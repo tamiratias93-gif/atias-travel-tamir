@@ -10,6 +10,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Bellefair&family=Heebo:wght@300;400;500;700;800&display=swap" rel="stylesheet">
 <link rel="icon" type="image/png" href="assets/logo-mark-128.png">
 <script src="../three.min.js"></script>
+<script src="config.js"></script>
 <style>
 :root{
   --paper:#F6FAFD; --white:#FFFFFF;
@@ -902,6 +903,90 @@ function setChips(arr){const c=document.getElementById('chips');c.innerHTML='';
   arr.forEach(t=>{const e=document.createElement('button');e.className='chip';e.textContent=t;
     e.onclick=()=>{document.getElementById('inp').value=t;send();};c.appendChild(e);});}
 
+/* ================= LIVE AI BRAIN (Gemini) — activates when config.js provides a key ================= */
+const AI=(window.ATIAS_CONFIG||{});
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const SYS_PROMPT=[
+"אתה \"הסוכן החכם של Atias Travel\" — סוכנות הנסיעות של תמיר אטיאס, סוכן נסיעות אישי מישראל שמתמחה בטיולים מותאמים אישית ובטיולים נגישים. תמיר עצמו מטייל על כיסא גלגלים, ולכן נגישות אצלו היא מקצוע, לא סיסמה.",
+"דבר עברית בלבד, בגוף ראשון, בחום ובקיצור: 1-3 משפטים לכל תגובה, ושאלה אחת בלבד בכל פעם. בלי מקפים ארוכים.",
+"המטרה: לתשאל את הלקוח בהדרגה ולאסוף — 1) יעד (בארץ או בעולם) 2) תאריכים או עונה 3) כמה נוסעים ומי 4) תחומי עניין (אוכל, טבע, תרבות, חופים, קניות) 5) צרכים מיוחדים: שאל בפתיחות (נגישות, תזונה, כל דבר) אבל אל תניח כלום — תכני כשרות או בית חב\"ד יופיעו רק אם הלקוח העלה אותם 6) תחושת תקציב 7) שם ודרך התקשרות.",
+"אם הלקוח מזכיר נגישות: אמור לו שאצל תמיר נגישות היא קריטריון מספר אחת, וכל דירה, תחבורה ואטרקציה נבדקות אחת-אחת.",
+"עובדות אמת שמותר להשתמש בהן על בורדו (היעד שתמיר מכיר הכי טוב): טיסה ישירה מנתב\"ג ב-easyJet כ-5:20 שעות, או Air France דרך פריז + רכבת TGV נגישה כשעתיים; Cité du Vin עם הסמכת נגישות מלאה; רציפי הגארון שטוחים; יקב Château Pape Clément נגיש; יש בית חב\"ד במרכז העיר. על יעדים אחרים דבר בכלליות נכונה ואל תמציא עובדות, מחירים או שמות בתי עסק.",
+"לעולם אל תמציא מחירים. הצעת מחיר מדויקת נותן רק תמיר אישית, אחרי בדיקת טיסות ולינה בזמן אמת. שום דבר לא מוזמן בלי אישור הלקוח.",
+"כשיש לך לפחות יעד + תאריכים/עונה + מי נוסע + תחום עניין אחד, הפק ברושור עטוף בדיוק כך:",
+"[[BROCHURE]]",
+"כותרת: <שם היעד>",
+"תקציר: <משפט מסקרן אחד>",
+"דגשים:",
+"- <דגש מותאם 1>",
+"- <דגש מותאם 2>",
+"- <דגש מותאם 3>",
+"מסלול מוצע: <2-3 משפטים על קצב הטיול>",
+"[[/BROCHURE]]",
+"אם הלקוח ביקש נגישות — הדגש הראשון תמיד יהיה התאמת הנגישות המלאה של המסלול.",
+"אחרי הברושור: אם אין לך עדיין שם ופרטי קשר, בקש אותם. אחר כך הצע מדריך אישי בשתי רמות: מדריך מקוצר (כל העיקר בעמוד אחד) או מדריך מלא ומפורט (יום-יום, מסעדות, אטרקציות), ושאל מה מתאים. המדריך מוכן ונשלח ללקוח אוטומטית עם הפרטים; תמיר חוזר אישית רק להצעת מחיר או שאלות מיוחדות.",
+"בסוף כל תגובה אפשר להוסיף שורת תשובות מהירות בפורמט: [[CHIPS]] אפשרות 1 | אפשרות 2 | אפשרות 3 (עד 4, קצרות).",
+"סיים שיחות בשאלה אם אפשר לעזור בעוד משהו."
+].join("\n");
+const llmHistory=[];
+let llmBusy=false,llmTurns=0,llmDead=false,llmFails=0;
+const AI_MODELS=[AI.GEMINI_MODEL||'gemini-flash-latest','gemini-2.5-flash','gemini-3-flash-preview'];
+async function askGemini(userText){
+  llmHistory.push({role:'user',parts:[{text:userText}]});
+  const body=JSON.stringify({
+    system_instruction:{parts:[{text:SYS_PROMPT}]},
+    contents:llmHistory,
+    generationConfig:{temperature:0.7,maxOutputTokens:1400}
+  });
+  let lastErr=null;
+  for(const model of AI_MODELS){
+    for(let attempt=0;attempt<2;attempt++){
+      try{
+        const resp=await fetch('https://generativelanguage.googleapis.com/v1beta/models/'+model+':generateContent?key='+AI.GEMINI_KEY,
+          {method:'POST',headers:{'Content-Type':'application/json'},body});
+        if(resp.status===429||resp.status===503){
+          lastErr=new Error(model+' http '+resp.status);
+          await new Promise(r=>setTimeout(r,900));continue;
+        }
+        if(!resp.ok)throw new Error(model+' http '+resp.status);
+        const data=await resp.json();
+        const txt=((data.candidates&&data.candidates[0]&&data.candidates[0].content&&data.candidates[0].content.parts)||[]).map(p=>p.text||'').join('').trim();
+        if(!txt)throw new Error(model+' empty');
+        llmHistory.push({role:'model',parts:[{text:txt}]});
+        llmFails=0;
+        return txt;
+      }catch(e){lastErr=e;}
+    }
+  }
+  llmHistory.pop();
+  throw lastErr||new Error('gemini unavailable');
+}
+function addBrochureRaw(raw){
+  const get=k=>{const m=raw.match(new RegExp(k+':\\s*(.*)'));return m?esc(m[1].trim()):'';};
+  const title=get('כותרת'),sum=get('תקציר'),route=get('מסלול מוצע');
+  const items=(raw.match(/^[-•]\s*(.+)$/gm)||[]).map(s=>esc(s.replace(/^[-•]\s*/,'').trim()));
+  const el=document.createElement('div');el.className='brochure';
+  el.innerHTML='<span class="tag">ברושור מותאם אישית</span><h3>'+(title||'המסע שלך')+'</h3>'+(sum?'<p>'+sum+'</p>':'')+
+    (items.length?'<ul>'+items.map(i=>'<li>'+i+'</li>').join('')+'</ul>':'')+
+    (route?'<p><b>מסלול מוצע:</b> '+route+'</p>':'')+
+    '<div class="ref">📍 להצעת מחיר מדויקת תמיר חוזר אליך אישית. שום דבר לא מוזמן בלי אישור שלך.</div>';
+  msgs.appendChild(el);scrollDown();
+}
+function renderLLM(txt){
+  let chips=null;
+  const cm=txt.match(/\[\[CHIPS\]\]\s*(.+)/);
+  if(cm){chips=cm[1].split('|').map(s=>s.trim()).filter(Boolean).slice(0,4);txt=txt.replace(/\[\[CHIPS\]\][^\n]*/g,'').trim();}
+  const b=txt.indexOf('[[BROCHURE]]'),e=txt.indexOf('[[/BROCHURE]]');
+  if(b>-1){
+    const end=e>-1?e:txt.length;
+    const before=txt.slice(0,b).trim(),raw=txt.slice(b+12,end).trim(),after=e>-1?txt.slice(e+13).trim():'';
+    if(before)addBubble(before,'bot');
+    addBrochureRaw(raw);
+    if(after)addBubble(after,'bot');
+  }else addBubble(txt,'bot');
+  if(chips)setChips(chips);
+}
+
 /* ---- knowledge base, distilled from Tamir's real agent procedures ---- */
 const KB={
 "בורדו":{tease:"בירת היין של העולם — ואחד היעדים שאני מכיר הכי לעומק.",b:["טיסה ישירה מנתב\"ג (easyJet, כ-5:20) או Air France דרך פריז + רכבת TGV נגישה (כשעתיים)","Cité du Vin — מוזיאון היין עם הסמכת נגישות מלאה","רציפי נהר הגארון — שטוחים ויפהפיים, מושלמים לשעת שקיעה","יקבים שנבדקו לנגישות, כמו Château Pape Clément","בית חב\"ד פעיל במרכז העיר — למי שמחפש כשרות וקהילה"]},
@@ -1066,9 +1151,25 @@ function respond(raw){
 }
 function send(){
   const inp=document.getElementById('inp');const v=inp.value.trim();if(!v)return;
+  if(AI.GEMINI_KEY&&!llmDead){
+    if(llmBusy)return;
+    inp.value='';document.getElementById('chips').innerHTML='';
+    addBubble(v,'me');
+    if(++llmTurns>24){
+      addBubble("וואו, זו כבר שיחה רצינית 🙂 בוא נמשיך אותה ישירות עם תמיר — השאר שם וטלפון והוא יחזור אליך.",'bot');
+      return;
+    }
+    llmBusy=true;typing(true);
+    askGemini(v)
+      .then(txt=>{typing(false);renderLLM(txt);})
+      .catch(err=>{console.warn('AI fallback:',err);typing(false);if(++llmFails>=2)llmDead=true;respond(v);})
+      .finally(()=>{llmBusy=false;});
+    return;
+  }
   inp.value='';document.getElementById('chips').innerHTML='';
   addBubble(v,'me');respond(v);
 }
+if(AI.GEMINI_KEY){const lv=document.querySelector('.live');if(lv)lv.innerHTML='<i></i> מחובר · AI חי';}
 addBubble("היי 👋 אני הסוכן החכם של Atias Travel — סוכנות הנסיעות של תמיר אטיאס. אני אתשאל אתכם בדיוק כמו שתמיר היה, כמה שאלות קצרות — ובסוף מחכה לכם ברושור אישי. אז, חולמים על חו\"ל או על חופשה בארץ?",'bot');
 setChips(["טיול בחו\"ל","חופשה בארץ","בורדו","ים המלח"]);
 </script>
