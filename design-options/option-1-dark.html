@@ -1,0 +1,191 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>אופציה 1 · לילה קולנועי · תמיר אטיאס</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Frank+Ruhl+Libre:wght@500;700;900&family=Heebo:wght@300;400;500;700;800&display=swap" rel="stylesheet">
+<script src="../three.min.js"></script>
+<style>
+:root{
+  --bg:#050509; --gold:#e9b85c; --gold2:#f6d78f; --goldd:#9a7422;
+  --cream:#f5efe2; --mut:#8b8496; --line:rgba(233,184,92,.18);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%}
+body{background:var(--bg);color:var(--cream);font-family:"Heebo",sans-serif;overflow-x:hidden;
+  -webkit-font-smoothing:antialiased;line-height:1.7}
+.serif{font-family:"Frank Ruhl Libre",Georgia,serif}
+#scene{position:fixed;top:0;left:0;width:100%;height:100%;z-index:0;display:block}
+.glow{position:fixed;z-index:1;pointer-events:none;inset:0;
+  background:radial-gradient(52% 60% at 24% 45%, rgba(233,184,92,.10), transparent 62%),
+             radial-gradient(40% 40% at 80% 10%, rgba(90,70,180,.12), transparent 65%)}
+.vignette{position:fixed;inset:0;z-index:3;pointer-events:none;box-shadow:inset 0 0 220px rgba(0,0,0,.85)}
+.grain{position:fixed;inset:0;z-index:3;pointer-events:none;opacity:.5;mix-blend-mode:overlay;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='120' height='120' filter='url(%23n)' opacity='0.06'/%3E%3C/svg%3E")}
+nav{position:fixed;top:0;left:0;right:0;z-index:10;display:flex;align-items:center;gap:18px;
+  padding:20px 40px;background:linear-gradient(180deg,rgba(5,5,9,.75),transparent)}
+.logo{display:flex;align-items:center;gap:11px;font-weight:800;font-size:17px;letter-spacing:.02em}
+.logo .mark{width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;
+  background:radial-gradient(circle at 35% 30%,var(--gold2),var(--goldd));color:#141005;font-size:15px;
+  box-shadow:0 0 24px rgba(233,184,92,.5)}
+.tag{margin-right:auto;font-size:12px;letter-spacing:.3em;color:var(--mut);font-weight:500}
+.hero{position:relative;z-index:5;min-height:100svh;display:flex;align-items:center;padding:110px 6vw 90px}
+.hero-in{max-width:640px}
+.eyebrow{display:inline-flex;align-items:center;gap:10px;font-size:12px;font-weight:700;letter-spacing:.28em;
+  color:var(--gold2);border:1px solid var(--line);border-radius:40px;padding:10px 20px;margin-bottom:30px;
+  background:rgba(233,184,92,.05);backdrop-filter:blur(6px)}
+.eyebrow .dot{width:7px;height:7px;border-radius:50%;background:var(--gold);box-shadow:0 0 12px var(--gold);animation:pulse 1.8s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.2}}
+h1{font-size:clamp(46px,7.4vw,104px);line-height:1.02;font-weight:900;letter-spacing:-.02em;color:var(--cream)}
+h1 .grad{background:linear-gradient(100deg,#f6d78f,#e9b85c 45%,#fdf0cf 80%);
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+  filter:drop-shadow(0 0 34px rgba(233,184,92,.35))}
+.lead{margin-top:26px;max-width:480px;font-size:clamp(15px,1.7vw,19px);color:#c9c2d4;font-weight:300}
+.cta-row{margin-top:42px;display:flex;gap:16px;flex-wrap:wrap}
+.btn{cursor:pointer;font-family:inherit;font-weight:700;font-size:15.5px;border-radius:50px;padding:16px 34px;
+  border:none;transition:.25s;display:inline-flex;align-items:center;gap:9px}
+.btn:hover{transform:translateY(-3px)}
+.btn-gold{background:linear-gradient(95deg,var(--goldd),var(--gold));color:#140f04;
+  box-shadow:0 10px 40px rgba(233,184,92,.35)}
+.btn-gold:hover{box-shadow:0 16px 55px rgba(233,184,92,.55)}
+.btn-ghost{background:transparent;color:var(--cream);border:1px solid rgba(245,239,226,.25)}
+.btn-ghost:hover{border-color:var(--gold);color:var(--gold2)}
+.stats{margin-top:64px;display:flex;gap:44px;flex-wrap:wrap}
+.stat b{display:block;font-family:"Frank Ruhl Libre",serif;font-size:34px;font-weight:900;color:var(--gold2);line-height:1.1}
+.stat span{font-size:13px;color:var(--mut)}
+.marquee{position:fixed;bottom:0;left:0;right:0;z-index:6;overflow:hidden;white-space:nowrap;
+  border-top:1px solid var(--line);background:rgba(5,5,9,.72);backdrop-filter:blur(10px);padding:15px 0}
+.marquee-in{display:inline-block;animation:slide 36s linear infinite;font-family:"Frank Ruhl Libre",serif;
+  font-size:17px;color:#6f6880;letter-spacing:.06em}
+.marquee-in b{color:var(--gold2);font-weight:700}
+@keyframes slide{from{transform:translateX(0)}to{transform:translateX(50%)}}
+.scroll-cue{position:absolute;bottom:76px;left:50%;transform:translateX(-50%);z-index:6;font-size:10.5px;
+  letter-spacing:.3em;color:var(--mut);display:flex;flex-direction:column;align-items:center;gap:8px}
+.scroll-cue .line{width:1px;height:40px;background:linear-gradient(var(--gold),transparent);animation:drop 2s infinite}
+@keyframes drop{0%{transform:scaleY(0);transform-origin:top}50%{transform:scaleY(1);transform-origin:top}50.1%{transform-origin:bottom}100%{transform:scaleY(0);transform-origin:bottom}}
+@media(max-width:700px){.hero{padding-top:130px}.stats{gap:26px}}
+</style>
+</head>
+<body>
+<canvas id="scene"></canvas>
+<div class="glow"></div>
+<div class="vignette"></div>
+<div class="grain"></div>
+
+<nav>
+  <span class="logo"><span class="mark">✈</span> תמיר אטיאס</span>
+  <span class="tag">ATIAS · PRIVATE TRAVEL</span>
+</nav>
+
+<header class="hero">
+  <div class="hero-in">
+    <div class="eyebrow"><span class="dot"></span> סוכן נסיעות אישי · בארץ ובעולם</div>
+    <h1 class="serif">העולם נפתח<br><span class="grad">בשיחה אחת</span></h1>
+    <p class="lead">מסלולים תפורים אישית, נגישות בלי פשרות, וליווי צמוד מהחלום ועד הנחיתה. ספר לסוכן החכם לאן אתה חולם להגיע.</p>
+    <div class="cta-row">
+      <button class="btn btn-gold">✦ דבר עם הסוכן</button>
+      <button class="btn btn-ghost">גלה יעדים</button>
+    </div>
+    <div class="stats">
+      <div class="stat"><b>24</b><span>יעדים נבחרים</span></div>
+      <div class="stat"><b>+150</b><span>מסלולים אישיים</span></div>
+      <div class="stat"><b>100%</b><span>התאמת נגישות</span></div>
+    </div>
+  </div>
+  <div class="scroll-cue"><span>גלול</span><span class="line"></span></div>
+</header>
+
+<div class="marquee"><div class="marquee-in" id="mq"></div></div>
+
+<script>
+/* marquee */
+const NAMES=["פריז","בורדו","רומא","טוקיו","סנטוריני","ניו יורק","דובאי","באלי","אמסטרדם","פראג","המלדיביים","שוויץ","לונדון","ברצלונה"];
+document.getElementById('mq').innerHTML=(NAMES.map(n=>` <b>${n}</b> · `).join('')).repeat(4);
+
+/* ===== 3D: golden globe + starfield ===== */
+const canvas=document.getElementById('scene');
+const renderer=new THREE.WebGLRenderer({canvas,antialias:true,alpha:true});
+renderer.setPixelRatio(Math.min(window.devicePixelRatio||1,2));
+const scene=new THREE.Scene();
+const camera=new THREE.PerspectiveCamera(55,1,0.1,200);
+camera.position.set(0,0,7);
+
+/* starfield */
+(function(){
+  const N=1800,pos=new Float32Array(N*3);
+  for(let i=0;i<N;i++){
+    const r=18+Math.random()*50,t=Math.random()*Math.PI*2,p=Math.acos(2*Math.random()-1);
+    pos[i*3]=r*Math.sin(p)*Math.cos(t);pos[i*3+1]=r*Math.sin(p)*Math.sin(t);pos[i*3+2]=-Math.abs(r*Math.cos(p))-4;
+  }
+  const g=new THREE.BufferGeometry();g.setAttribute('position',new THREE.BufferAttribute(pos,3));
+  scene.add(new THREE.Points(g,new THREE.PointsMaterial({color:0xcfc6e0,size:0.09,transparent:true,opacity:0.8})));
+})();
+
+/* globe group — sits on the LEFT side (text is on the right, RTL) */
+const globe=new THREE.Group();
+globe.position.set(-3.1,-0.2,0);
+scene.add(globe);
+
+/* wireframe sphere */
+globe.add(new THREE.Mesh(
+  new THREE.SphereGeometry(2.15,28,28),
+  new THREE.MeshBasicMaterial({color:0xe9b85c,wireframe:true,transparent:true,opacity:0.16})
+));
+/* inner dark body */
+globe.add(new THREE.Mesh(
+  new THREE.SphereGeometry(2.1,32,32),
+  new THREE.MeshBasicMaterial({color:0x0a0812,transparent:true,opacity:0.9})
+));
+/* destination dots on the surface */
+(function(){
+  const N=90,pos=new Float32Array(N*3);
+  for(let i=0;i<N;i++){
+    const t=Math.random()*Math.PI*2,p=Math.acos(2*Math.random()-1),r=2.17;
+    pos[i*3]=r*Math.sin(p)*Math.cos(t);pos[i*3+1]=r*Math.cos(p);pos[i*3+2]=r*Math.sin(p)*Math.sin(t);
+  }
+  const g=new THREE.BufferGeometry();g.setAttribute('position',new THREE.BufferAttribute(pos,3));
+  globe.add(new THREE.Points(g,new THREE.PointsMaterial({color:0xf6d78f,size:0.075,transparent:true,opacity:0.95})));
+})();
+/* orbit rings */
+[[2.9,0.4,0],[3.3,-0.7,0.5]].forEach(function(cfg){
+  const ring=new THREE.Mesh(
+    new THREE.TorusGeometry(cfg[0],0.008,8,120),
+    new THREE.MeshBasicMaterial({color:0xe9b85c,transparent:true,opacity:0.28})
+  );
+  ring.rotation.x=Math.PI/2+cfg[1];ring.rotation.y=cfg[2];
+  globe.add(ring);
+});
+/* a "plane" light travelling an orbit */
+const traveler=new THREE.Mesh(new THREE.SphereGeometry(0.055,10,10),
+  new THREE.MeshBasicMaterial({color:0xfff3d0}));
+globe.add(traveler);
+
+let t=0,mx=0,my=0,lastW=0,lastH=0,narrow=false;
+function resize(){
+  const w=canvas.clientWidth||innerWidth,h=canvas.clientHeight||innerHeight;
+  if(w===lastW&&h===lastH)return;lastW=w;lastH=h;
+  renderer.setSize(w,h,false);camera.aspect=w/h;camera.updateProjectionMatrix();
+  /* on narrow screens center the globe behind the text */
+  narrow=(w/h)<1.05;
+  globe.position.x=narrow?0:-3.1;
+}
+addEventListener('mousemove',function(e){
+  mx=e.clientX/innerWidth-0.5;my=e.clientY/innerHeight-0.5;
+});
+(function frame(){
+  resize();t+=0.004;
+  globe.rotation.y=t*1.6;
+  globe.rotation.x=0.25+my*0.15;
+  traveler.position.set(Math.cos(t*6)*2.9,Math.sin(t*3)*0.35,Math.sin(t*6)*2.9);
+  camera.position.x+=((mx*0.9)-camera.position.x)*0.05;
+  camera.position.y+=((-my*0.6)-camera.position.y)*0.05;
+  camera.lookAt(narrow?0:-1.2,0,0);
+  renderer.render(scene,camera);
+  requestAnimationFrame(frame);
+})();
+</script>
+</body>
+</html>

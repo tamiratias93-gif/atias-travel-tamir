@@ -1,0 +1,237 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>אופציה 3 · עולם שובב · תמיר אטיאס</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;700;800;900&display=swap" rel="stylesheet">
+<script src="../three.min.js"></script>
+<style>
+:root{--sky1:#7ec8f5;--sky2:#b9e4ff;--sun:#ffd25e;--coral:#ff7a59;--grass:#59c26e;--ink:#1d3a5f}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%}
+body{font-family:"Heebo",sans-serif;overflow-x:hidden;color:var(--ink);line-height:1.65;
+  background:linear-gradient(180deg,#8ed0f8 0%,#b9e4ff 55%,#e8f7ff 100%);-webkit-font-smoothing:antialiased}
+#scene{position:fixed;top:0;left:0;width:100%;height:100%;z-index:0;display:block}
+.cloud{position:fixed;z-index:1;pointer-events:none;background:#fff;border-radius:60px;opacity:.9;
+  box-shadow:30px 8px 0 6px #fff,-28px 10px 0 2px #fff,0 6px 24px rgba(60,120,180,.18)}
+.c1{top:14%;right:6%;width:90px;height:34px;animation:drift 40s linear infinite}
+.c2{top:26%;left:4%;width:70px;height:28px;animation:drift 55s linear infinite reverse;opacity:.75}
+.c3{top:8%;left:30%;width:56px;height:22px;animation:drift 48s linear infinite;opacity:.65}
+@keyframes drift{from{transform:translateX(0)}50%{transform:translateX(-70px)}to{transform:translateX(0)}}
+nav{position:fixed;top:0;left:0;right:0;z-index:10;display:flex;align-items:center;gap:18px;padding:20px 38px}
+.logo{display:flex;align-items:center;gap:11px;font-weight:900;font-size:18px;color:#fff;
+  text-shadow:0 2px 12px rgba(30,90,150,.4)}
+.logo .mark{width:38px;height:38px;border-radius:14px;display:flex;align-items:center;justify-content:center;
+  background:linear-gradient(135deg,#ffd25e,#ff9f4a);color:#7a4310;font-size:17px;transform:rotate(-8deg);
+  box-shadow:0 8px 20px rgba(200,120,30,.4)}
+.tag{margin-right:auto;font-size:12px;letter-spacing:.26em;color:rgba(255,255,255,.95);font-weight:700;
+  text-shadow:0 2px 10px rgba(30,90,150,.4)}
+.hero{position:relative;z-index:5;min-height:100svh;display:flex;align-items:center;padding:110px 6vw 90px}
+.hero-in{max-width:620px}
+.eyebrow{display:inline-flex;align-items:center;gap:9px;font-size:13px;font-weight:800;color:#fff;
+  background:linear-gradient(95deg,#ff7a59,#ff9f4a);border-radius:40px;padding:10px 20px;margin-bottom:24px;
+  box-shadow:0 10px 26px rgba(230,110,60,.4);transform:rotate(-1.5deg)}
+h1{font-size:clamp(46px,7.6vw,100px);line-height:1.03;font-weight:900;letter-spacing:-.02em;color:#fff;
+  text-shadow:0 4px 0 rgba(38,110,175,.85), 0 14px 40px rgba(30,90,150,.35)}
+h1 .pop{color:#ffd25e;text-shadow:0 4px 0 rgba(200,120,20,.75), 0 14px 40px rgba(30,90,150,.35)}
+.lead{margin-top:22px;max-width:470px;font-size:clamp(15px,1.8vw,19px);color:#fff;font-weight:500;
+  text-shadow:0 2px 14px rgba(30,90,150,.45)}
+.cta-row{margin-top:38px;display:flex;gap:15px;flex-wrap:wrap}
+.btn{cursor:pointer;font-family:inherit;font-weight:800;font-size:16px;border-radius:20px;padding:17px 34px;
+  border:none;transition:.2s;display:inline-flex;align-items:center;gap:9px}
+.btn:hover{transform:translateY(-4px) rotate(-1deg)}
+.btn-main{background:linear-gradient(135deg,#ffd25e,#ff9f4a);color:#6b3c0c;
+  box-shadow:0 6px 0 #d9932c, 0 18px 36px rgba(210,130,40,.4)}
+.btn-main:hover{box-shadow:0 8px 0 #d9932c, 0 24px 44px rgba(210,130,40,.5)}
+.btn-sec{background:#fff;color:#2a6fae;box-shadow:0 6px 0 #bcd9ee, 0 16px 32px rgba(60,120,180,.25)}
+.chips{margin-top:52px;display:flex;gap:10px;flex-wrap:wrap}
+.chip{background:rgba(255,255,255,.92);border-radius:30px;padding:9px 18px;font-size:14px;font-weight:700;
+  color:#2a6fae;box-shadow:0 8px 18px rgba(60,120,180,.2);transform:rotate(0deg);transition:.2s;cursor:pointer}
+.chip:nth-child(2n){transform:rotate(1.6deg)}
+.chip:nth-child(3n){transform:rotate(-1.6deg)}
+.chip:hover{transform:scale(1.08) rotate(0deg);background:#ffd25e;color:#6b3c0c}
+.scroll-cue{position:absolute;bottom:30px;left:50%;transform:translateX(-50%);z-index:6;font-size:11px;
+  letter-spacing:.28em;color:#fff;font-weight:700;text-shadow:0 2px 10px rgba(30,90,150,.5);
+  display:flex;flex-direction:column;align-items:center;gap:7px}
+.scroll-cue .ball{width:10px;height:10px;border-radius:50%;background:#fff;animation:bounce 1.4s infinite}
+@keyframes bounce{0%,100%{transform:translateY(0)}50%{transform:translateY(12px)}}
+@media(max-width:760px){.hero{align-items:flex-start;padding-top:150px}}
+</style>
+</head>
+<body>
+<canvas id="scene"></canvas>
+<div class="cloud c1"></div><div class="cloud c2"></div><div class="cloud c3"></div>
+
+<nav>
+  <span class="logo"><span class="mark">✈</span> תמיר אטיאס</span>
+  <span class="tag">FUN · TRAVEL · WORLD</span>
+</nav>
+
+<header class="hero">
+  <div class="hero-in">
+    <div class="eyebrow">🌍 סוכן נסיעות אישי · בארץ ובעולם</div>
+    <h1>לאן טסים<br><span class="pop">הפעם?</span></h1>
+    <p class="lead">בוחרים יעד, מספרים לסוכן החכם מה אתם אוהבים, ומקבלים מסלול תפור אישית. כולל התאמת נגישות מלאה, כי לכולם מגיע לטייל בכיף.</p>
+    <div class="cta-row">
+      <button class="btn btn-main">🚀 דבר עם הסוכן</button>
+      <button class="btn btn-sec">גלה יעדים</button>
+    </div>
+    <div class="chips">
+      <span class="chip">🗼 פריז</span><span class="chip">🍕 רומא</span><span class="chip">🏝️ באלי</span>
+      <span class="chip">🗽 ניו יורק</span><span class="chip">🎌 טוקיו</span><span class="chip">🐫 מצפה רמון</span>
+    </div>
+  </div>
+  <div class="scroll-cue"><span>גלול</span><span class="ball"></span></div>
+</header>
+
+<script>
+/* ===== 3D: low-poly planet + orbiting plane + balloons ===== */
+const canvas=document.getElementById('scene');
+const renderer=new THREE.WebGLRenderer({canvas,antialias:true,alpha:true});
+renderer.setPixelRatio(Math.min(window.devicePixelRatio||1,2));
+const scene=new THREE.Scene();
+const camera=new THREE.PerspectiveCamera(50,1,0.1,100);
+camera.position.set(0,0.4,8.5);
+
+scene.add(new THREE.HemisphereLight(0xffffff,0x88b8e0,1.05));
+const dl=new THREE.DirectionalLight(0xfff4d8,1.3);dl.position.set(5,6,4);scene.add(dl);
+
+/* planet group — LEFT side (text on the right, RTL) */
+const world=new THREE.Group();
+world.position.set(-3.4,-0.5,0);
+scene.add(world);
+
+/* ocean */
+world.add(new THREE.Mesh(
+  new THREE.IcosahedronGeometry(2.1,1),
+  new THREE.MeshStandardMaterial({color:0x3f9fe0,flatShading:true,roughness:.85})
+));
+/* land patches */
+const LAND=[0x59c26e,0x6ecf7f,0x4bb267,0xd9b45e,0x59c26e,0x6ecf7f,0x86d98a,0x4bb267];
+for(let i=0;i<10;i++){
+  const dir=new THREE.Vector3(Math.random()-0.5,Math.random()-0.5,Math.random()-0.5).normalize();
+  const land=new THREE.Mesh(
+    new THREE.IcosahedronGeometry(0.55+Math.random()*0.5,0),
+    new THREE.MeshStandardMaterial({color:LAND[i%LAND.length],flatShading:true,roughness:1})
+  );
+  land.position.copy(dir.multiplyScalar(2.02));
+  land.scale.set(1,0.45,1);
+  land.lookAt(0,0,0);
+  world.add(land);
+}
+/* snow caps */
+[[0,1,0],[0.4,-0.92,0.2]].forEach(function(d){
+  const cap=new THREE.Mesh(new THREE.IcosahedronGeometry(0.55,0),
+    new THREE.MeshStandardMaterial({color:0xffffff,flatShading:true,roughness:.9}));
+  const v=new THREE.Vector3(d[0],d[1],d[2]).normalize().multiplyScalar(2.05);
+  cap.position.copy(v);cap.scale.set(1,0.4,1);cap.lookAt(0,0,0);
+  world.add(cap);
+});
+/* little trees */
+for(let i=0;i<8;i++){
+  const dir=new THREE.Vector3(Math.random()-0.5,Math.random()-0.3,Math.random()-0.5).normalize();
+  const tree=new THREE.Group();
+  const trunk=new THREE.Mesh(new THREE.CylinderGeometry(0.03,0.04,0.16,5),
+    new THREE.MeshStandardMaterial({color:0x8a5a30,roughness:1}));
+  const top=new THREE.Mesh(new THREE.ConeGeometry(0.11,0.26,6),
+    new THREE.MeshStandardMaterial({color:0x2f8f4a,flatShading:true,roughness:1}));
+  top.position.y=0.2;tree.add(trunk);tree.add(top);
+  tree.position.copy(dir.clone().multiplyScalar(2.28));
+  tree.lookAt(dir.clone().multiplyScalar(4));
+  tree.rotateX(Math.PI/2);
+  world.add(tree);
+}
+/* clouds around planet */
+const pclouds=[];
+for(let i=0;i<6;i++){
+  const cg=new THREE.Group();
+  for(let k=0;k<3;k++){
+    const puff=new THREE.Mesh(new THREE.IcosahedronGeometry(0.16+Math.random()*0.12,0),
+      new THREE.MeshStandardMaterial({color:0xffffff,flatShading:true,roughness:1,transparent:true,opacity:.95}));
+    puff.position.set(k*0.2-0.2,Math.random()*0.06,Math.random()*0.1);
+    cg.add(puff);
+  }
+  cg.userData={r:2.75+Math.random()*0.35,a:Math.random()*Math.PI*2,tilt:(Math.random()-0.5)*1.4,sp:0.12+Math.random()*0.12};
+  world.add(cg);pclouds.push(cg);
+}
+/* plane orbiting */
+const planeG=new THREE.Group();
+const body=new THREE.Mesh(new THREE.ConeGeometry(0.13,0.55,8),
+  new THREE.MeshStandardMaterial({color:0xffffff,flatShading:true,roughness:.7}));
+body.rotation.z=-Math.PI/2;planeG.add(body);
+const wing=new THREE.Mesh(new THREE.BoxGeometry(0.16,0.02,0.62),
+  new THREE.MeshStandardMaterial({color:0xff7a59,roughness:.8}));
+planeG.add(wing);
+const tail=new THREE.Mesh(new THREE.BoxGeometry(0.05,0.16,0.05),
+  new THREE.MeshStandardMaterial({color:0xff7a59,roughness:.8}));
+tail.position.set(-0.22,0.09,0);planeG.add(tail);
+const orbit=new THREE.Group();orbit.rotation.z=0.35;orbit.add(planeG);
+world.add(orbit);
+/* trail dots behind the plane */
+const TR=26,tpos=new Float32Array(TR*3);
+const tgeo=new THREE.BufferGeometry();tgeo.setAttribute('position',new THREE.BufferAttribute(tpos,3));
+const trail=new THREE.Points(tgeo,new THREE.PointsMaterial({color:0xffffff,size:0.07,transparent:true,opacity:.75}));
+orbit.add(trail);
+
+/* floating balloons in the sky */
+const balloons=[];
+[[0xff7a59,3.2,2.1,-3,0.5],[0xffd25e,4.6,-0.8,-5,0.42],[0xb37ae0,2.2,-2.3,-2,0.34]].forEach(function(cfg,i){
+  const g=new THREE.Group();
+  const env=new THREE.Mesh(new THREE.IcosahedronGeometry(1,1),
+    new THREE.MeshStandardMaterial({color:cfg[0],flatShading:true,roughness:.8}));
+  env.scale.set(1,1.18,1);g.add(env);
+  const basket=new THREE.Mesh(new THREE.BoxGeometry(0.34,0.26,0.34),
+    new THREE.MeshStandardMaterial({color:0x8a5a30,roughness:1}));
+  basket.position.y=-1.62;g.add(basket);
+  g.position.set(cfg[1],cfg[2],cfg[3]);g.scale.setScalar(cfg[4]);
+  g.userData={y0:cfg[2],ph:i*1.9};
+  scene.add(g);balloons.push(g);
+});
+
+let t=0,mx=0,my=0,lastW=0,lastH=0,narrow=false;
+function resize(){
+  const w=canvas.clientWidth||innerWidth,h=canvas.clientHeight||innerHeight;
+  if(w===lastW&&h===lastH)return;lastW=w;lastH=h;
+  renderer.setSize(w,h,false);camera.aspect=w/h;camera.updateProjectionMatrix();
+  narrow=(w/h)<1.05;
+  world.position.x=narrow?0:-3.4;
+  world.position.y=narrow?-4.4:-0.5;
+  world.scale.setScalar(narrow?0.85:1);
+}
+addEventListener('mousemove',function(e){
+  mx=e.clientX/innerWidth-0.5;my=e.clientY/innerHeight-0.5;
+});
+(function frame(){
+  resize();t+=0.006;
+  world.rotation.y=t*0.9;
+  world.rotation.x=0.28+my*0.1;
+  /* plane on its orbit */
+  const pa=t*2.4,R=3.15;
+  planeG.position.set(Math.cos(pa)*R,0,Math.sin(pa)*R);
+  planeG.rotation.y=-pa-Math.PI/2;
+  for(let i=0;i<TR;i++){
+    const a=pa-(i+1)*0.09;
+    tpos[i*3]=Math.cos(a)*R;tpos[i*3+1]=0;tpos[i*3+2]=Math.sin(a)*R;
+  }
+  tgeo.attributes.position.needsUpdate=true;
+  /* clouds orbit slowly */
+  pclouds.forEach(function(cg){
+    cg.userData.a+=cg.userData.sp*0.01;
+    const u=cg.userData;
+    cg.position.set(Math.cos(u.a)*u.r,Math.sin(u.a*0.7)*u.tilt,Math.sin(u.a)*u.r);
+  });
+  balloons.forEach(function(b){
+    b.position.y=b.userData.y0+Math.sin(t*1.3+b.userData.ph)*0.4;
+    b.rotation.y=Math.sin(t*0.6+b.userData.ph)*0.3;
+  });
+  camera.position.x+=((mx*0.9)-camera.position.x)*0.05;
+  camera.lookAt(narrow?0:-1.4,narrow?-1.2:0,0);
+  renderer.render(scene,camera);
+  requestAnimationFrame(frame);
+})();
+</script>
+</body>
+</html>
