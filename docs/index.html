@@ -994,6 +994,11 @@ function doBrochure(){
   state.brochure=true;
   const kb=kbFor(state.dest);
   let bullets=kb.b.slice();
+  /* open to everyone: kosher/Chabad content only when the client asked for it */
+  const wantsKosher=state.needs&&/(כשר|חב"ד)/.test(state.needs);
+  if(!wantsKosher)bullets=bullets.filter(b=>!/חב"ד|כשרות|כשר/.test(b));
+  else{const k=bullets.findIndex(b=>/חב"ד|כשרות|כשר/.test(b));
+    if(k>0){const kb2=bullets.splice(k,1)[0];bullets.unshift(kb2);}}
   if(state.needs&&/נגישות/.test(state.needs))
     bullets.unshift("כל המסלול מותאם נגישות מלאה — לינה נגישה, תחבורה מסודרת ומסלולים שטוחים");
   bullets=bullets.slice(0,4);
@@ -1014,12 +1019,12 @@ function doBrochure(){
 }
 function guideOffer(){
   state.stage='guide';
-  reply("ועוד משהו 🧡 אשמח להכין לך גם מדריך אישי מפורט ליעד — טיסות, תחבורה נגישה, אטרקציות שנבדקו והמלצות מקומיות. רוצה?",
-    ["כן, אשמח למדריך","לא צריך, תודה"]);
+  reply("ועוד משהו 🧡 אני יודע להכין לך גם מדריך אישי ליעד — בכל רמה שתבחר: ⚡ מדריך מקוצר — כל העיקר בעמוד אחד (טיסות, תחבורה, 5 דברים שאסור לפספס), או 📖 מדריך מלא ומפורט — תכנון יום-יום, מסעדות, אטרקציות והתאמות אישיות. מה יתאים לך?",
+    ["מדריך מקוצר","מדריך מלא ומפורט","לא צריך, תודה"]);
 }
-function closing(withGuide){
+function closing(guideType){
   state.stage='done';
-  reply((withGuide?"סגור! המדריך בהכנה — הוא יישלח אליך יחד עם הפרטים. ":"אין בעיה. ")+
+  reply((guideType?"סגור! המדריך ה"+guideType+" בהכנה — הוא יישלח אליך יחד עם הפרטים. ":"אין בעיה. ")+
     "להצעת מחיר מדויקת תמיר יחזור אליך אישית ממש בקרוב. יש עוד משהו שאוכל לעזור בו?",
     ["תכנון יעד נוסף","זהו, תודה רבה"]);
 }
@@ -1029,8 +1034,11 @@ function resetForNewTrip(){
 function respond(raw){
   let text=raw;
   if(state.stage==='guide'){
-    if(/כן|אשמח|בטח|יאלל|בכיף/.test(text))return closing(true);
-    if(/לא/.test(text))return closing(false);
+    if(/מקוצר|קצר|תמציתי/.test(text))return closing("מקוצר");
+    if(/מלא|מפורט|מורחב/.test(text))return closing("מלא");
+    if(/כן|אשמח|בטח|יאלל|בכיף/.test(text))return reply("מעולה! איזה סוג יתאים לך?",["מדריך מקוצר","מדריך מלא ומפורט"]);
+    if(/לא/.test(text))return closing(null);
+    return reply("רק תבחר: מקוצר או מלא? (ואפשר גם לוותר)",["מדריך מקוצר","מדריך מלא ומפורט","לא צריך, תודה"]);
   }
   if(state.stage==='done'){
     if(/יעד נוסף|עוד טיול|תכנון/.test(text)){resetForNewTrip();return reply("יאללה, מתחילים טיול חדש! "+Q.dest.q,Q.dest.chips);}
