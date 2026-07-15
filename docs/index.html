@@ -931,13 +931,32 @@ const SYS_PROMPT=[
 const llmHistory=[];
 let llmBusy=false,llmTurns=0,llmDead=false,llmFails=0;
 const AI_MODELS=[AI.GEMINI_MODEL||'gemini-flash-latest','gemini-2.5-flash','gemini-3-flash-preview'];
+const AI_ON=!!(AI.GEMINI_PROXY_URL||AI.GEMINI_KEY);
 async function askGemini(userText){
   llmHistory.push({role:'user',parts:[{text:userText}]});
-  const body=JSON.stringify({
+  const payload={
     system_instruction:{parts:[{text:SYS_PROMPT}]},
     contents:llmHistory,
     generationConfig:{temperature:0.7,maxOutputTokens:1400}
-  });
+  };
+  /* Preferred path: hidden proxy (key stays server-side). text/plain avoids CORS preflight on Apps Script. */
+  if(AI.GEMINI_PROXY_URL){
+    let lastErr=null;
+    for(let attempt=0;attempt<2;attempt++){
+      try{
+        const resp=await fetch(AI.GEMINI_PROXY_URL,{method:'POST',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify(payload)});
+        if(!resp.ok){lastErr=new Error('proxy http '+resp.status);await new Promise(r=>setTimeout(r,800));continue;}
+        const data=await resp.json();
+        if(data.error)throw new Error('proxy: '+data.error);
+        const txt=(data.text||'').trim();
+        if(!txt)throw new Error('proxy empty');
+        llmHistory.push({role:'model',parts:[{text:txt}]});llmFails=0;return txt;
+      }catch(e){lastErr=e;}
+    }
+    llmHistory.pop();throw lastErr||new Error('proxy unavailable');
+  }
+  /* Fallback path: direct call with in-page key (local dev only). */
+  const body=JSON.stringify(payload);
   let lastErr=null;
   for(const model of AI_MODELS){
     for(let attempt=0;attempt<2;attempt++){
@@ -1151,7 +1170,7 @@ function respond(raw){
 }
 function send(){
   const inp=document.getElementById('inp');const v=inp.value.trim();if(!v)return;
-  if(AI.GEMINI_KEY&&!llmDead){
+  if(AI_ON&&!llmDead){
     if(llmBusy)return;
     inp.value='';document.getElementById('chips').innerHTML='';
     addBubble(v,'me');
@@ -1169,7 +1188,7 @@ function send(){
   inp.value='';document.getElementById('chips').innerHTML='';
   addBubble(v,'me');respond(v);
 }
-if(AI.GEMINI_KEY){const lv=document.querySelector('.live');if(lv)lv.innerHTML='<i></i> מחובר · AI חי';}
+if(AI_ON){const lv=document.querySelector('.live');if(lv)lv.innerHTML='<i></i> מחובר · AI חי';}
 addBubble("היי 👋 אני הסוכן החכם של Atias Travel — סוכנות הנסיעות של תמיר אטיאס. אני אתשאל אתכם בדיוק כמו שתמיר היה, כמה שאלות קצרות — ובסוף מחכה לכם ברושור אישי. אז, חולמים על חו\"ל או על חופשה בארץ?",'bot');
 setChips(["טיול בחו\"ל","חופשה בארץ","בורדו","ים המלח"]);
 </script>
