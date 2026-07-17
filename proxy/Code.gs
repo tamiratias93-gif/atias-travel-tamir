@@ -70,8 +70,8 @@ function doGet() {
  * confirmation to Tamir so we know leads will arrive.
  */
 function _authorizeMail() {
-  MailApp.sendEmail(TAMIR_EMAIL, 'הסוכן של Atias Travel — מוכן לשלוח לידים ✅',
-    'מעולה! מעכשיו כל ליד שלקוח משאיר בסוכן החכם באתר יגיע ישירות למייל הזה.');
+  MailApp.sendEmail(TAMIR_EMAIL, 'הסוכן של Atias Travel — הכל מוכן ✅',
+    'מעולה! מעכשיו בכל פעם שלקוח משאיר פרטים בסוכן החכם באתר, הם יגיעו ישירות למייל הזה.');
 }
 
 /**
