@@ -65,6 +65,16 @@ function doGet() {
 }
 
 /**
+ * Run this ONCE from the editor after pasting the new code.
+ * It triggers Google's permission prompt for sending email, and sends a
+ * confirmation to Tamir so we know leads will arrive.
+ */
+function _authorizeMail() {
+  MailApp.sendEmail(TAMIR_EMAIL, 'הסוכן של Atias Travel — מוכן לשלוח לידים ✅',
+    'מעולה! מעכשיו כל ליד שלקוח משאיר בסוכן החכם באתר יגיע ישירות למייל הזה.');
+}
+
+/**
  * Emails a new website lead to Tamir. Runs as Tamir (Execute as: Me),
  * so the mail is sent from his own Gmail — no extra service needed.
  */
