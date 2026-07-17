@@ -424,7 +424,7 @@ h2{line-height:1.06;font-size:clamp(36px,5.2vw,62px)}
             <button onclick="send()" aria-label="שלח">➤</button>
           </div>
         </div>
-        <p class="agent-note">⚙ דמו. בגרסה החיה מחובר מנוע AI מלא — והפרטים שנאספים מגיעים ישירות לתמיר.</p>
+        <p class="agent-note">✦ הסוכן מחובר ל-AI חי ועונה בזמן אמת. הפרטים שתשאירו מגיעים ישירות לתמיר, והוא חוזר אליכם אישית עם הצעת מחיר. שום דבר לא מוזמן בלי אישורכם.</p>
       </div>
     </div>
   </div>
@@ -1150,7 +1150,7 @@ function respond(raw){
   }
   if(/תפתיע/.test(text)&&!state.dest)text="בורדו";
   const before={};ORDER.concat(['contact']).forEach(k=>before[k]=state[k]);
-  extract(text);
+  extract(text);sendLead();
   const newly=ORDER.concat(['contact']).filter(k=>before[k]===null&&state[k]!==null);
   const out=[];
   newly.forEach(k=>{const a=ackFor(k);if(a)out.push(a);});
@@ -1168,12 +1168,33 @@ function respond(raw){
     return setTimeout(doBrochure,1700);
   }
 }
+/* ===== Lead delivery — the moment we have a way to reach the client, send everything to Tamir ===== */
+let leadSent=false;
+function collectLead(){
+  return {dest:state.dest||'',dates:state.dates||'',travelers:state.travelers||'',
+    interests:state.interests||'',needs:state.needs||'',budget:state.budget||'',contact:state.contact||''};
+}
+function transcriptText(){
+  if(AI_ON&&llmHistory.length)
+    return llmHistory.map(m=>(m.role==='user'?'לקוח: ':'סוכן: ')+((m.parts&&m.parts[0]&&m.parts[0].text)||'')).join('\n');
+  return Array.from(document.querySelectorAll('#msgs .bubble'))
+    .map(b=>(b.classList.contains('me')?'לקוח: ':'סוכן: ')+b.textContent).join('\n');
+}
+function sendLead(){
+  if(leadSent||!state.contact)return;
+  const url=AI.GEMINI_PROXY_URL;if(!url)return;
+  leadSent=true;
+  const body=JSON.stringify({type:'lead',lead:collectLead(),transcript:transcriptText(),page:location.href});
+  fetch(url,{method:'POST',headers:{'Content-Type':'text/plain;charset=utf-8'},body})
+    .then(r=>r.json()).then(d=>{if(d&&d.error)leadSent=false;}).catch(()=>{leadSent=false;});
+}
 function send(){
   const inp=document.getElementById('inp');const v=inp.value.trim();if(!v)return;
   if(AI_ON&&!llmDead){
     if(llmBusy)return;
     inp.value='';document.getElementById('chips').innerHTML='';
     addBubble(v,'me');
+    extract(v);sendLead();
     if(++llmTurns>24){
       addBubble("וואו, זו כבר שיחה רצינית 🙂 בוא נמשיך אותה ישירות עם תמיר — השאר שם וטלפון והוא יחזור אליך.",'bot');
       return;
@@ -1188,7 +1209,8 @@ function send(){
   inp.value='';document.getElementById('chips').innerHTML='';
   addBubble(v,'me');respond(v);
 }
-if(AI_ON){const lv=document.querySelector('.live');if(lv)lv.innerHTML='<i></i> מחובר · AI חי';}
+if(AI_ON){const lv=document.querySelector('.live');if(lv)lv.innerHTML='<i></i> מחובר · AI חי';
+  if(AI.GEMINI_PROXY_URL){try{fetch(AI.GEMINI_PROXY_URL,{method:'GET',mode:'no-cors'}).catch(()=>{});}catch(e){}}}
 addBubble("היי 👋 אני הסוכן החכם של Atias Travel — סוכנות הנסיעות של תמיר אטיאס. אני אתשאל אתכם בדיוק כמו שתמיר היה, כמה שאלות קצרות — ובסוף מחכה לכם ברושור אישי. אז, חולמים על חו\"ל או על חופשה בארץ?",'bot');
 setChips(["טיול בחו\"ל","חופשה בארץ","בורדו","ים המלח"]);
 </script>
