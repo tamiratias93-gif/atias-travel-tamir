@@ -1223,8 +1223,33 @@ function send(){
 }
 if(AI_ON){const lv=document.querySelector('.live');if(lv)lv.innerHTML='<i></i> מחובר · AI חי';
   if(AI.GEMINI_PROXY_URL){try{fetch(AI.GEMINI_PROXY_URL,{method:'GET',mode:'no-cors'}).catch(()=>{});}catch(e){}}}
-addBubble("היי 👋 אני הסוכן החכם של Atias Travel — סוכנות הנסיעות של תמיר אטיאס. אני אתשאל אתכם בדיוק כמו שתמיר היה, כמה שאלות קצרות — ובסוף מחכה לכם ברושור אישי. אז, חולמים על חו\"ל או על חופשה בארץ?",'bot');
-setChips(["טיול בחו\"ל","חופשה בארץ","בורדו","ים המלח"]);
+/* ===== Resume link: a returning client arrives with known context in the URL,
+   e.g. https://atiastravel.com/?name=אדיר&dest=פראג&when=קיץ&who=זוג — greet by
+   name, pre-load what we already know, and continue instead of starting over. ===== */
+(function(){
+  const p=new URLSearchParams(location.search);
+  const seed=[['dest','dest'],['when','dates'],['days','duration'],['who','travelers'],['likes','interests'],['needs','needs'],['budget','budget']];
+  const name=(p.get('name')||'').trim();
+  let any=false;
+  seed.forEach(([q,k])=>{const v=(p.get(q)||'').trim();if(v){any=true;state[k]=v;}});
+  if(name){any=true;state.contact=state.contact||name;}
+  if(!any){
+    addBubble("היי 👋 אני הסוכן החכם של Atias Travel — סוכנות הנסיעות של תמיר אטיאס. אני אתשאל אתכם בדיוק כמו שתמיר היה, כמה שאלות קצרות — ובסוף מחכה לכם ברושור אישי. אז, חולמים על חו\"ל או על חופשה בארץ?",'bot');
+    setChips(["טיול בחו\"ל","חופשה בארץ","בורדו","ים המלח"]);
+    return;
+  }
+  const dest=state.dest||'היעד שלכם';
+  const nf=nextField();
+  let g="היי"+(name?" "+name:"")+"! 🌍 כאן הסוכן של Atias Travel, כיף שחזרתם. ממשיכים בדיוק מאיפה שעצרנו — התכנון ל"+dest+".";
+  if(nf&&Q[nf])g+=" "+Q[nf].q; else g+=" רוצים שאבנה לכם עכשיו את התוכנית האישית?";
+  addBubble(g,'bot');
+  if(nf&&Q[nf])setChips(Q[nf].chips); else setChips(["כן, בוא נראה!","אשמח לשנות פרט"]);
+  if(AI_ON){
+    const summary=["יעד "+(state.dest||'?'),state.dates&&"עונה "+state.dates,state.duration&&"משך "+state.duration,state.travelers&&state.travelers,state.interests&&"עניין "+state.interests,state.needs&&"צרכים "+state.needs,state.budget&&"תקציב "+state.budget].filter(Boolean).join(", ");
+    llmHistory.push({role:'user',parts:[{text:"(הקשר פנימי, אל תצטט: לקוח חוזר"+(name?" בשם "+name:"")+" שממשיך שיחה קודמת. פרטים ידועים: "+summary+". פנה אליו בשמו, אל תתחיל מהתחלה, המשך לאסוף רק את מה שחסר ואז בנה תוכנית מלאה.)"}]});
+    llmHistory.push({role:'model',parts:[{text:g}]});
+  }
+})();
 </script>
 </body>
 </html>
