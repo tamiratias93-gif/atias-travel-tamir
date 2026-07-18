@@ -33,7 +33,7 @@ function doPost(e) {
     var body = {
       system_instruction: payload.system_instruction,
       contents: payload.contents,
-      generationConfig: payload.generationConfig || { temperature: 0.7, maxOutputTokens: 1400 }
+      generationConfig: payload.generationConfig || { temperature: 0.7, maxOutputTokens: 2048, thinkingConfig: { thinkingBudget: 0 } }
     };
 
     var lastErr = 'unavailable';
@@ -82,7 +82,7 @@ function handleLead(payload) {
   try {
     var L = payload.lead || {};
     var labels = {
-      dest: 'יעד', dates: 'תאריכים / עונה', travelers: 'מי נוסע',
+      dest: 'יעד', dates: 'תאריכים / עונה', duration: 'משך הטיול', travelers: 'מי נוסע',
       interests: 'תחומי עניין', needs: 'צרכים מיוחדים', budget: 'תקציב', contact: 'פרטי קשר'
     };
     var lines = [];
