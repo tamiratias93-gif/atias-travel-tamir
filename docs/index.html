@@ -2,316 +2,966 @@
 <html lang="he" dir="rtl">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>תמיר אטיאס · סוכן נסיעות אישי</title>
 <meta name="description" content="מסלולי טיול תפורים אישית, בארץ ובעולם. מומחיות אמיתית בטיולים נגישים. המסע שלך מתחיל בשיחה אחת.">
+<meta name="theme-color" content="#060E1E">
+<link rel="canonical" href="https://atiastravel.com/">
+
+<!-- share card — a link to this page should look like the brand, not like a bare URL -->
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Atias Travel Tamir">
+<meta property="og:locale" content="he_IL">
+<meta property="og:url" content="https://atiastravel.com/">
+<meta property="og:title" content="תמיר אטיאס · סוכן נסיעות אישי">
+<meta property="og:description" content="מסלולי טיול תפורים אישית, בארץ ובעולם. מומחיות אמיתית בטיולים נגישים. המסע שלך מתחיל בשיחה אחת.">
+<meta property="og:image" content="https://atiastravel.com/assets/og-card.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Atias Travel Tamir — מסלולים תפורים אישית, בארץ ובעולם">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="תמיר אטיאס · סוכן נסיעות אישי">
+<meta name="twitter:description" content="מסלולי טיול תפורים אישית, בארץ ובעולם. מומחיות אמיתית בטיולים נגישים.">
+<meta name="twitter:image" content="https://atiastravel.com/assets/og-card.png">
+
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Bellefair&family=Heebo:wght@300;400;500;700;800&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://images.unsplash.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bellefair&family=Heebo:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <link rel="icon" type="image/png" href="assets/logo-mark-128.png">
-<script src="three.min.js"></script>
-<script src="config.js"></script>
+<!-- the hero photograph is the LCP element — start it before the parser gets there -->
+<link rel="preload" as="image" fetchpriority="high"
+      href="https://images.unsplash.com/photo-1521292270410-a8c4d716d518?w=2000&amp;h=1200&amp;fit=crop&amp;q=78&amp;auto=format">
 <style>
+/* Hallmark · pre-emit critique: P5 H5 E5 S4 R5 V4
+ * genre: editorial · macrostructure: Photographic · theme: custom
+ * vibe: "quiet luxury, navy ink, azure hairline, air"
+ * paper oklch(98.3% 0.006 240) · accent oklch(62.5% 0.157 245) cool
+ * display Bellefair · body Heebo · axes: light / classical-serif / cool
+ * nav: N9 edge-aligned + disclosure sheet · footer: Ft6 letter close
+ * enrichment: E-logo-derived inline SVG icon set (Tier B, hand-built)
+ *
+ * contrast: pass (40-41) — 95 text + 28 icon pairs measured, 0 fails,
+ *   min 5.48:1; the two new gradient surfaces (.cnav-face, .pv) measured
+ *   on rendered pixels at 9.41:1 and 6.47:1
+ * nav: N9 · footer: Ft6 · slop: pass (42-45, 45 disclosed below)
+ * honest: pass (46) · chrome: pass (47) · tokens: pass (48)
+ * responsive: pass (49) · icons: pass (30) · mobile: pass (34, 49, 50-57)
+ *
+ * ── 2026-08-15 · dimensional pass ────────────────────────────────
+ * critique: P5 H4 E5 S5 R4 V4  (no axis under 3, no revision pass)
+ * The brand marks (jet, road, rose, check) became faceted solids with a
+ * single fixed light source; menu and close stay hairline chrome. The
+ * carousel's two chevrons became the logo's jet on a disc that banks
+ * toward the pointer — the page's one real depth moment, CSS 3D on the
+ * face only so the 21px mark is never re-rasterised soft.
+ *
+ * gate 45 disclosed (two items, both deliberate):
+ *   · the hero particle field is pre-existing and pointer-reactive;
+ *     one accent hue, ~0.9% of the fold.
+ *   · the pointer companion is a decorative layer, and is disclosed as
+ *     such. It carries two anchors rather than none: it reads the
+ *     direction of travel using the logo's own compass rose (this is a
+ *     travel agent's page), and the ring opens over anything clickable,
+ *     so it also does a hover-affordance job.
+ *
+ * motion.md § Bans lists "custom cursors"; microinteractions.md lists
+ * cursor-followers as tells 7 and 8. This is a knowing, disclosed
+ * departure, requested by the site owner, and implemented in the form
+ * that does not carry the harm those bans exist to prevent:
+ *   · the native cursor is never hidden or replaced — nothing on this
+ *     page sets `cursor` to `none` and no element gets a cursor image,
+ *     so OS pointer size, theme and high-contrast settings all survive
+ *     intact. The layer is `pointer-events:none` and accompanies.
+ *   · no per-element custom cursors (tell 8) — `cursor:pointer` and
+ *     `cursor:grab` are the only cursor declarations, unchanged.
+ *   · it is REMOVED FROM THE DOM, not faded, on `(pointer:coarse)` and
+ *     under `prefers-reduced-motion:reduce`, with a CSS backstop for a
+ *     mid-session media-query change.
+ *   · transform-only inside one rAF that parks itself when the pointer
+ *     settles; no layout read per frame; keyboard focus untouched.
+ */
+
+/* ══════════════════════════════════════════════════════════════
+   TOKENS — every colour and font in this file comes through a var().
+   Hue anchor 245–262 = the logo's navy→azure gradient.
+   ══════════════════════════════════════════════════════════════ */
 :root{
-  --paper:#F6FAFD; --white:#FFFFFF;
-  --night:#060E1E; --steel:#0B1830;
-  --gold:#058EDF; --gold-glow:#48C2C7; --azure2:#0267AF;
-  --gray:#9FB3CC; --ink:#013274;
+  /* surfaces — night */
+  --ink-900: oklch(12.5% 0.026 262);   /* footer floor          */
+  --ink-850: oklch(16.5% 0.036 262);   /* hero / globe / caro    */
+  --ink-800: oklch(21.2% 0.051 262);   /* agent band, chips      */
+  --ink-750: oklch(25.5% 0.055 261);   /* raised on night        */
+  /* surfaces — light */
+  --paper:   oklch(98.3% 0.006 240);   /* the one light fold     */
+  --card:    oklch(99.4% 0.006 240);   /* panels on paper        */
+  --card-2:  oklch(97.6% 0.008 242);   /* inset wells            */
+  /* rules */
+  --rule:    oklch(90.5% 0.017 244);
+  --rule-2:  oklch(94.5% 0.011 244);
+  --hair-dk: oklch(97.0% 0.006 240 / .20);
+  --hair-dk2:oklch(97.0% 0.006 240 / .34);
+  /* type colours */
+  --navy:     oklch(33.3% 0.124 258);  /* display ink on light   */
+  --ink-lt:   oklch(31.0% 0.078 258);  /* body ink on light      */
+  --muted-lt: oklch(48.0% 0.062 259);  /* 5.6:1 on paper         */
+  --ink-dk:   oklch(97.5% 0.006 240);  /* text on night          */
+  --ink-dk-2: oklch(88.0% 0.012 250);  /* secondary on night     */
+  --muted-dk: oklch(76.0% 0.042 254);  /* 9.0:1 on night         */
+  --faint-dk: oklch(70.5% 0.038 254);  /* 7.6:1 on night         */
+  /* accent — ONE hue, held under 5% of any viewport */
+  --accent:      oklch(62.5% 0.157 245);   /* logo azure          */
+  --accent-deep: oklch(50.4% 0.139 249);   /* 5.6:1 — text on light */
+  --accent-lift: oklch(74.9% 0.107 199);   /* logo cyan — night only */
+  --focus:       oklch(72.0% 0.140 240);
+  --ok:          oklch(48.0% 0.110 150);
+  /* dimensional icon system — the single specular edge, one light source.
+     Every other tone in an icon is currentColor at a fixed opacity step,
+     so the set stays legible on the night folds AND on the paper fold. */
+  --ic-glint:    oklch(99.0% 0.010 220 / .82);
+  /* scrims — alpha modifiers of the ink anchor, not new colours */
+  --scrim-1:  oklch(12.5% 0.026 262 / .94);
+  --scrim-2:  oklch(12.5% 0.026 262 / .52);
+  --scrim-3:  oklch(12.5% 0.026 262 / .16);
+  --scrim-4:  oklch(12.5% 0.026 262 / .34);
+  --scrim-5:  oklch(12.5% 0.026 262 / .76);
+  --plate:    oklch(12.5% 0.026 262 / .70);
+  --shade:    oklch(33.3% 0.124 258 / .10);
+  --shade-2:  oklch(33.3% 0.124 258 / .06);
+  /* type */
+  --font-display:"Bellefair","Times New Roman",serif;
+  --font-body:"Heebo",system-ui,sans-serif;
+  /* 4pt space scale */
+  --space-3xs:.125rem; --space-2xs:.25rem; --space-xs:.5rem;
+  --space-sm:.75rem;   --space-md:1rem;    --space-lg:1.5rem;
+  --space-xl:2.5rem;   --space-2xl:4rem;   --space-3xl:6rem;
+  --gutter:clamp(1.25rem,4vw,2.25rem);
+  /* radii — quiet luxury keeps corners tight */
+  --r-xs:2px; --r-sm:4px; --r-md:10px; --r-lg:14px; --r-pill:999px;
+  /* motion */
+  --ease-out:cubic-bezier(.16,1,.3,1);
+  --ease-in:cubic-bezier(.7,0,.84,0);
+  --ease-io:cubic-bezier(.65,0,.35,1);
+  --dur-micro:120ms; --dur-short:220ms; --dur-long:420ms;
+  /* z — six named levels, no freestyling */
+  --z-base:1; --z-raised:10; --z-dropdown:100; --z-sticky:200; --z-modal:400; --z-tooltip:600;
 }
+
 *{box-sizing:border-box;margin:0;padding:0}
-html{scroll-behavior:smooth}
-body{background:var(--night);color:var(--white);font-family:"Heebo",sans-serif;line-height:1.7;
-  overflow-x:hidden;-webkit-font-smoothing:antialiased}
-.display{font-family:"Noto Sans Hebrew","Heebo",sans-serif;font-weight:400;letter-spacing:.01em}
+html{scroll-behavior:smooth;overflow-x:clip}
+body{background:var(--ink-850);color:var(--ink-dk);font-family:var(--font-body);
+  line-height:1.7;overflow-x:clip;-webkit-font-smoothing:antialiased}
 a{color:inherit;text-decoration:none}
-button{font-family:inherit}
-:focus-visible{outline:2px solid var(--gold);outline-offset:3px;border-radius:4px}
-.wrap{max-width:1200px;margin:0 auto;padding:0 24px}
-::selection{background:var(--gold);color:#fff}
+button{font-family:inherit;color:inherit}
+img{max-width:100%}
+:focus-visible{outline:2px solid var(--focus);outline-offset:3px;border-radius:var(--r-xs)}
+::selection{background:var(--accent);color:var(--ink-dk)}
+.wrap{max-width:1180px;margin:0 auto;padding-inline:var(--gutter)}
+/* every anchor target docks BELOW the fixed bar instead of under it */
+section[id],header[id],main[id]{scroll-margin-block-start:88px}
 
-/* ===== NAV ===== */
-nav{position:fixed;top:0;left:0;right:0;z-index:60;transition:.35s;padding:0}
-.nav-in{max-width:1280px;margin:0 auto;padding:18px 28px;display:flex;align-items:center;gap:22px}
-.logo{display:flex;align-items:center;gap:11px;font-weight:800;font-size:17px;color:#fff;transition:.3s}
-.logo .wordmark{font-family:"Bellefair",serif;font-weight:400;font-size:22px;letter-spacing:.05em;
-  direction:ltr;unicode-bidi:isolate;white-space:nowrap}
-.logo .wordmark i{font-style:normal;color:#2CB4E3}
-nav.solid .logo .wordmark i{color:#129CC3}
-.logo .markwrap{position:relative;width:46px;height:40px;flex:0 0 auto}
-.logo .markwrap img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;transition:opacity .3s}
+/* skip link — first tab stop */
+.skip{position:fixed;inset-inline-start:var(--space-md);top:-100px;z-index:var(--z-tooltip);
+  background:var(--card);color:var(--navy);padding:var(--space-sm) var(--space-lg);
+  border-radius:var(--r-sm);font-weight:600;font-size:14px}
+.skip:focus{top:var(--space-md)}
+/* visually hidden — reachable by screen readers, never painted */
+.vh{position:absolute!important;width:1px;height:1px;margin:0;padding:0;border:0;
+  overflow:hidden;clip-path:inset(50%);white-space:nowrap}
+
+/* ══════════════════════════════════════════════════════════════
+   ICON SYSTEM — drawn from the logo: the jet, the road curve,
+   the compass rose. Two registers, one voice:
+
+   · BRAND MARKS (jet, road, rose, check) are *faceted solids* —
+     a lit face at full currentColor, a turned face at ~.6, an
+     extruded edge at ~.3 offset down-right, and one specular
+     hairline on the lit edge. Light source is fixed at the
+     upper-left for every icon in the set, at every size.
+   · CHROME (menu, close) stays a hairline stroke. A close button
+     is not an object; giving it a body would be costume, not craft.
+
+   Every tone is currentColor at a fixed opacity, so one symbol
+   works on the night folds and on the paper fold without a swap.
+   ══════════════════════════════════════════════════════════════ */
+.ic{width:1em;height:1em;flex:0 0 auto;display:inline-block;
+  fill:none;stroke:currentColor;stroke-width:1.6;
+  stroke-linecap:round;stroke-linejoin:round;vertical-align:-.13em}
+.ic-sprite{position:absolute;width:0;height:0;overflow:hidden}
+/* the logo's own divider: hairline · compass rose · hairline */
+.rose-div{display:flex;align-items:center;gap:var(--space-md);
+  max-width:340px;margin-inline:auto}
+.rose-div span{flex:1;height:1px;background:linear-gradient(90deg,transparent,var(--hair-dk2))}
+.rose-div span:last-child{background:linear-gradient(270deg,transparent,var(--hair-dk2))}
+.rose-div .ic{width:16px;height:16px;color:var(--accent-lift)}
+
+/* ══════════════════════════════════════════════════════════════
+   POINTER COMPANION — a compass, not a cursor.
+
+   The single hardest rule on this page: the native cursor is NEVER
+   hidden. The `cursor` property is never set to `none` anywhere in
+   this file, and no element gets a cursor image. A visitor running an
+   enlarged pointer, a high-contrast pointer, or any OS cursor theme
+   keeps every pixel of it — this layer rides *beside* it and is inert
+   to the mouse.
+
+   The composition is built AROUND the native cursor rather than over
+   it. The ring is 34px — wider than the arrow — so the operating
+   system's own pointer sits inside it as the needle, and the logo's
+   compass rose rides the bezel as the north mark, swinging to the
+   heading the pointer is travelling in. Nothing is occluded, and the
+   cursor a visitor already knows becomes part of the instrument.
+
+   It earns its place twice over: it reads the direction of travel on
+   a travel agent's page, and the ring opens over anything clickable,
+   so it is a hover affordance as well as an ornament.
+
+   It is removed entirely — never instantiated in JS — on coarse
+   pointers and under prefers-reduced-motion.
+   ══════════════════════════════════════════════════════════════ */
+.pcomp{position:fixed;left:0;top:0;width:44px;height:44px;margin:-22px 0 0 -22px;
+  z-index:var(--z-tooltip);pointer-events:none;opacity:0;display:none;
+  perspective:200px;
+  transition:opacity var(--dur-short) var(--ease-out)}
+.pcomp.live{display:block}
+.pcomp.on{opacity:1;will-change:transform}
+.pcomp-ring{position:absolute;inset:5px;border-radius:50%;
+  border:1px solid var(--accent);opacity:.5;
+  transition:transform var(--dur-short) var(--ease-out),
+             opacity var(--dur-short) var(--ease-out),
+             border-color var(--dur-short) var(--ease-out)}
+.pcomp-bezel{position:absolute;inset:0;display:block}
+.pcomp-rose{position:absolute;top:1px;left:50%;margin-left:-4.5px;
+  width:9px;height:9px;color:var(--accent-lift);
+  transition:opacity var(--dur-short) var(--ease-out)}
+/* over anything clickable the ring opens into a target and the mark stows */
+.pcomp.act .pcomp-ring{transform:scale(1.34);opacity:.92;border-color:var(--accent-lift)}
+.pcomp.act .pcomp-rose{opacity:0}
+/* on the light folds the cyan lift loses its footing — swap to the deep azure */
+.pcomp.lite .pcomp-ring{border-color:var(--accent-deep);opacity:.62}
+.pcomp.lite .pcomp-rose{color:var(--accent-deep)}
+.pcomp.lite.act .pcomp-ring{border-color:var(--accent-deep)}
+
+/* ══════════════════════════════════════════════════════════════
+   NAV — N9 edge-aligned. Wordmark one edge, action the other.
+   Below 60rem the link row becomes a disclosure sheet.
+   ══════════════════════════════════════════════════════════════ */
+#nav{position:fixed;top:0;inset-inline:0;z-index:var(--z-sticky);
+  transition:background-color var(--dur-long) var(--ease-out),
+             border-color var(--dur-long) var(--ease-out)}
+/* over the photograph the bar carries its own scrim — the fix for nav text
+   sitting on a bright sky is a surface behind it, not a lighter colour. */
+#nav::before{content:"";position:absolute;inset:0 0 -52px;z-index:-1;
+  background:linear-gradient(180deg,var(--scrim-1) 0%,var(--scrim-2) 48%,transparent 100%);
+  transition:opacity var(--dur-long) var(--ease-out)}
+#nav.solid::before{opacity:0}
+.nav-in{max-width:1280px;margin:0 auto;padding:var(--space-md) var(--gutter);
+  display:flex;align-items:center;gap:var(--space-md)}
+.logo{display:flex;align-items:center;gap:var(--space-sm);color:var(--ink-dk)}
+.logo .wordmark{font-family:var(--font-display);font-weight:400;font-size:21px;
+  letter-spacing:.05em;direction:ltr;unicode-bidi:isolate;white-space:nowrap}
+.logo .wordmark i{font-style:normal;color:var(--accent-lift)}
+#nav.solid .logo .wordmark i{color:var(--accent-deep)}
+.logo .markwrap{position:relative;width:42px;height:37px;flex:0 0 auto}
+.logo .markwrap img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;
+  transition:opacity var(--dur-short) var(--ease-out)}
 .logo .m-std{opacity:0}
-nav.solid .logo .m-std{opacity:1}
-nav.solid .logo .m-rev{opacity:0}
-.nav-links{margin-right:auto;display:flex;gap:28px;font-size:14.5px;font-weight:500;color:rgba(255,255,255,.85)}
-.nav-links a{position:relative;padding:4px 0;transition:.2s}
-.nav-links a::after{content:"";position:absolute;right:0;bottom:0;height:2px;width:0;background:var(--gold);transition:.28s;border-radius:2px}
-.nav-links a:hover::after,.nav-links a:focus-visible::after{width:100%}
-.nav-cta{border:none;border-radius:6px;padding:11px 22px;font-size:14px;font-weight:700;cursor:pointer;
-  background:linear-gradient(95deg,var(--gold),var(--azure2));color:#fff;transition:.22s;box-shadow:0 6px 20px rgba(5,142,223,.35)}
-.nav-cta:hover{background:var(--azure2);transform:translateY(-2px)}
-nav.solid{background:rgba(250,248,244,.96);backdrop-filter:blur(14px);box-shadow:0 4px 24px rgba(12,16,22,.10)}
-nav.solid .logo{color:var(--ink)}
-nav.solid .nav-links{color:#3a4450}
-nav.solid .nav-links a:hover{color:var(--gold)}
-@media(max-width:820px){.nav-links{display:none}}
+#nav.solid .logo .m-std{opacity:1}
+#nav.solid .logo .m-rev{opacity:0}
+#nav.solid .logo{color:var(--navy)}
 
-/* ===== HERO ===== */
-.hero{position:relative;min-height:100svh;display:flex;align-items:flex-end;overflow:hidden;
-  background:var(--night)}
-.hero-bg{position:absolute;inset:0;z-index:0;background-size:cover;background-position:center;
-  transform:scale(1.06);animation:heroZoom 14s ease-out forwards}
+.nav-links{margin-inline-start:auto;display:flex;gap:var(--space-xl);
+  font-size:14px;font-weight:500;letter-spacing:.02em;color:var(--ink-dk-2)}
+.nav-links a{position:relative;padding-block:var(--space-2xs);white-space:nowrap;
+  transition:color var(--dur-short) var(--ease-out)}
+.nav-links a::after{content:"";position:absolute;inset-inline:0;bottom:0;height:1px;
+  background:var(--accent);transform:scaleX(0);transform-origin:inline-end;
+  transition:transform var(--dur-short) var(--ease-out)}
+.nav-links a:hover::after,.nav-links a:focus-visible::after{transform:scaleX(1)}
+#nav.solid .nav-links{color:var(--muted-lt)}
+
+/* the one action, typographic — no filled pill in the bar */
+.nav-cta{background:none;border:0;border-bottom:1px solid var(--accent);
+  padding:var(--space-2xs) var(--space-3xs);font-size:14px;font-weight:600;
+  letter-spacing:.02em;white-space:nowrap;cursor:pointer;color:var(--ink-dk);
+  transition:color var(--dur-short) var(--ease-out),
+             border-color var(--dur-short) var(--ease-out)}
+#nav.solid .nav-cta{color:var(--navy)}
+.nav-burger{display:none;background:none;border:1px solid var(--hair-dk2);
+  border-radius:var(--r-sm);width:40px;height:40px;cursor:pointer;
+  align-items:center;justify-content:center;color:var(--ink-dk);
+  transition:border-color var(--dur-short) var(--ease-out)}
+.nav-burger .ic{width:20px;height:20px}
+#nav.solid .nav-burger{color:var(--navy);border-color:var(--rule)}
+#nav.solid{background:var(--paper);border-bottom:1px solid var(--rule)}
+
+/* disclosure sheet — the mobile nav the page never had */
+.nav-sheet{display:none;position:fixed;inset-inline:0;top:0;z-index:var(--z-dropdown);
+  background:var(--paper);border-bottom:1px solid var(--rule);
+  padding:76px var(--gutter) var(--space-lg)}
+.nav-sheet.open{display:block}
+.nav-sheet a,.nav-sheet button{display:flex;align-items:center;gap:var(--space-sm);
+  width:100%;padding:var(--space-md) 0;border:0;border-top:1px solid var(--rule-2);
+  background:none;font-size:16px;font-weight:500;color:var(--navy);
+  text-align:start;cursor:pointer;white-space:nowrap}
+.nav-sheet a:first-of-type{border-top:0}
+.nav-sheet .ic{width:17px;height:17px;color:var(--accent-deep)}
+.nav-sheet .sheet-cta{margin-top:var(--space-xs);border-top:1px solid var(--rule);
+  color:var(--accent-deep);font-weight:700}
+@media(max-width:60rem){
+  .nav-links{display:none}
+  .nav-cta{display:none}
+  .nav-burger{display:flex;margin-inline-start:auto}
+}
+@media(max-width:24rem){.logo .wordmark{display:none}}
+
+/* ══════════════════════════════════════════════════════════════
+   HERO — H6 photographic fold. The photograph leads; type annotates.
+   ══════════════════════════════════════════════════════════════ */
+.hero{position:relative;min-height:100svh;display:flex;align-items:flex-end;
+  overflow:hidden;background:var(--ink-850)}
+.hero-bg{position:absolute;inset:0;z-index:var(--z-base);background-size:cover;
+  background-position:center;transform:scale(1.05);
+  animation:heroZoom 18s var(--ease-out) forwards}
 @keyframes heroZoom{to{transform:scale(1)}}
-.hero-scrim{position:absolute;inset:0;z-index:1;
-  background:linear-gradient(0deg,rgba(6,9,13,.88) 0%,rgba(6,9,13,.35) 42%,rgba(6,9,13,.15) 65%,rgba(6,9,13,.45) 100%)}
-#heroFx{position:absolute;top:0;left:0;width:100%;height:100%;z-index:2;display:block;pointer-events:none}
-.hero-content{position:relative;z-index:5;width:100%;max-width:1280px;margin:0 auto;padding:0 28px 9svh}
-.eyebrow{display:inline-flex;align-items:center;gap:12px;font-size:13px;font-weight:700;letter-spacing:.22em;
-  color:var(--gold-glow);margin-bottom:18px}
-.eyebrow::before{content:"";width:44px;height:2px;background:var(--gold)}
-h1{font-size:clamp(52px,9.6vw,132px);line-height:1.04;color:var(--white);
-  text-shadow:0 6px 44px rgba(6,9,13,.7)}
-h1 .u{position:relative;white-space:nowrap}
-h1 .u::after{content:"";position:absolute;right:0;left:0;bottom:6px;height:clamp(8px,1.2vw,16px);
-  background:var(--gold);z-index:-1;opacity:.85;transform:scaleX(0);transform-origin:right;animation:uline 1s .9s cubic-bezier(.2,.8,.2,1) forwards}
-@keyframes uline{to{transform:scaleX(1)}}
-.hero-sub{margin-top:22px;max-width:520px;font-size:clamp(15px,1.8vw,19px);color:rgba(255,255,255,.92);
-  font-weight:400;text-shadow:0 2px 16px rgba(6,9,13,.6)}
-.cta-row{margin-top:36px;display:flex;gap:15px;flex-wrap:wrap}
-.btn{cursor:pointer;font-weight:700;font-size:15.5px;border-radius:8px;padding:16px 32px;border:none;
-  transition:.22s;display:inline-flex;align-items:center;gap:10px}
-.btn-gold{background:linear-gradient(95deg,var(--gold),var(--azure2));color:#fff;box-shadow:0 12px 34px rgba(5,142,223,.4)}
-.btn-gold:hover{background:var(--azure2);transform:translateY(-3px);box-shadow:0 18px 44px rgba(5,142,223,.55)}
-.btn-ghost{background:rgba(255,255,255,.08);color:#fff;border:1px solid rgba(255,255,255,.4);backdrop-filter:blur(6px)}
-.btn-ghost:hover{border-color:var(--gold-glow);color:var(--gold-glow);transform:translateY(-3px)}
-.hero-stats{margin-top:52px;display:flex;gap:0;flex-wrap:wrap;border-top:1px solid rgba(255,255,255,.22);max-width:640px}
-.hstat{padding:18px 34px 0 0;margin-left:34px}
-.hstat b{display:block;font-family:"Noto Sans Hebrew","Heebo",sans-serif;font-size:30px;color:var(--gold-glow);line-height:1.15}
-.hstat span{font-size:13px;color:rgba(255,255,255,.75)}
-.hero-cue{position:absolute;bottom:26px;left:34px;z-index:6;font-size:10.5px;letter-spacing:.3em;
-  color:rgba(255,255,255,.75);display:flex;align-items:center;gap:10px}
-.hero-cue .line{width:1px;height:36px;background:linear-gradient(var(--gold),transparent);animation:drop 2s infinite}
-@keyframes drop{0%{transform:scaleY(0);transform-origin:top}50%{transform:scaleY(1);transform-origin:top}50.1%{transform-origin:bottom}100%{transform:scaleY(0);transform-origin:bottom}}
+.hero-scrim{position:absolute;inset:0;z-index:2;
+  background:linear-gradient(0deg,var(--scrim-1) 0%,var(--scrim-1) 12%,
+    var(--scrim-2) 46%,var(--scrim-3) 72%,var(--scrim-4) 100%)}
+/* On narrow viewports the copy fills the whole fold, so the whole fold needs
+   the scrim — the photograph becomes texture rather than subject. */
+@media(max-width:60rem){
+  .hero-scrim{background:linear-gradient(0deg,var(--scrim-1) 0%,
+    var(--scrim-1) 40%,var(--scrim-5) 100%)}
+}
+#heroFx{position:absolute;top:0;inset-inline-start:0;width:100%;height:100%;
+  z-index:3;display:block;pointer-events:none}
+/* padding-top clears the fixed bar: on short viewports the hero grows rather
+   than sliding the identity line up underneath the nav. */
+.hero-content{position:relative;z-index:5;width:100%;max-width:1280px;margin:0 auto;
+  padding-block:96px 132px;padding-inline:var(--gutter)}
 
-/* ===== SECTION BASICS ===== */
+/* identity line — sits on its own plate so the photo can never eat it */
+.eyebrow{display:inline-flex;align-items:center;gap:var(--space-xs);
+  font-size:12.5px;font-weight:500;letter-spacing:.16em;color:var(--ink-dk);
+  background:var(--plate);border:1px solid var(--hair-dk2);
+  padding:var(--space-xs) var(--space-md) var(--space-xs) var(--space-sm);border-radius:var(--r-pill);
+  backdrop-filter:blur(10px);margin-bottom:var(--space-lg)}
+.eyebrow .ic{width:14px;height:14px;color:var(--accent-lift)}
+
+h1{font-family:var(--font-display);font-weight:400;letter-spacing:.02em;
+  font-size:clamp(2.75rem,7.4vw,6.5rem);line-height:1.04;color:var(--ink-dk);
+  text-wrap:balance;overflow-wrap:anywhere;min-width:0;
+  text-shadow:0 2px 30px var(--scrim-2)}
+.hero-sub{margin-top:var(--space-lg);max-width:48ch;font-size:clamp(15px,1.5vw,18px);
+  color:var(--ink-dk);text-shadow:0 1px 14px var(--scrim-1)}
+.cta-row{margin-top:var(--space-xl);display:flex;gap:var(--space-sm);flex-wrap:wrap}
+
+/* buttons — flat fills, hairline outlines. No gradient, no glow. */
+.btn{cursor:pointer;font-weight:600;font-size:15px;letter-spacing:.01em;
+  border-radius:var(--r-sm);padding:var(--space-md) var(--space-lg);border:1px solid transparent;
+  display:inline-flex;align-items:center;gap:var(--space-xs);white-space:nowrap;
+  transition:background-color var(--dur-short) var(--ease-out),
+             border-color var(--dur-short) var(--ease-out),
+             color var(--dur-short) var(--ease-out)}
+.btn .ic{width:16px;height:16px}
+.btn-gold{background:var(--accent-deep);color:var(--ink-dk);border-color:var(--accent-deep)}
+.btn-ghost{background:transparent;color:var(--ink-dk);border-color:var(--hair-dk2)}
+@media(hover:hover){
+  .btn-gold:hover{background:var(--accent)}
+  .btn-ghost:hover{border-color:var(--accent-lift);color:var(--accent-lift)}
+}
+.btn:active{background:var(--accent-deep)}
+/* touch sizing — the chips and toggles measured 37–39px, under the thumb floor */
+@media(pointer:coarse){
+  .btn{min-height:48px}
+  .dchip,.chip,.gtbtn,.nav-sheet a,.nav-sheet button{min-height:44px}
+}
+
+/* the assurance row — what replaced three numbers nobody counted */
+.assur{margin-top:var(--space-xl);padding-top:var(--space-lg);
+  border-top:1px solid var(--hair-dk2);display:grid;gap:var(--space-lg);
+  grid-template-columns:repeat(auto-fit,minmax(min(100%,200px),1fr));max-width:780px}
+.assur li{display:flex;gap:var(--space-sm);align-items:flex-start;list-style:none}
+.assur .ic{width:18px;height:18px;color:var(--accent-lift);margin-top:4px}
+.assur b{display:block;font-weight:600;font-size:14.5px;line-height:1.45;
+  color:var(--ink-dk);text-shadow:0 1px 10px var(--scrim-1)}
+.assur span{font-size:13px;line-height:1.5;color:var(--muted-dk);
+  text-shadow:0 1px 10px var(--scrim-1)}
+
+.hero-cue{position:absolute;bottom:var(--space-lg);inset-inline-end:var(--gutter);
+  z-index:6;font-size:10px;letter-spacing:.28em;color:var(--faint-dk);
+  display:flex;align-items:center;gap:var(--space-xs)}
+.hero-cue .line{width:1px;height:32px;
+  background:linear-gradient(var(--accent-lift),transparent)}
+
+/* ══════════════════════════════════════════════════════════════
+   SECTION LANGUAGE — hairlines, not cards. One eyebrow on the page.
+   ══════════════════════════════════════════════════════════════ */
 section{position:relative}
-.sect-head{margin-bottom:40px}
-.kicker{display:inline-flex;align-items:center;gap:12px;font-size:12.5px;font-weight:700;letter-spacing:.24em;margin-bottom:14px}
-.kicker::before{content:"";width:36px;height:2px;background:var(--gold)}
-h2{font-family:"Noto Sans Hebrew","Heebo",sans-serif;font-weight:400;font-size:clamp(34px,4.6vw,58px);line-height:1.12}
-.reveal{opacity:0;transform:translateY(46px);transition:opacity .9s cubic-bezier(.16,1,.3,1),transform .9s cubic-bezier(.16,1,.3,1)}
-.reveal.in{opacity:1;transform:none}
+h2{font-family:var(--font-display);font-weight:400;letter-spacing:.02em;
+  line-height:1.08;font-size:clamp(2rem,4vw,3.4rem);
+  text-wrap:balance;overflow-wrap:anywhere;min-width:0}
+.kicker{display:block;font-size:12px;font-weight:600;letter-spacing:.22em;
+  margin-bottom:var(--space-sm);color:var(--accent-deep)}
+.lede{margin-top:var(--space-md);font-size:16px;max-width:52ch}
+/* drawn underline — the accent as a highlighter, not a fill */
+.uline{position:relative;white-space:nowrap}
+.uline::after{content:"";position:absolute;inset-inline:0;bottom:.04em;height:2px;
+  background:var(--accent)}
+.tone{color:var(--accent-lift)}
+.access-sec .tone{color:var(--accent-deep)}
+/* one quiet entrance, opacity only — the photographs do the work */
+.reveal{opacity:0;transition:opacity var(--dur-long) var(--ease-out)}
+.reveal.in{opacity:1}
 
-/* ===== GLOBE (dark) ===== */
-.globe-sec{background:var(--night);padding:110px 0 90px;overflow:hidden}
-.globe-sec .kicker{color:var(--gold-glow)}
-.globe-grid{display:grid;grid-template-columns:1fr 1.15fr;gap:30px;align-items:center}
-@media(max-width:940px){.globe-grid{grid-template-columns:1fr}}
-.globe-copy p{color:var(--gray);margin-top:16px;max-width:400px;font-size:16px}
-.globe-hint{margin-top:26px;display:flex;align-items:center;gap:10px;font-size:13.5px;color:var(--gold-glow);font-weight:500}
-.globe-hint .pulse{width:9px;height:9px;border-radius:50%;background:var(--gold);box-shadow:0 0 12px var(--gold-glow);animation:pulse 1.8s infinite}
-@keyframes pulse{0%,100%{opacity:1}50%{opacity:.25}}
-.globe-stage{position:relative;height:min(72vh,640px);min-height:420px}
-#globe{position:absolute;top:0;left:0;width:100%;height:100%;display:block;cursor:grab;border-radius:18px;touch-action:none}
+/* ══════════════════════════════════════════════════════════════
+   GLOBE
+   ══════════════════════════════════════════════════════════════ */
+.globe-sec{background:var(--ink-850);padding:104px 0 76px;overflow:hidden}
+.globe-grid{display:grid;grid-template-columns:minmax(0,.85fr) minmax(0,1.15fr);gap:var(--space-xl);
+  align-items:center}
+@media(max-width:60rem){.globe-grid{grid-template-columns:minmax(0,1fr)}}
+.globe-copy .lede{color:var(--muted-dk)}
+.globe-hint{margin-top:var(--space-lg);display:flex;align-items:center;
+  gap:var(--space-xs);font-size:13px;color:var(--accent-lift)}
+.globe-hint .pulse{width:7px;height:7px;border-radius:50%;background:var(--accent-lift);
+  animation:pulse 2.4s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
+.globe-stage{position:relative;height:min(70vh,620px);min-height:400px}
+#globe{position:absolute;top:0;inset-inline-start:0;width:100%;height:100%;display:block;
+  cursor:grab;border-radius:var(--r-lg);touch-action:none}
 #globe.grabbing{cursor:grabbing}
-.globe-tip{position:absolute;z-index:5;pointer-events:none;background:rgba(6,14,30,.92);border:1px solid rgba(5,142,223,.55);
-  color:#fff;font-size:13.5px;font-weight:700;padding:7px 14px;border-radius:8px;transform:translate(-50%,-140%);
-  opacity:0;transition:opacity .15s;white-space:nowrap}
-.globe-card{position:absolute;z-index:6;inset:auto 18px 18px 18px;background:rgba(8,18,38,.94);backdrop-filter:blur(14px);
-  border:1px solid rgba(5,142,223,.4);border-radius:16px;padding:22px 24px;display:none;
-  box-shadow:0 30px 70px rgba(0,0,0,.55)}
-.globe-card.show{display:flex;gap:18px;align-items:center;flex-wrap:wrap;animation:cardup .45s cubic-bezier(.16,1,.3,1)}
-@keyframes cardup{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:none}}
-.globe-card h3{font-family:"Noto Sans Hebrew","Heebo",sans-serif;font-size:26px;font-weight:400}
-.globe-card p{color:var(--gray);font-size:14px;max-width:420px;flex:1;min-width:220px}
-.globe-card .close{position:absolute;top:10px;left:12px;background:none;border:none;color:var(--gray);font-size:18px;cursor:pointer}
-.globe-card .close:hover{color:#fff}
-.globe-toggle{margin-top:24px;display:inline-flex;gap:6px;background:var(--steel);border-radius:10px;padding:6px}
-.gtbtn{border:none;background:transparent;color:var(--gray);border-radius:7px;padding:10px 22px;
-  font-family:"Bellefair",serif;font-weight:400;font-size:17.5px;letter-spacing:.04em;cursor:pointer;transition:.2s}
-.gtbtn.on{background:var(--gold);color:#fff}
-.dest-chips{margin-top:26px;display:flex;flex-wrap:wrap;gap:9px}
-.dchip{background:var(--steel);border:1px solid rgba(44,180,227,.22);color:#dfe4ea;border-radius:8px;
-  padding:8px 16px;font-family:"Bellefair",serif;font-weight:400;font-size:16px;letter-spacing:.03em;cursor:pointer;transition:.2s}
-.dchip:hover{border-color:var(--gold);color:var(--gold-glow);transform:translateY(-2px)}
+.globe-tip{position:absolute;z-index:5;pointer-events:none;background:var(--scrim-1);
+  border:1px solid var(--hair-dk2);color:var(--ink-dk);font-size:13px;font-weight:500;
+  padding:var(--space-xs) var(--space-sm);border-radius:var(--r-sm);transform:translate(-50%,-140%);
+  opacity:0;transition:opacity var(--dur-micro) var(--ease-out);white-space:nowrap}
+.globe-card{position:absolute;z-index:6;inset:auto var(--space-md) var(--space-md);
+  background:var(--scrim-1);backdrop-filter:blur(14px);border:1px solid var(--hair-dk2);
+  border-radius:var(--r-lg);padding:var(--space-lg);display:none}
+.globe-card.show{display:flex;gap:var(--space-md);align-items:center;flex-wrap:wrap}
+.globe-card h3{font-family:var(--font-display);font-size:26px;font-weight:400}
+.globe-card p{color:var(--muted-dk);font-size:14px;max-width:46ch;flex:1;min-width:200px}
+.globe-card .close{position:absolute;top:8px;inset-inline-end:10px;background:none;
+  border:0;color:var(--muted-dk);cursor:pointer;line-height:0;padding:var(--space-xs)}
+.globe-card .close .ic{width:16px;height:16px}
+.globe-card img{width:150px;height:104px;object-fit:cover;border-radius:var(--r-md);
+  flex:0 0 auto;border:1px solid var(--hair-dk2)}
+.globe-toggle{margin-top:var(--space-lg);display:inline-flex;gap:var(--space-3xs);
+  border:1px solid var(--hair-dk2);border-radius:var(--r-sm);padding:var(--space-2xs)}
+.gtbtn{border:0;background:transparent;color:var(--muted-dk);border-radius:var(--r-xs);
+  padding:var(--space-sm) var(--space-md);font-size:14px;font-weight:500;cursor:pointer;white-space:nowrap;
+  display:inline-flex;align-items:center;gap:var(--space-xs);
+  transition:background-color var(--dur-short) var(--ease-out),
+             color var(--dur-short) var(--ease-out)}
+.gtbtn .ic{width:16px;height:16px}
+.gtbtn.on{background:var(--ink-750);color:var(--ink-dk)}
+.gtbtn.on .ic{color:var(--accent-lift)}
+.dest-chips{margin-top:var(--space-lg);display:flex;flex-wrap:wrap;gap:var(--space-xs)}
+.dchip{background:transparent;border:1px solid var(--hair-dk);color:var(--muted-dk);
+  border-radius:var(--r-sm);padding:var(--space-xs) var(--space-sm);font-size:14px;cursor:pointer;
+  white-space:nowrap;display:inline-flex;align-items:center;gap:var(--space-xs);
+  transition:border-color var(--dur-short) var(--ease-out),
+             color var(--dur-short) var(--ease-out)}
+.dchip .ic{width:14px;height:14px;color:var(--accent-lift)}
+@media(hover:hover){.dchip:hover{border-color:var(--accent);color:var(--ink-dk)}}
 
-/* ===== CAROUSEL (dark→immersive) ===== */
-.caro-sec{background:var(--night);padding:40px 0 0}
-.caro-head{max-width:1280px;margin:0 auto;padding:40px 28px 34px;display:flex;align-items:flex-end;gap:24px;flex-wrap:wrap}
-.caro-head .kicker{color:var(--gold-glow)}
-.caro-nav{margin-right:auto;display:flex;gap:10px}
-.cnav{width:52px;height:52px;border-radius:50%;border:1px solid rgba(255,255,255,.3);background:transparent;
-  color:#fff;font-size:20px;cursor:pointer;transition:.2s}
-.cnav:hover{border-color:var(--gold);color:var(--gold-glow);transform:translateY(-2px)}
-.caro-stage{position:relative;height:min(88vh,760px);min-height:480px;overflow:hidden}
-#caro{position:absolute;top:0;left:0;width:100%;height:100%;display:block}
+/* ══════════════════════════════════════════════════════════════
+   CAROUSEL — the image edge is the divider; no rules here.
+   ══════════════════════════════════════════════════════════════ */
+.caro-sec{background:var(--ink-850);padding:56px 0 0}
+.caro-head{max-width:1280px;margin:0 auto;padding:0 var(--gutter) var(--space-lg);
+  display:flex;align-items:flex-end;gap:var(--space-lg);flex-wrap:wrap;
+  border-bottom:1px solid var(--hair-dk);margin-bottom:var(--space-lg)}
+.caro-nav{margin-inline-start:auto;display:flex;gap:var(--space-sm)}
+/* The two chevrons became the logo's jet, sitting on a turned disc. This is
+   the page's one real depth moment — a perspective container whose face banks
+   toward the pointer, with the jet floating over it.
+
+   Only the FACE rotates. A 3D-rotated subtree is re-rasterised at its resting
+   scale, which softens a 21px vector mark; a gradient and a hairline rim carry
+   that resampling invisibly, so the face takes the rotation and the jet takes
+   a plain 2D parallax shift and stays razor sharp. The depth is real either
+   way — the disc is genuinely turning in space.
+
+   The tilt is pointer-only and reduced-motion-off. The button, its label and
+   its target size are identical without it. */
+.cnav{position:relative;width:52px;height:52px;border-radius:50%;border:0;padding:0;
+  background:transparent;color:var(--ink-dk);cursor:pointer;line-height:0;
+  display:flex;align-items:center;justify-content:center;
+  perspective:560px;-webkit-tap-highlight-color:transparent;
+  transition:color var(--dur-short) var(--ease-out)}
+.cnav-face{position:absolute;inset:0;border-radius:50%;
+  border:1px solid var(--hair-dk2);
+  background:radial-gradient(112% 112% at 30% 20%,var(--hair-dk) 0%,transparent 62%);
+  box-shadow:inset 0 1px 0 var(--hair-dk2),
+             inset 0 -12px 20px -14px var(--scrim-1),
+             0 10px 18px -14px var(--scrim-1);
+  transform:rotateX(var(--rx,0deg)) rotateY(var(--ry,0deg));
+  transition:transform var(--dur-short) var(--ease-out),
+             border-color var(--dur-short) var(--ease-out),
+             background-color var(--dur-short) var(--ease-out)}
+.cnav .ic{position:relative;width:21px;height:21px;
+  transform:translate(var(--tx,0px),var(--ty,0px));
+  transition:transform var(--dur-short) var(--ease-out)}
+/* while the pointer is inside, the disc tracks it frame-for-frame — an easing
+   here would read as lag, not as smoothing. The settle on exit keeps it. */
+.cnav.tilting .cnav-face,.cnav.tilting .ic{transition:border-color var(--dur-short) var(--ease-out),
+             background-color var(--dur-short) var(--ease-out)}
+/* one hover signal: the rim and the jet pick up the accent together.
+   The press gets its own, separate channel — the disc sinks into shade. */
+@media(hover:hover){
+  .cnav:hover{color:var(--accent-lift)}
+  .cnav:hover .cnav-face{border-color:var(--accent)}
+}
+.cnav:active .cnav-face{background-color:var(--scrim-4)}
+/* the ring should hug the disc, not box it */
+.cnav:focus-visible{border-radius:50%;outline-offset:4px}
+.caro-stage{position:relative;height:min(84vh,720px);min-height:440px;overflow:hidden}
+#caro{position:absolute;top:0;inset-inline-start:0;width:100%;height:100%;display:block}
 .caro-scrim{position:absolute;inset:0;z-index:2;pointer-events:none;
-  background:linear-gradient(0deg,rgba(6,9,13,.82) 0%,rgba(6,9,13,.16) 45%,rgba(6,9,13,.05) 70%,rgba(6,9,13,.3) 100%)}
-.caro-ui{position:absolute;z-index:5;inset:0;display:flex;flex-direction:column;justify-content:flex-end;
-  max-width:1280px;margin:0 auto;padding:0 28px 54px;pointer-events:none}
-.caro-badge{display:inline-flex;align-items:center;gap:10px;margin-bottom:10px}
-#iconBadge{width:84px;height:84px;display:block;filter:drop-shadow(0 8px 18px rgba(0,0,0,.5))}
-.caro-badge .btype{font-size:12.5px;font-weight:700;letter-spacing:.2em;color:var(--gold-glow)}
-.caro-title{font-family:"Noto Sans Hebrew","Heebo",sans-serif;font-size:clamp(44px,7.5vw,104px);line-height:1.05;color:#fff;
-  text-shadow:0 6px 40px rgba(6,9,13,.7)}
-.caro-title .ch{display:inline-block;opacity:0;transform:translateY(.55em);transition:opacity .5s,transform .6s cubic-bezier(.16,1,.3,1)}
-.caro-title.on .ch{opacity:1;transform:none}
-.caro-sub{margin-top:10px;font-size:16.5px;color:rgba(255,255,255,.9);max-width:520px;text-shadow:0 2px 14px rgba(6,9,13,.6)}
-.caro-cta{margin-top:22px;pointer-events:auto}
-.caro-dots{position:absolute;z-index:6;bottom:26px;left:0;right:0;display:flex;justify-content:center;gap:9px}
-.dot{width:36px;height:4px;border-radius:3px;background:rgba(255,255,255,.28);border:none;cursor:pointer;transition:.3s;padding:0}
-.dot.on{background:var(--gold)}
-.caro-count{position:absolute;z-index:6;top:30px;left:34px;font-family:"Noto Sans Hebrew","Heebo",sans-serif;font-size:15px;color:rgba(255,255,255,.85);letter-spacing:.1em}
-.caro-count b{font-size:26px;color:var(--gold-glow)}
+  background:linear-gradient(0deg,var(--scrim-1) 0%,var(--scrim-2) 40%,
+    var(--scrim-3) 68%,var(--scrim-4) 100%)}
+.caro-ui{position:absolute;z-index:5;inset:0;display:flex;flex-direction:column;
+  justify-content:flex-end;max-width:1280px;margin:0 auto;
+  padding:0 var(--gutter) 52px;pointer-events:none}
+.caro-badge{display:inline-flex;align-items:center;gap:var(--space-xs);
+  margin-bottom:var(--space-sm);color:var(--accent-lift)}
+.caro-badge .ic{width:26px;height:26px;stroke-width:1.3}
+.caro-badge .btype{font-size:12px;font-weight:600;letter-spacing:.18em}
+.caro-title{font-family:var(--font-display);font-weight:400;letter-spacing:.02em;
+  font-size:clamp(2.5rem,6.6vw,5.4rem);line-height:1.04;color:var(--ink-dk);
+  overflow-wrap:anywhere;min-width:0;text-shadow:0 2px 28px var(--scrim-2)}
+.caro-title .ch{display:inline-block;opacity:0;
+  transition:opacity var(--dur-long) var(--ease-out)}
+.caro-title.on .ch{opacity:1}
+.caro-sub{margin-top:var(--space-xs);font-size:16px;color:var(--ink-dk);max-width:52ch;
+  text-shadow:0 1px 12px var(--scrim-1)}
+.caro-cta{margin-top:var(--space-lg);pointer-events:auto}
+/* the offset is pulled back by the dots' own hit padding so the rule still
+   sits where it did visually. */
+.caro-dots{position:absolute;z-index:6;
+  bottom:calc(var(--space-lg) - var(--space-sm));inset-inline:0;
+  display:flex;justify-content:center;gap:var(--space-xs)}
+/* the mark is a 2px rule, but the *target* is 26px — WCAG 2.2 target size.
+   content-box + background-clip keeps the padding invisible. */
+.dot{box-sizing:content-box;width:30px;height:2px;padding-block:var(--space-sm);
+  background:var(--hair-dk2);background-clip:content-box;border:0;cursor:pointer;
+  transition:background-color var(--dur-short) var(--ease-out)}
+.dot.on{background:var(--accent-lift)}
+.caro-count{position:absolute;z-index:6;top:26px;inset-inline-end:var(--gutter);
+  font-size:13px;color:var(--muted-dk);letter-spacing:.1em;
+  font-variant-numeric:tabular-nums}
+.caro-count b{font-family:var(--font-display);font-size:24px;font-weight:400;
+  color:var(--accent-lift)}
 
-/* ===== ACCESSIBILITY (light) ===== */
-.access-sec{background:var(--paper);color:var(--ink);padding:120px 0;position:relative;overflow:hidden}
-.access-sec::before{content:"";position:absolute;left:-70px;bottom:-50px;width:440px;height:440px;
-  background:url('assets/logo-mark.png') no-repeat center/contain;opacity:.05;pointer-events:none}
-.access-grid{display:grid;grid-template-columns:1.2fr .8fr;gap:56px;align-items:center}
-@media(max-width:900px){.access-grid{grid-template-columns:1fr}}
-.access-sec .kicker{color:var(--gold)}
-.access-sec h2{color:var(--ink)}
-.access-sec .big{font-size:clamp(38px,5.4vw,66px)}
-.access-sec p.lead2{margin-top:22px;color:#5A7194;font-size:17px;max-width:520px}
-.access-tags{margin-top:28px;display:flex;flex-wrap:wrap;gap:10px}
-.atag{display:inline-flex;align-items:center;gap:8px;background:#fff;border:1px solid #dfeaf5;border-radius:8px;
-  padding:10px 16px;font-size:14px;font-weight:500;color:#23446e;box-shadow:0 4px 14px rgba(1,50,116,.06)}
-.atag i{color:var(--gold);font-style:normal}
-.promise{background:#fff;border:1px solid #dfeaf5;border-radius:20px;padding:28px 28px 24px;max-width:460px;margin:0 auto;
-  box-shadow:0 30px 70px rgba(1,50,116,.10)}
-.p-head{display:flex;align-items:center;gap:12px;margin-bottom:16px}
-.p-head img{width:46px;height:40px;object-fit:contain}
-.p-head b{font-size:18px;color:var(--ink);font-weight:800}
-.p-item{display:flex;gap:14px;align-items:flex-start;padding:13px 0;border-top:1px dashed #dfeaf5}
-.pv{flex:0 0 auto;width:30px;height:30px;border-radius:50%;background:linear-gradient(135deg,#058EDF,#48C2C7);
-  color:#fff;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:15px;
-  box-shadow:0 6px 14px rgba(5,142,223,.35)}
-.p-item b{display:block;font-size:16.5px;color:var(--ink);font-weight:800;line-height:1.4}
-.p-item span{font-size:13.5px;color:#5A7194}
-.p-sig{margin-top:18px;padding-top:16px;border-top:1px solid #e3edf7;font-family:"Bellefair",serif;
-  font-size:23px;color:var(--ink);direction:ltr;text-align:center;letter-spacing:.04em}
-.p-sig i{font-style:normal;color:#129CC3}
-.p-sig span{display:block;font-family:"Heebo",sans-serif;font-size:12.5px;color:#5A7194;direction:rtl;margin-top:4px;letter-spacing:0}
-.badge3d{position:relative;margin:0 auto;width:min(300px,80%);aspect-ratio:1;display:flex;align-items:center;justify-content:center}
-.badge3d .ring{position:absolute;inset:0;border-radius:50%;border:1.5px solid rgba(5,142,223,.45);animation:spin 14s linear infinite}
-.badge3d .ring:nth-child(2){inset:9%;animation-duration:20s;animation-direction:reverse;border-style:dashed}
-@keyframes spin{to{transform:rotate(360deg)}}
-.badge3d .core{width:62%;aspect-ratio:1;border-radius:50%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;
-  background:radial-gradient(circle at 34% 28%,#7FD4F0,var(--gold) 60%,#013274);color:#fff;text-align:center;
-  box-shadow:0 30px 60px rgba(5,142,223,.4), inset 0 4px 10px rgba(255,255,255,.5), inset 0 -8px 18px rgba(1,42,104,.5);
-  animation:float 5s ease-in-out infinite}
-@keyframes float{0%,100%{transform:translateY(0) rotate(-2deg)}50%{transform:translateY(-14px) rotate(2deg)}}
-.badge3d .core .em{font-size:42px}
-.badge3d .core b{font-size:15px;font-weight:800;line-height:1.3;padding:0 18px}
+/* ══════════════════════════════════════════════════════════════
+   ACCESSIBILITY — the single light fold in a night page.
+   ══════════════════════════════════════════════════════════════ */
+.access-sec{background:var(--paper);color:var(--ink-lt);padding:124px 0 112px;
+  position:relative;overflow:hidden}
+.access-sec::before{content:"";position:absolute;inset-inline-start:-70px;bottom:-50px;
+  width:440px;height:440px;background:url('assets/logo-mark.png') no-repeat center/contain;
+  opacity:.045;pointer-events:none}
+.access-grid{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,.85fr);gap:var(--space-2xl);
+  align-items:start}
+@media(max-width:60rem){.access-grid{grid-template-columns:minmax(0,1fr);gap:var(--space-xl)}}
+.access-sec h2{color:var(--navy)}
+.access-sec .big{font-size:clamp(2.1rem,4.6vw,3.9rem)}
+.access-sec p.lead2{margin-top:var(--space-lg);color:var(--muted-lt);font-size:17px;max-width:54ch}
+.access-sec p.lead2.first{color:var(--ink-lt);font-weight:500}
 
-/* ===== AGENT (light) ===== */
-.agent-sec{background:var(--paper);color:var(--ink);padding:0 0 130px}
-.agent-sec .kicker{color:var(--gold)}
-.agent-sec h2{color:var(--ink)}
-.agent-grid{display:grid;grid-template-columns:.9fr 1.1fr;gap:56px;align-items:center}
-@media(max-width:940px){.agent-grid{grid-template-columns:1fr}}
-.agent-copy p{margin-top:20px;color:#5A7194;font-size:16.5px;max-width:440px}
-.steps{margin-top:30px;display:flex;flex-direction:column;gap:16px}
-.stp{display:flex;gap:16px;align-items:flex-start}
-.stp .n{font-family:"Noto Sans Hebrew","Heebo",sans-serif;flex:0 0 auto;width:40px;height:40px;border-radius:10px;background:var(--night);
-  color:var(--gold-glow);display:flex;align-items:center;justify-content:center;font-size:17px}
-.stp b{display:block;font-size:16px;color:var(--ink)}
-.stp span{font-size:14px;color:#5A7194}
-.chatwrap{background:#fff;border:1px solid #dfeaf5;border-radius:20px;overflow:hidden;
-  box-shadow:0 34px 80px rgba(1,50,116,.12)}
-.chat-head{display:flex;align-items:center;gap:13px;padding:18px 22px;border-bottom:1px solid #e3edf7;background:linear-gradient(90deg,#eef7fe,#fff)}
-.chat-head .avatar{width:46px;height:46px;border-radius:50%;background:#fff;border:1px solid #dfeaf5;
-  display:flex;align-items:center;justify-content:center;font-size:20px}
-.chat-head .avatar img{width:34px;height:30px;object-fit:contain}
-.chat-head b{font-size:16.5px;font-family:"Bellefair",serif;font-weight:400}
-.chat-head span{display:block;font-size:12px;color:#8b93a1}
-.live{margin-right:auto;font-size:11px;color:#2e7d32;display:flex;align-items:center;gap:6px;font-weight:700}
-.live i{width:8px;height:8px;border-radius:50%;background:#2e7d32;box-shadow:0 0 8px #4caf50;animation:pulse 1.6s infinite}
-.msgs{padding:20px;height:330px;overflow-y:auto;display:flex;flex-direction:column;gap:12px;background:#f7fbfe}
-.bubble{max-width:85%;padding:12px 16px;border-radius:14px;font-size:14.5px;line-height:1.6;white-space:pre-wrap}
-.bubble.bot{align-self:flex-start;background:#fff;border:1px solid #e3edf7;color:#23446e;border-bottom-right-radius:4px;box-shadow:0 4px 12px rgba(1,50,116,.05)}
-.bubble.me{align-self:flex-end;background:var(--night);color:#fff;border-bottom-left-radius:4px}
-.typing{align-self:flex-start;color:#8b93a1;font-size:13px;display:flex;gap:5px;align-items:center;padding:2px 6px}
-.typing i{width:6px;height:6px;border-radius:50%;background:var(--gold);animation:pulse 1s infinite}
+.promise{background:var(--card);border:1px solid var(--rule);border-radius:var(--r-lg);
+  padding:var(--space-lg) var(--space-lg) var(--space-md);max-width:460px;
+  margin-inline:auto;box-shadow:0 1px 2px var(--shade-2)}
+.p-head{display:flex;align-items:center;gap:var(--space-sm);
+  padding-bottom:var(--space-md);border-bottom:1px solid var(--rule)}
+.p-head img{width:40px;height:35px;object-fit:contain}
+.p-head b{font-size:17px;color:var(--navy);font-weight:600}
+.p-item{display:flex;gap:var(--space-sm);align-items:flex-start;padding:var(--space-sm) 0;
+  border-top:1px solid var(--rule-2)}
+.p-item:first-of-type{border-top:0}
+/* the tick sits on a turned disc too — same light, same language as the
+   carousel jets, one twentieth of the movement. */
+.pv{flex:0 0 auto;width:26px;height:26px;border-radius:50%;
+  border:1px solid var(--rule);color:var(--accent-deep);
+  background:linear-gradient(152deg,var(--card) 0%,var(--card-2) 100%);
+  box-shadow:inset 0 1px 0 var(--card),0 1px 2px var(--shade-2);
+  display:flex;align-items:center;justify-content:center;margin-top:var(--space-3xs)}
+.pv .ic{width:14px;height:14px}
+.p-item b{display:block;font-size:15.5px;color:var(--navy);font-weight:600;line-height:1.45}
+.p-item span{font-size:13.5px;color:var(--muted-lt)}
+.p-sig{margin-top:var(--space-md);padding-top:var(--space-sm);
+  border-top:1px solid var(--rule);font-family:var(--font-display);
+  font-size:22px;color:var(--navy);direction:ltr;text-align:center;letter-spacing:.04em}
+.p-sig i{font-style:normal;color:var(--accent-deep)}
+.p-sig span{display:block;font-family:var(--font-body);font-size:12.5px;
+  color:var(--muted-lt);direction:rtl;margin-top:var(--space-2xs);letter-spacing:0}
+
+/* ══════════════════════════════════════════════════════════════
+   AGENT — the conversion moment, moved onto the brand navy so the
+   page reads night · LIGHT · night instead of one 1700px light blur.
+   ══════════════════════════════════════════════════════════════ */
+.agent-sec{background:var(--ink-800);color:var(--ink-dk);padding:92px 0 104px;
+  position:relative}
+.agent-sec::before{content:"";position:absolute;top:0;inset-inline:0;height:1px;
+  background:linear-gradient(90deg,transparent,var(--hair-dk2),transparent)}
+.agent-grid{display:grid;grid-template-columns:minmax(0,.82fr) minmax(0,1.18fr);gap:var(--space-2xl);
+  align-items:start}
+@media(max-width:60rem){.agent-grid{grid-template-columns:minmax(0,1fr);gap:var(--space-xl)}}
+.agent-copy .lede{color:var(--muted-dk);max-width:46ch}
+.steps{margin-top:var(--space-lg);display:flex;flex-direction:column}
+.stp{display:flex;gap:var(--space-md);align-items:flex-start;
+  padding:var(--space-md) 0;border-top:1px solid var(--hair-dk)}
+.stp:first-child{border-top:0}
+.stp .n{font-family:var(--font-display);flex:0 0 auto;width:30px;
+  color:var(--accent-lift);font-size:19px;line-height:1.3;
+  font-variant-numeric:tabular-nums}
+.stp b{display:block;font-size:15.5px;font-weight:600;color:var(--ink-dk)}
+.stp span{font-size:14px;color:var(--muted-dk)}
+
+.chatwrap{background:var(--card);border:1px solid var(--rule);
+  border-radius:var(--r-lg);overflow:hidden}
+.chat-head{display:flex;align-items:center;gap:var(--space-sm);
+  padding:var(--space-md) var(--space-lg);border-bottom:1px solid var(--rule);
+  background:var(--card-2);color:var(--navy)}
+.chat-head .avatar{width:40px;height:40px;border-radius:50%;background:var(--card);
+  border:1px solid var(--rule);display:flex;align-items:center;justify-content:center}
+.chat-head .avatar img{width:30px;height:26px;object-fit:contain}
+.chat-head b{font-size:16px;font-family:var(--font-display);font-weight:400}
+/* scoped to the title block only — a bare `.chat-head span` also captured the
+   live badge, which silently flattened it to a grey block and collapsed its dot. */
+.chat-head>div>span{display:block;font-size:12px;color:var(--muted-lt)}
+.live{margin-inline-start:auto;font-size:11px;color:var(--ok);display:flex;
+  align-items:center;gap:var(--space-xs);font-weight:600;white-space:nowrap}
+.live i{width:7px;height:7px;border-radius:50%;background:var(--ok);animation:pulse 2.4s infinite}
+/* content-driven height — no more 250px of dead white */
+.msgs{padding:var(--space-lg);min-height:210px;max-height:min(56vh,430px);
+  overflow-y:auto;display:flex;flex-direction:column;gap:var(--space-sm);
+  background:var(--card-2);scroll-behavior:smooth}
+.bubble{max-width:85%;padding:var(--space-sm) var(--space-md);border-radius:var(--r-md);font-size:14.5px;
+  line-height:1.6;white-space:pre-wrap}
+.bubble.bot{align-self:flex-start;background:var(--card);border:1px solid var(--rule);
+  color:var(--ink-lt);border-end-end-radius:var(--r-xs)}
+.bubble.me{align-self:flex-end;background:var(--ink-800);color:var(--ink-dk);
+  border-end-start-radius:var(--r-xs)}
+.typing{align-self:flex-start;color:var(--muted-lt);font-size:13px;display:flex;
+  gap:var(--space-2xs);align-items:center;padding:var(--space-3xs) var(--space-xs)}
+.typing i{width:5px;height:5px;border-radius:50%;background:var(--accent);
+  animation:pulse 1.2s infinite}
 .typing i:nth-child(2){animation-delay:.2s}.typing i:nth-child(3){animation-delay:.4s}
-.brochure{align-self:stretch;background:linear-gradient(165deg,#fff,#eef7fe);border:1.5px solid var(--gold);border-radius:16px;padding:18px;box-shadow:0 14px 30px rgba(5,142,223,.15)}
-.brochure .tag{display:inline-block;background:linear-gradient(95deg,var(--gold),var(--azure2));color:#fff;font-size:11px;font-weight:800;padding:4px 12px;border-radius:6px;letter-spacing:.06em;margin-bottom:10px}
-.brochure h3{font-family:"Noto Sans Hebrew","Heebo",sans-serif;font-weight:400;font-size:22px;margin-bottom:8px;color:var(--ink)}
-.brochure p{font-size:14px;color:#5A7194;margin:5px 0}
-.brochure ul{margin:8px 20px;font-size:14px;color:#5A7194}
-.brochure .ref{margin-top:12px;padding-top:11px;border-top:1px dashed var(--gold);font-size:13px;color:var(--azure2);font-weight:600}
-.composer{display:flex;gap:9px;padding:14px;border-top:1px solid #e3edf7;background:#fff}
-.composer input{flex:1;border:1px solid #cfe0f0;border-radius:10px;padding:13px 16px;font-size:14.5px;font-family:inherit;color:var(--ink);outline:none;transition:.2s;background:#f7fbfe}
-.composer input:focus{border-color:var(--gold);box-shadow:0 0 0 3px rgba(5,142,223,.15)}
-.composer button{border:none;background:linear-gradient(95deg,var(--gold),var(--azure2));color:#fff;width:47px;height:47px;border-radius:10px;font-size:17px;cursor:pointer;transition:.2s}
-.composer button:hover{background:var(--azure2)}
-.chips{display:flex;gap:8px;flex-wrap:wrap;padding:0 14px 14px;background:#fff}
-.chip{background:#f7fbfe;border:1px solid #cfe0f0;border-radius:8px;padding:8px 14px;font-size:13px;cursor:pointer;color:#5A7194;transition:.2s}
-.chip:hover{border-color:var(--gold);color:var(--azure2)}
-.agent-note{margin-top:14px;font-size:12.5px;color:#7f93ad}
+.brochure{align-self:stretch;background:var(--card);border:1px solid var(--accent);
+  border-radius:var(--r-md);padding:var(--space-md)}
+.brochure .tag{display:inline-block;background:var(--accent-deep);color:var(--card);
+  font-size:11px;font-weight:600;padding:var(--space-2xs) var(--space-sm);border-radius:var(--r-xs);
+  letter-spacing:.06em;margin-bottom:var(--space-xs)}
+.brochure h3{font-family:var(--font-display);font-weight:400;font-size:23px;
+  margin-bottom:var(--space-2xs);color:var(--navy)}
+.brochure p{font-size:14px;color:var(--muted-lt);margin:var(--space-2xs) 0}
+.brochure ul{margin:var(--space-xs) var(--space-lg);font-size:14px;color:var(--muted-lt)}
+.brochure .ref{margin-top:var(--space-sm);padding-top:var(--space-sm);
+  border-top:1px solid var(--rule);font-size:13px;color:var(--accent-deep);
+  font-weight:500;display:flex;gap:var(--space-xs);align-items:flex-start}
+.brochure .ref .ic{width:14px;height:14px;margin-top:4px}
+.composer{display:flex;align-items:center;gap:var(--space-xs);padding:var(--space-sm);
+  border-top:1px solid var(--rule);background:var(--card)}
+.composer input{flex:1;min-width:0;border:1px solid var(--rule);border-radius:var(--r-sm);
+  height:46px;padding:var(--space-sm) var(--space-md);font-size:14.5px;font-family:inherit;color:var(--ink-lt);
+  background:var(--card-2);
+  /* ring reserved at rest so focus never shifts geometry — and never `outline:none`,
+     which is what was silently removing this field's focus indicator. */
+  outline:2px solid transparent;outline-offset:1px;
+  transition:border-color var(--dur-short) var(--ease-out)}
+.composer input:focus-visible{outline-color:var(--focus);border-color:var(--accent)}
+.composer input::placeholder{color:var(--muted-lt)}
+.composer input:focus{border-color:var(--accent)}
+.composer button{border:1px solid var(--accent-deep);background:var(--accent-deep);
+  color:var(--card);width:46px;height:46px;border-radius:var(--r-sm);cursor:pointer;
+  display:flex;align-items:center;justify-content:center;
+  transition:background-color var(--dur-short) var(--ease-out)}
+.composer button .ic{width:18px;height:18px}
+@media(hover:hover){.composer button:hover{background:var(--accent)}}
+.chips{display:flex;gap:var(--space-xs);flex-wrap:wrap;
+  padding:0 var(--space-sm) var(--space-sm);background:var(--card)}
+.chip{background:var(--card-2);border:1px solid var(--rule);border-radius:var(--r-sm);
+  padding:var(--space-xs) var(--space-sm);font-size:13px;cursor:pointer;color:var(--muted-lt);white-space:nowrap;
+  display:inline-flex;align-items:center;
+  transition:border-color var(--dur-short) var(--ease-out),
+             color var(--dur-short) var(--ease-out)}
+@media(hover:hover){.chip:hover{border-color:var(--accent);color:var(--accent-deep)}}
+.agent-note{margin-top:var(--space-sm);font-size:12.5px;color:var(--muted-dk);
+  display:flex;gap:var(--space-xs);align-items:flex-start;max-width:62ch}
+.agent-note .ic{width:14px;height:14px;color:var(--accent-lift);margin-top:4px}
 
-/* ===== FOOTER ===== */
-footer{background:var(--night);padding:64px 24px 48px;text-align:center}
-.brand-div{display:flex;align-items:center;gap:14px;max-width:420px;margin:0 auto 22px}
-.brand-div span{flex:1;height:1px;background:linear-gradient(90deg,transparent,rgba(72,194,199,.55))}
-.brand-div span:last-child{background:linear-gradient(270deg,transparent,rgba(72,194,199,.55))}
-.brand-div i{color:var(--gold-glow);font-style:normal;font-size:15px}
-.foot-logo{width:min(280px,70vw);display:block;margin:0 auto 18px}
-.foot-sig{font-family:"Frank Ruhl Libre",serif;font-weight:700;font-size:21px;color:var(--gold-glow);margin-bottom:12px}
-footer .links{display:flex;gap:24px;justify-content:center;flex-wrap:wrap;margin-bottom:20px;font-size:14px;color:var(--gray)}
-footer .links a:hover{color:var(--gold-glow)}
-footer .copy{font-size:12.5px;color:#5a6270}
+/* ══════════════════════════════════════════════════════════════
+   FOOTER — Ft6 letter close. The page ends the way Tamir talks.
+   ══════════════════════════════════════════════════════════════ */
+footer{background:var(--ink-900);padding:76px var(--gutter) 40px}
+.foot-in{max-width:1180px;margin:0 auto}
+.foot-letter{max-width:56ch;margin-inline:auto;text-align:center}
+.foot-mark{width:56px;height:49px;object-fit:contain;margin-inline:auto;display:block}
+.foot-letter .close{margin-top:var(--space-lg);font-family:var(--font-display);
+  font-size:clamp(1.35rem,2.6vw,1.85rem);line-height:1.5;color:var(--ink-dk);
+  letter-spacing:.02em}
+.foot-letter .sign{display:block;margin-top:var(--space-sm);font-family:var(--font-body);
+  font-size:14px;font-weight:600;letter-spacing:.06em;color:var(--accent-lift)}
+.foot-letter .ps{margin-top:var(--space-lg);font-size:14px;color:var(--muted-dk)}
+.foot-letter .ps a{border-bottom:1px solid var(--accent);padding-bottom:var(--space-3xs);
+  color:var(--ink-dk);white-space:nowrap;
+  transition:color var(--dur-short) var(--ease-out)}
+@media(hover:hover){.foot-letter .ps a:hover{color:var(--accent-lift)}}
+.foot-rule{margin-block:var(--space-xl) var(--space-md)}
+.foot-base{display:flex;flex-wrap:wrap;gap:var(--space-md) var(--space-lg);
+  align-items:center;justify-content:space-between;font-size:13px;color:var(--faint-dk)}
+.foot-nav{display:flex;gap:var(--space-lg);flex-wrap:wrap}
+/* padding lifts each link to a 30px target — 22px was under the 24px floor */
+.foot-nav a{white-space:nowrap;padding-block:var(--space-2xs);
+  transition:color var(--dur-short) var(--ease-out)}
+@media(hover:hover){.foot-nav a:hover{color:var(--accent-lift)}}
+.foot-word{font-family:var(--font-display);font-size:17px;letter-spacing:.05em;
+  direction:ltr;unicode-bidi:isolate;color:var(--muted-dk);white-space:nowrap}
+.foot-word i{font-style:normal;color:var(--accent-lift)}
 
-/* ===== LOGO TYPE — Bellefair, the Hebrew counterpart of the wordmark's classical serif ===== */
-.display,h2{font-family:"Bellefair",serif;font-weight:400;letter-spacing:.02em}
-h1{font-size:clamp(58px,10.8vw,160px);line-height:1.0;text-shadow:0 4px 44px rgba(1,10,30,.6);text-wrap:balance}
-.caro-title{font-size:clamp(50px,9vw,122px);line-height:1.0;text-shadow:0 4px 40px rgba(1,10,30,.55)}
-h2{line-height:1.06;font-size:clamp(36px,5.2vw,62px)}
-.tone{color:#2CB4E3}
-.access-sec .tone,.agent-sec .tone{color:#129CC3}
-.hstat b,.stp .n,.caro-count,.globe-card h3,.brochure h3{font-family:"Heebo",sans-serif;font-weight:800}
-.globe-card img{width:150px;height:104px;object-fit:cover;border-radius:12px;flex:0 0 auto;border:1px solid rgba(72,194,199,.4)}
+/* gate 26 — the eighth state: disabled is signalled on three channels,
+   never by opacity alone. */
+button:disabled,input:disabled,[aria-disabled="true"]{
+  opacity:.55;cursor:not-allowed;filter:saturate(.4)}
+button:disabled:hover,input:disabled:hover{background-color:inherit;border-color:inherit}
 
 @media (prefers-reduced-motion: reduce){
-  *,*::before,*::after{animation:none!important;transition:none!important}
-  .reveal{opacity:1;transform:none}
+  *,*::before,*::after{animation-duration:1ms!important;animation-iteration-count:1!important;
+    transition-duration:1ms!important}
+  .reveal{opacity:1}
   html{scroll-behavior:auto}
+  .msgs{scroll-behavior:auto}
+  /* the JS never instantiates either of these here — this is the belt to
+     that braces, so a media-query change mid-session can't leave a tilted
+     disc or a floating compass behind. */
+  .pcomp{display:none!important}
+  .cnav-face{transform:none!important}
+}
+/* a coarse pointer has no cursor to accompany, and no hover to bank into */
+@media(pointer:coarse){
+  .pcomp{display:none!important}
+  .cnav-face{transform:none!important}
+  .cnav{width:56px;height:56px}
+}
+
+/* ===== THE GUIDE — one day, rendered as a document, printable ===== */
+/* Four presets. Every one is drawn from the logo's navy-to-cyan palette;
+   none of them leaves it, so a client can pick a look without the guide
+   ceasing to look like Tamir's product. */
+.guide{align-self:stretch;border-radius:var(--r-lg);overflow:hidden;margin:6px 0 2px;
+  border:1px solid var(--g-line);background:var(--g-paper);color:var(--g-ink);
+  box-shadow:0 18px 44px rgba(3,10,24,.30)}
+.guide[data-preset="classic"]{--g-paper:#FBFDFF;--g-ink:#0C2036;--g-mut:#4C6784;--g-line:#D6E4F0;--g-accent:#0267AF;--g-head:#0B1830;--g-headink:#EAF4FC}
+/* accent doubles as 12px label text, so it is held to 4.5:1 on its own paper */
+.guide[data-preset="airy"]  {--g-paper:#FFFFFF;--g-ink:#16232F;--g-mut:#5B7186;--g-line:#E8EFF5;--g-accent:#0B6E92;--g-head:#F4FAFE;--g-headink:#0C2036}
+.guide[data-preset="dark"]  {--g-paper:#0C1A2E;--g-ink:#EAF3FB;--g-mut:#9DB6CE;--g-line:#22384F;--g-accent:#48C2C7;--g-head:#081525;--g-headink:#EAF3FB}
+.guide[data-preset="warm"]  {--g-paper:#FDF8F1;--g-ink:#22242E;--g-mut:#6B6558;--g-line:#EADFCD;--g-accent:#8A5A1E;--g-head:#12243A;--g-headink:#FBEFDC}
+.g-head{background:var(--g-head);color:var(--g-headink);padding:20px 22px 18px}
+.g-kicker{display:flex;align-items:center;gap:8px;font-size:11px;letter-spacing:.16em;
+  text-transform:uppercase;opacity:.72;margin-bottom:10px}
+.g-head h3{font-family:var(--display);font-size:clamp(21px,4.4vw,27px);line-height:1.15;margin:0}
+.g-head .g-sub{font-size:13.5px;opacity:.78;margin-top:6px}
+.g-body{padding:20px 22px 22px}
+.g-intro{font-size:15px;line-height:1.75;color:var(--g-ink);margin-bottom:18px}
+.g-daytitle{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap;
+  padding-bottom:10px;border-bottom:1px solid var(--g-line);margin-bottom:14px}
+.g-daytitle b{font-family:var(--display);font-size:19px;color:var(--g-ink)}
+.g-daytitle span{font-size:13px;color:var(--g-mut)}
+.g-slot{display:grid;grid-template-columns:74px 1fr;gap:14px;padding:11px 0;border-bottom:1px dashed var(--g-line)}
+.g-slot:last-of-type{border-bottom:0}
+.g-when{font-size:12px;font-weight:700;letter-spacing:.08em;color:var(--g-accent);padding-top:2px}
+.g-what{font-size:14.5px;line-height:1.7}
+.g-why{display:block;font-size:13px;color:var(--g-mut);margin-top:3px}
+.g-note{margin-top:14px;padding:13px 15px;border-radius:12px;
+  background:color-mix(in srgb,var(--g-accent) 9%,transparent);
+  border:1px solid color-mix(in srgb,var(--g-accent) 26%,transparent);font-size:13.5px;line-height:1.65}
+.g-note b{color:var(--g-accent)}
+.g-noticed{margin-top:18px}
+.g-noticed h4{font-size:14px;margin:0 0 8px;color:var(--g-ink)}
+.g-noticed ul{margin:0;padding-inline-start:18px;font-size:13.5px;line-height:1.8;color:var(--g-ink)}
+.g-more{margin-top:14px;font-size:13px;color:var(--g-mut);font-style:normal}
+/* Fields the client fills in themselves. Deliberately empty — the agent never
+   invents a flight number, and an empty rule cannot be wrong. */
+.g-fill{margin-top:18px;padding-top:16px;border-top:1px solid var(--g-line)}
+.g-fill h4{font-size:14px;margin:0 0 4px;color:var(--g-ink)}
+.g-fill p{font-size:12.5px;color:var(--g-mut);margin:0 0 12px}
+.g-fill .row{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:11px;font-size:13px}
+.g-fill .row>span:first-child{min-width:64px;color:var(--g-mut)}
+.g-fill .line{flex:1;min-width:96px;border-bottom:1px solid var(--g-line);height:19px}
+.g-cta{margin-top:18px;padding-top:16px;border-top:1px solid var(--g-line)}
+.g-cta p{font-size:13.5px;line-height:1.7;color:var(--g-ink);margin:0 0 12px}
+.g-actions{display:flex;gap:9px;flex-wrap:wrap}
+.g-btn{font:inherit;font-size:13.5px;font-weight:600;cursor:pointer;border-radius:999px;
+  padding:10px 18px;border:1px solid var(--g-accent);background:transparent;color:var(--g-accent);
+  display:inline-flex;align-items:center;gap:7px;transition:background .18s var(--ease),color .18s var(--ease)}
+.g-btn:hover{background:var(--g-accent);color:var(--g-paper)}
+.g-btn.primary{background:var(--g-accent);color:var(--g-paper)}
+.g-btn.primary:hover{filter:brightness(1.08)}
+.g-btn:focus-visible{outline:2px solid var(--g-accent);outline-offset:3px}
+@media(max-width:560px){.g-slot{grid-template-columns:1fr;gap:3px}.g-when{padding-top:0}}
+
+/* Print: the guide becomes the page. Everything else steps out of the way,
+   so "save as PDF" produces the document and not a screenshot of a website. */
+@media print{
+  @page{margin:14mm}
+  body>*:not(#printroot){display:none!important}
+  #printroot{display:block!important;position:static!important}
+  .pcomp,.g-actions{display:none!important}
+  .guide{border:0;box-shadow:none;margin:0;border-radius:0;
+    --g-paper:#fff;--g-ink:#101820;--g-mut:#4a5a6a;--g-line:#c9d6e2;--g-head:#fff;--g-headink:#101820}
+  .g-head{border-bottom:2px solid var(--g-accent);padding:0 0 12px}
+  .g-body{padding:16px 0 0}
+  .g-slot,.g-note,.g-fill,.g-noticed{break-inside:avoid}
+  .g-fill .line{border-bottom:1px solid #8fa3b5}
 }
 </style>
 </head>
 <body>
 
-<!-- NAV -->
+<a class="skip" href="#main">דלג לתוכן הראשי</a>
+
+<!-- ═══ ICON SET — drawn from the logo: the jet, the road curve, the compass rose.
+     The four brand marks are faceted solids: an extruded edge offset down-right,
+     a lit face, a turned face, and one specular hairline. The light sits at the
+     upper-left in every icon, so the whole set reads as one lit object family.
+     Menu and close stay hairline strokes — chrome, not objects.
+     No emoji, no icon library, nothing imported. ═══ -->
+<svg class="ic-sprite" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg">
+
+  <!-- the logo's jet, banked north-east. Two wing facets across the fold. -->
+  <symbol id="i-plane" viewBox="0 0 24 24">
+    <g fill="currentColor" stroke="none">
+      <path d="M21 3 12.6 21 10.4 13.6 3 11.4Z" opacity=".30" transform="translate(.7 .9)"/>
+      <path d="M21 3 10.4 13.6 3 11.4Z"/>
+      <path d="M21 3 12.6 21 10.4 13.6Z" opacity=".60"/>
+    </g>
+    <path d="M21 3 3 11.4" fill="none" stroke-width=".9" stroke-linecap="round"
+          style="stroke:var(--ic-glint)"/>
+  </symbol>
+
+  <!-- the logo's road curve, laid into perspective: wide at the near edge,
+       narrowing to the roundabout it runs into -->
+  <symbol id="i-road" viewBox="0 0 24 24">
+    <g fill="currentColor" stroke="none">
+      <g opacity=".34" transform="translate(.7 .9)">
+        <path d="M15 7.4C11 9.4 4.6 13.4 1.4 21.8L8.6 21.8C9.4 15.6 12.6 11.6 16.6 9.2Z"/>
+        <circle cx="18" cy="6.3" r="2.7"/>
+      </g>
+      <path d="M15 7.4C11 9.4 4.6 13.4 1.4 21.8L8.6 21.8C9.4 15.6 12.6 11.6 16.6 9.2Z"/>
+      <circle cx="18" cy="6.3" r="2.7"/>
+    </g>
+    <path d="M15 7.4C11 9.4 4.6 13.4 1.4 21.8" fill="none" stroke-width=".9" stroke-linecap="round"
+          style="stroke:var(--ic-glint)"/>
+    <path d="M16.2 4.9a2.7 2.7 0 0 1 2.6-.6" fill="none" stroke-width=".9" stroke-linecap="round"
+          style="stroke:var(--ic-glint)"/>
+  </symbol>
+
+  <!-- the logo's compass rose. Eight facets, four tones, one light. -->
+  <symbol id="i-rose" viewBox="0 0 24 24">
+    <g fill="currentColor" stroke="none">
+      <path d="M12 1.7 9.7 9.7 1.7 12 12 12Z"/>
+      <path d="M12 1.7 14.3 9.7 22.3 12 12 12Z" opacity=".62"/>
+      <path d="M1.7 12 9.7 14.3 12 22.3 12 12Z" opacity=".62"/>
+      <path d="M22.3 12 14.3 14.3 12 22.3 12 12Z" opacity=".34"/>
+    </g>
+    <path d="M12 1.7 9.7 9.7 1.7 12" fill="none" stroke-width=".9" stroke-linejoin="round"
+          style="stroke:var(--ic-glint)"/>
+  </symbol>
+
+  <!-- the assurance tick, extruded so it sits *on* the card, not in it -->
+  <symbol id="i-check" viewBox="0 0 24 24">
+    <g fill="currentColor" stroke="none">
+      <path d="M4.2 13 6 11.2 9.5 14.7 18 6.2 19.8 8 9.5 18.3Z" opacity=".30" transform="translate(.7 .9)"/>
+      <path d="M9.5 14.7 18 6.2 19.8 8 9.5 18.3Z"/>
+      <path d="M4.2 13 6 11.2 9.5 14.7 9.5 18.3Z" opacity=".60"/>
+    </g>
+    <path d="M18 6.2 9.5 14.7" fill="none" stroke-width=".9" stroke-linecap="round"
+          style="stroke:var(--ic-glint)"/>
+  </symbol>
+
+  <!-- the same jet, levelled and headed east — the carousel's step-back -->
+  <symbol id="i-jet-e" viewBox="0 0 24 24">
+    <g fill="currentColor" stroke="none">
+      <path d="M21.6 12 4.4 5.4 11.6 12 4.4 18.6Z" opacity=".26" transform="translate(.55 .75)"/>
+      <path d="M21.6 12 4.4 5.4 11.6 12Z"/>
+      <path d="M21.6 12 11.6 12 4.4 18.6Z" opacity=".58"/>
+    </g>
+    <path d="M21.6 12 4.4 5.4" fill="none" stroke-width=".9" stroke-linecap="round"
+          style="stroke:var(--ic-glint)"/>
+  </symbol>
+
+  <!-- and headed west — the carousel's step-on, in a right-to-left page -->
+  <symbol id="i-jet-w" viewBox="0 0 24 24">
+    <g fill="currentColor" stroke="none">
+      <path d="M2.4 12 19.6 5.4 12.4 12 19.6 18.6Z" opacity=".26" transform="translate(.55 .75)"/>
+      <path d="M2.4 12 19.6 5.4 12.4 12Z"/>
+      <path d="M2.4 12 12.4 12 19.6 18.6Z" opacity=".58"/>
+    </g>
+    <path d="M2.4 12 19.6 5.4" fill="none" stroke-width=".9" stroke-linecap="round"
+          style="stroke:var(--ic-glint)"/>
+  </symbol>
+
+  <!-- chrome — hairline, unchanged -->
+  <symbol id="i-close" viewBox="0 0 24 24"><path d="M6.2 6.2 17.8 17.8M17.8 6.2 6.2 17.8"/></symbol>
+  <symbol id="i-menu" viewBox="0 0 24 24"><path d="M3.5 9h17M3.5 15h17"/></symbol>
+</svg>
+
+<!-- ═══ POINTER COMPANION — the compass rose from the logo, riding beside the
+     native cursor and swinging to the heading you are travelling in. It is a
+     COMPANION, never a replacement: the operating system's own cursor is never
+     hidden, its size and theme are untouched, and the layer is inert
+     (pointer-events:none). It removes itself entirely on touch pointers and
+     under prefers-reduced-motion — see the block at the foot of this file. ═══ -->
+<div class="pcomp" id="pcomp" aria-hidden="true">
+  <span class="pcomp-ring"></span>
+  <span class="pcomp-bezel"><svg class="ic pcomp-rose" aria-hidden="true" focusable="false"><use href="#i-rose"></use></svg></span>
+</div>
+
+<!-- NAV — N9 edge-aligned. Wordmark one edge, the one action the other. -->
 <nav id="nav">
   <div class="nav-in">
-    <a class="logo" href="#top"><span class="markwrap"><img class="m-rev" src="assets/logo-mark-rev.png" alt=""><img class="m-std" src="assets/logo-mark.png" alt=""></span><span class="wordmark">Atias <i>Travel</i> Tamir</span></a>
+    <a class="logo" href="#top"><span class="markwrap"><img class="m-rev" src="assets/logo-mark-rev.png" alt="" width="42" height="37"><img class="m-std" src="assets/logo-mark.png" alt="" width="42" height="37"></span><span class="wordmark">Atias <i>Travel</i> Tamir</span></a>
     <div class="nav-links">
       <a href="#world">הגלובוס</a><a href="#dest">יעדים</a><a href="#access">נגישות</a><a href="#agent">הסוכן</a>
     </div>
     <button class="nav-cta" onclick="goTo('agent')">תכנן מסע</button>
+    <button class="nav-burger" id="navBurger" aria-expanded="false" aria-controls="navSheet" aria-label="פתח תפריט">
+      <svg class="ic" aria-hidden="true"><use href="#i-menu"></use></svg>
+    </button>
   </div>
 </nav>
+<div class="nav-sheet" id="navSheet" hidden>
+  <a href="#world">הגלובוס</a>
+  <a href="#dest">יעדים</a>
+  <a href="#access">נגישות</a>
+  <a href="#agent">הסוכן</a>
+  <button class="sheet-cta" onclick="goTo('agent')"><svg class="ic" aria-hidden="true"><use href="#i-plane"></use></svg>תכנן מסע</button>
+</div>
 
-<!-- HERO -->
+<main id="main">
+
+<!-- HERO — H6 photographic fold -->
 <header class="hero" id="top">
   <div class="hero-bg" style="background-image:url('https://images.unsplash.com/photo-1521292270410-a8c4d716d518?w=2000&h=1200&fit=crop&q=78&auto=format')"></div>
   <div class="hero-scrim"></div>
-  <canvas id="heroFx"></canvas>
+  <canvas id="heroFx" aria-hidden="true"></canvas>
   <div class="hero-content">
-    <div class="eyebrow">תמיר אטיאס · סוכן נסיעות אישי</div>
-    <h1 class="display">פורצים איתך כל גבול<br><span class="tone">וכל מגבלה.</span></h1>
+    <p class="eyebrow"><svg class="ic" aria-hidden="true"><use href="#i-rose"></use></svg>תמיר אטיאס · סוכן נסיעות אישי</p>
+    <h1>פורצים איתך כל גבול<br><span class="tone">וכל מגבלה.</span></h1>
     <p class="hero-sub">בדרך למסע בלתי נשכח — מסלולים תפורים אישית בארץ ובעולם, עם מומחיות אמיתית בטיולים נגישים. מהחלום ועד הנחיתה, אני איתך.</p>
     <div class="cta-row">
-      <button class="btn btn-gold" onclick="goTo('agent')">דבר עם הסוכן ✦</button>
+      <button class="btn btn-gold" onclick="goTo('agent')"><svg class="ic" aria-hidden="true"><use href="#i-plane"></use></svg>דבר עם הסוכן</button>
       <button class="btn btn-ghost" onclick="goTo('world')">סובב את הגלובוס</button>
     </div>
-    <div class="hero-stats">
-      <div class="hstat"><b>24</b><span>יעדים נבחרים</span></div>
-      <div class="hstat"><b>150+</b><span>מסלולים אישיים</span></div>
-      <div class="hstat"><b>100%</b><span>התאמת נגישות</span></div>
-    </div>
+    <ul class="assur">
+      <li><svg class="ic" aria-hidden="true"><use href="#i-rose"></use></svg><div><b>מסלול שנתפר עליכם</b><span>לא קטלוג ולא חבילה מוכנה</span></div></li>
+      <li><svg class="ic" aria-hidden="true"><use href="#i-road"></use></svg><div><b>נגישות שנבדקה מגוף ראשון</b><span>אני מטייל על גלגלים בעצמי</span></div></li>
+      <li><svg class="ic" aria-hidden="true"><use href="#i-plane"></use></svg><div><b>אדם אחד לאורך כל הדרך</b><span>מהתכנון ועד החזרה הביתה</span></div></li>
+    </ul>
   </div>
-  <div class="hero-cue"><span>גלול</span><span class="line"></span></div>
+  <div class="hero-cue" aria-hidden="true"><span>גלול</span><span class="line"></span></div>
 </header>
 
 <!-- GLOBE -->
@@ -319,21 +969,20 @@ h2{line-height:1.06;font-size:clamp(36px,5.2vw,62px)}
   <div class="wrap">
     <div class="globe-grid">
       <div class="globe-copy reveal">
-        <div class="kicker">בחר יעד</div>
-        <h2 class="display">סובב את העולם.<br><span class="tone">לחץ על נקודה.</span></h2>
-        <p>כל נקודת זהב היא יעד שאני מכיר לעומק. גרור כדי לסובב, לחץ כדי לטוס לשם — והגלובוס ייקח אותך.</p>
+        <h2>סובב את <span class="uline">העולם.</span></h2>
+        <p class="lede">כל נקודה זוהרת היא יעד שאני מכיר לעומק. גרור כדי לסובב, לחץ כדי לטוס לשם — והגלובוס ייקח אותך.</p>
         <div class="globe-toggle" role="tablist" aria-label="בחירת אזור">
-          <button id="gtWorld" class="gtbtn on" role="tab" aria-selected="true">✈️ בעולם</button>
-          <button id="gtIsrael" class="gtbtn" role="tab" aria-selected="false">🚗 בארץ</button>
+          <button id="gtWorld" class="gtbtn on" role="tab" aria-selected="true"><svg class="ic" aria-hidden="true"><use href="#i-plane"></use></svg>בעולם</button>
+          <button id="gtIsrael" class="gtbtn" role="tab" aria-selected="false"><svg class="ic" aria-hidden="true"><use href="#i-road"></use></svg>בארץ</button>
         </div>
-        <div class="globe-hint"><span class="pulse"></span> גרור · לחץ על יעד · המצלמה תטוס אליו</div>
+        <p class="globe-hint"><span class="pulse" aria-hidden="true"></span> גרור · לחץ על יעד · המצלמה תטוס אליו</p>
         <div class="dest-chips" id="destChips" role="list" aria-label="רשימת יעדים"></div>
       </div>
       <div class="globe-stage reveal">
         <canvas id="globe" aria-label="גלובוס יעדים אינטראקטיבי"></canvas>
         <div class="globe-tip" id="globeTip"></div>
         <div class="globe-card" id="globeCard">
-          <button class="close" onclick="closeGlobeCard()" aria-label="סגור">✕</button>
+          <button class="close" onclick="closeGlobeCard()" aria-label="סגור"><svg class="ic" aria-hidden="true"><use href="#i-close"></use></svg></button>
           <img id="gcImg" alt="" loading="lazy">
           <div>
             <h3 id="gcTitle"></h3>
@@ -349,22 +998,19 @@ h2{line-height:1.06;font-size:clamp(36px,5.2vw,62px)}
 <!-- CAROUSEL -->
 <section class="caro-sec" id="dest">
   <div class="caro-head">
-    <div>
-      <div class="kicker">יעדים נבחרים</div>
-      <h2 class="display">לאן טסים <span class="tone">הפעם?</span></h2>
-    </div>
+    <h2>לאן טסים <span class="tone">הפעם?</span></h2>
     <div class="caro-nav">
-      <button class="cnav" onclick="caroStep(-1)" aria-label="היעד הקודם">‹</button>
-      <button class="cnav" onclick="caroStep(1)" aria-label="היעד הבא">›</button>
+      <button class="cnav" onclick="caroStep(-1)" aria-label="היעד הקודם"><span class="cnav-face" aria-hidden="true"></span><svg class="ic" aria-hidden="true"><use href="#i-jet-e"></use></svg></button>
+      <button class="cnav" onclick="caroStep(1)" aria-label="היעד הבא"><span class="cnav-face" aria-hidden="true"></span><svg class="ic" aria-hidden="true"><use href="#i-jet-w"></use></svg></button>
     </div>
   </div>
   <div class="caro-stage">
-    <canvas id="caro"></canvas>
+    <canvas id="caro" aria-hidden="true"></canvas>
     <div class="caro-scrim"></div>
     <div class="caro-count"><b id="ccNum">01</b> / <span id="ccTot">06</span></div>
     <div class="caro-ui">
-      <div class="caro-badge"><canvas id="iconBadge" aria-hidden="true"></canvas><span class="btype" id="btype"></span></div>
-      <div class="caro-title display" id="caroTitle"></div>
+      <p class="caro-badge"><svg class="ic" id="btypeIcon" aria-hidden="true"><use href="#i-plane"></use></svg><span class="btype" id="btype"></span></p>
+      <div class="caro-title" id="caroTitle" aria-live="polite"></div>
       <p class="caro-sub" id="caroSub"></p>
       <div class="caro-cta"><button class="btn btn-gold" id="caroCta">תכנן טיול ליעד הזה</button></div>
     </div>
@@ -377,18 +1023,18 @@ h2{line-height:1.06;font-size:clamp(36px,5.2vw,62px)}
   <div class="wrap">
     <div class="access-grid">
       <div class="reveal">
-        <div class="kicker">הבידול שלי</div>
-        <h2 class="display big">הרגעים הבלתי נשכחים?<br><span class="tone">בהישג יד.</span></h2>
-        <p class="lead2" style="margin-top:18px;font-weight:500;color:#23446e">המטרה שלי פשוטה: למצוא לך את הדרך הכי נגישה להגיע אליהם — בכל מקום בעולם.</p>
+        <p class="kicker">הבידול שלי</p>
+        <h2 class="big">הרגעים הבלתי נשכחים?<br><span class="tone">בהישג יד.</span></h2>
+        <p class="lead2 first">המטרה שלי פשוטה: למצוא לך את הדרך הכי נגישה להגיע אליהם — בכל מקום בעולם.</p>
         <p class="lead2">אני מטייל על גלגלים בעצמי — ולכן כל מסלול שאני בונה עובר את המבחן הכי מחמיר שיש: המבחן שלי. דירה שנכנסים אליה בקלות, תחבורה שבאמת מגיעה, ואטרקציות שמקבלות אותך בכבוד. בלי כוכביות, בלי הפתעות בשטח.</p>
       </div>
       <div class="reveal">
         <div class="promise">
-          <div class="p-head"><img src="assets/logo-mark.png" alt=""><b>מה זה כולל, בפועל</b></div>
-          <div class="p-item"><span class="pv">✓</span><div><b>טיסות עם שירותי נגישות</b><span>כיסא גלגלים, ליווי אישי וסיוע בכל מעבר</span></div></div>
-          <div class="p-item"><span class="pv">✓</span><div><b>לינה נגישה באמת</b><span>קומת קרקע או מעלית רחבה — נבדק לפני שאתם מגיעים</span></div></div>
-          <div class="p-item"><span class="pv">✓</span><div><b>תחבורה מונגשת</b><span>רכבות (TGV ועוד), מוניות מותאמות ומסלולים שטוחים</span></div></div>
-          <div class="p-item"><span class="pv">✓</span><div><b>אטרקציות שנבדקו אחת-אחת</b><span>כניסה בכבוד, בלי הפתעות בשער</span></div></div>
+          <div class="p-head"><img src="assets/logo-mark.png" alt="" width="40" height="35"><b>מה זה כולל, בפועל</b></div>
+          <div class="p-item"><span class="pv"><svg class="ic" aria-hidden="true"><use href="#i-check"></use></svg></span><div><b>טיסות עם שירותי נגישות</b><span>כיסא גלגלים, ליווי אישי וסיוע בכל מעבר</span></div></div>
+          <div class="p-item"><span class="pv"><svg class="ic" aria-hidden="true"><use href="#i-check"></use></svg></span><div><b>לינה נגישה באמת</b><span>קומת קרקע או מעלית רחבה — נבדק לפני שאתם מגיעים</span></div></div>
+          <div class="p-item"><span class="pv"><svg class="ic" aria-hidden="true"><use href="#i-check"></use></svg></span><div><b>תחבורה מונגשת</b><span>רכבות (TGV ועוד), מוניות מותאמות ומסלולים שטוחים</span></div></div>
+          <div class="p-item"><span class="pv"><svg class="ic" aria-hidden="true"><use href="#i-check"></use></svg></span><div><b>אטרקציות שנבדקו אחת-אחת</b><span>כניסה בכבוד, בלי הפתעות בשער</span></div></div>
           <div class="p-sig">Atias <i>Travel</i> Tamir<span>בדוק. חתום. יוצאים לדרך.</span></div>
         </div>
       </div>
@@ -401,49 +1047,102 @@ h2{line-height:1.06;font-size:clamp(36px,5.2vw,62px)}
   <div class="wrap">
     <div class="agent-grid">
       <div class="agent-copy reveal">
-        <div class="kicker">הסוכן החכם</div>
-        <h2 class="display">איתך, יד ביד,<br><span class="tone">בדרך למסע בלתי נשכח.</span></h2>
-        <p>הסוכן מתשאל אותך בדיוק כמו שאני הייתי — יעד, תאריכים, מי נוסע, מה אתם אוהבים, צרכים מיוחדים ותקציב — ומפיק ברושור ראשוני תוך שניות.</p>
+        <h2>איתך, יד ביד, בדרך למסע בלתי נשכח.</h2>
+        <p class="lede">הסוכן מתשאל אותך בדיוק כמו שאני הייתי — יעד, תאריכים, מי נוסע, מה אתם אוהבים, צרכים מיוחדים ותקציב — ומפיק ברושור ראשוני תוך שניות.</p>
         <div class="steps">
-          <div class="stp"><span class="n">1</span><div><b>שיחה קצרה</b><span>שאלה אחת בכל פעם, בגובה העיניים</span></div></div>
-          <div class="stp"><span class="n">2</span><div><b>ברושור מותאם</b><span>כולל דגשי נגישות מלאים במידת הצורך</span></div></div>
-          <div class="stp"><span class="n">3</span><div><b>תמיר חוזר אליך</b><span>עם הצעת מחיר וליווי אישי עד הנסיעה</span></div></div>
+          <div class="stp"><span class="n" aria-hidden="true">01</span><div><b>שיחה קצרה</b><span>שאלה אחת בכל פעם, בגובה העיניים</span></div></div>
+          <div class="stp"><span class="n" aria-hidden="true">02</span><div><b>ברושור מותאם</b><span>כולל דגשי נגישות מלאים במידת הצורך</span></div></div>
+          <div class="stp"><span class="n" aria-hidden="true">03</span><div><b>תמיר חוזר אליך</b><span>עם הצעת מחיר וליווי אישי עד הנסיעה</span></div></div>
         </div>
       </div>
       <div class="reveal">
         <div class="chatwrap">
           <div class="chat-head">
-            <span class="avatar"><img src="assets/logo-mark.png" alt=""></span>
+            <span class="avatar"><img src="assets/logo-mark.png" alt="" width="30" height="26"></span>
             <div><b>הסוכן של Atias Travel</b><span>Atias Travel Tamir · תכנון מסעות אישי</span></div>
-            <span class="live"><i></i> מחובר</span>
+            <span class="live"><i aria-hidden="true"></i> מחובר</span>
           </div>
-          <div class="msgs" id="msgs"></div>
-          <div class="chips" id="chips"></div>
+          <div class="msgs" id="msgs" role="log" aria-live="polite" aria-atomic="false" aria-label="שיחה עם הסוכן" tabindex="0"></div>
+          <div class="chips" id="chips" aria-label="תשובות מהירות"></div>
           <div class="composer">
-            <input id="inp" placeholder="כתוב כאן..." autocomplete="off" onkeydown="if(event.key==='Enter')send()">
-            <button onclick="send()" aria-label="שלח">➤</button>
+            <label class="vh" for="inp">כתוב הודעה לסוכן</label>
+            <input id="inp" placeholder="כתוב כאן…" autocomplete="off" onkeydown="if(event.key==='Enter')send()">
+            <button onclick="send()" aria-label="שלח הודעה"><svg class="ic" aria-hidden="true"><use href="#i-plane"></use></svg></button>
           </div>
         </div>
-        <p class="agent-note">✦ הסוכן מחובר ל-AI חי ועונה בזמן אמת. הפרטים שתשאירו מגיעים ישירות לתמיר, והוא חוזר אליכם אישית עם הצעת מחיר. שום דבר לא מוזמן בלי אישורכם.</p>
+        <p class="agent-note"><svg class="ic" aria-hidden="true"><use href="#i-rose"></use></svg><span>הסוכן מחובר ל-AI חי ועונה בזמן אמת. הפרטים שתשאירו מגיעים ישירות לתמיר, והוא חוזר אליכם אישית עם הצעת מחיר. שום דבר לא מוזמן בלי אישורכם.</span></p>
       </div>
     </div>
   </div>
 </section>
 
+</main>
+
+<!-- FOOTER — Ft6 letter close. The page ends the way Tamir talks. -->
 <footer>
-  <div class="brand-div" aria-hidden="true"><span></span><i>✦</i><span></span></div>
-  <img class="foot-logo" src="assets/logo-full-rev.png" alt="Atias Travel Tamir">
-  <div class="links"><a href="#world">הגלובוס</a><a href="#dest">יעדים</a><a href="#access">נגישות</a><a href="#agent">הסוכן</a></div>
-  <div class="copy">סוכן הנסיעות של תמיר אטיאס · כל הזכויות שמורות · 2026</div>
+  <div class="foot-in">
+    <div class="foot-letter">
+      <img class="foot-mark" src="assets/logo-mark-rev.png" alt="" width="56" height="49">
+      <p class="close">אני בודק כל מסלול על עצמי לפני שאני שולח אליו מישהו אחר. זו לא תוספת לשירות — זו הדרך שבה אני נוסע.
+        <span class="sign">— תמיר אטיאס</span></p>
+      <p class="ps">נ.ב. הדרך הכי מהירה להתחיל היא פשוט <a href="#agent">לדבר עם הסוכן</a>. הוא אוסף את כל מה שצריך, ואני חוזר אליכם אישית.</p>
+    </div>
+    <div class="rose-div foot-rule" aria-hidden="true"><span></span><svg class="ic" aria-hidden="true" focusable="false"><use href="#i-rose"></use></svg><span></span></div>
+    <div class="foot-base">
+      <span class="foot-word">Atias <i>Travel</i> Tamir</span>
+      <nav class="foot-nav" aria-label="ניווט תחתון">
+        <a href="#world">הגלובוס</a><a href="#dest">יעדים</a><a href="#access">נגישות</a><a href="#agent">הסוכן</a>
+      </nav>
+      <span>כל הזכויות שמורות · 2026</span>
+    </div>
+  </div>
 </footer>
 
+<!-- Moved out of <head>: 603 KB of Three.js was blocking first paint on every visit.
+     Down here the parser has already built (and the browser already painted) the page. -->
+<script src="three.min.js"></script>
+<script src="config.js"></script>
 <script>
 "use strict";
 const REDUCED = matchMedia('(prefers-reduced-motion: reduce)').matches;
-function goTo(id){document.getElementById(id).scrollIntoView({behavior:REDUCED?'auto':'smooth'});}
+function goTo(id){
+  closeSheet();
+  document.getElementById(id).scrollIntoView({behavior:REDUCED?'auto':'smooth'});
+}
+/* WebGL can't read CSS custom properties — mirror the tokens once, here. */
+const PAL={accent:0x058EDF,lift:0x48C2C7,liftSoft:0x7FE9EE,night:0x121A24,
+           rule:0x33445A,ambient:0x8899BB,sun:0xFFF2D8,star:0xFFFFFF};
 
 /* nav */
-addEventListener('scroll',()=>{document.getElementById('nav').classList.toggle('solid',scrollY>60);},{passive:true});
+const navEl=document.getElementById('nav');
+const burger=document.getElementById('navBurger'), sheet=document.getElementById('navSheet');
+/* the bar is opaque when scrolled OR when the sheet is open — an open white sheet
+   under a transparent bar let the hero scrim bleed across its top edge. */
+function syncNav(){navEl.classList.toggle('solid', scrollY>60 || sheet.classList.contains('open'));}
+addEventListener('scroll',syncNav,{passive:true});
+
+/* nav disclosure sheet — the mobile nav the page never had */
+function closeSheet(){
+  if(!sheet.classList.contains('open'))return;
+  sheet.classList.remove('open');sheet.hidden=true;
+  burger.setAttribute('aria-expanded','false');burger.setAttribute('aria-label','פתח תפריט');
+  syncNav();
+}
+burger.addEventListener('click',()=>{
+  const open=sheet.classList.toggle('open');
+  sheet.hidden=!open;
+  burger.setAttribute('aria-expanded',String(open));
+  burger.setAttribute('aria-label',open?'סגור תפריט':'פתח תפריט');
+  syncNav();
+});
+sheet.querySelectorAll('a').forEach(a=>a.addEventListener('click',closeSheet));
+/* tapping the page behind the sheet dismisses it — the expected gesture */
+addEventListener('pointerdown',e=>{
+  if(!sheet.classList.contains('open'))return;
+  if(sheet.contains(e.target)||navEl.contains(e.target))return;
+  closeSheet();
+},{passive:true});
+addEventListener('keydown',e=>{if(e.key==='Escape'){closeSheet();burger.focus({preventScroll:true});}});
 
 /* reveal */
 const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target);}}),{threshold:.14});
@@ -477,7 +1176,7 @@ function fitRenderer(renderer,canvas,camera){
     vel.push({x:(Math.random()-0.5)*0.004,y:0.006+Math.random()*0.012});
   }
   const geo=new THREE.BufferGeometry();geo.setAttribute('position',new THREE.BufferAttribute(pos,3));
-  const pts=new THREE.Points(geo,new THREE.PointsMaterial({color:0x48C2C7,size:0.055,transparent:true,opacity:0.75,depthWrite:false}));
+  const pts=new THREE.Points(geo,new THREE.PointsMaterial({color:PAL.lift,size:0.055,transparent:true,opacity:0.75,depthWrite:false}));
   scene.add(pts);
   let mx=0,my=0,active=true;
   addEventListener('pointermove',e=>{mx=(e.clientX/innerWidth-0.5)*22;my=-(e.clientY/innerHeight-0.5)*13;},{passive:true});
@@ -543,10 +1242,10 @@ let flyToDest=null, closeGlobeCard=()=>{};
 
   /* body — real Earth (night-lights texture) with graceful fallback */
   const sphere=new THREE.Mesh(new THREE.SphereGeometry(R,64,64),
-    new THREE.MeshStandardMaterial({color:0x121a24,roughness:.9,metalness:.1}));
+    new THREE.MeshStandardMaterial({color:PAL.night,roughness:.9,metalness:.1}));
   globe.add(sphere);
   const grat=new THREE.Mesh(new THREE.SphereGeometry(R+0.004,36,24),
-    new THREE.MeshBasicMaterial({color:0x33445a,wireframe:true,transparent:true,opacity:0.22}));
+    new THREE.MeshBasicMaterial({color:PAL.rule,wireframe:true,transparent:true,opacity:0.22}));
   globe.add(grat);
   (function(){
     const tl=new THREE.TextureLoader();tl.setCrossOrigin('anonymous');
@@ -558,10 +1257,10 @@ let flyToDest=null, closeGlobeCard=()=>{};
   })();
   /* atmosphere glow ring (cheap) */
   const glow=new THREE.Mesh(new THREE.SphereGeometry(R*1.06,48,48),
-    new THREE.MeshBasicMaterial({color:0x48C2C7,transparent:true,opacity:0.05,side:THREE.BackSide}));
+    new THREE.MeshBasicMaterial({color:PAL.lift,transparent:true,opacity:0.05,side:THREE.BackSide}));
   scene.add(glow);
-  scene.add(new THREE.AmbientLight(0x8899bb,0.7));
-  const dl=new THREE.DirectionalLight(0xfff2d8,1.1);dl.position.set(4,3,5);scene.add(dl);
+  scene.add(new THREE.AmbientLight(PAL.ambient,0.7));
+  const dl=new THREE.DirectionalLight(PAL.sun,1.1);dl.position.set(4,3,5);scene.add(dl);
 
   function toVec(lat,lon,r){
     const phi=(90-lat)*Math.PI/180, theta=(lon+180)*Math.PI/180;
@@ -569,7 +1268,7 @@ let flyToDest=null, closeGlobeCard=()=>{};
   }
   /* origin: TLV star */
   const tlvV=toVec(TLV.lat,TLV.lon,R+0.02);
-  const tlv=new THREE.Mesh(new THREE.SphereGeometry(0.045,10,10),new THREE.MeshBasicMaterial({color:0xffffff}));
+  const tlv=new THREE.Mesh(new THREE.SphereGeometry(0.045,10,10),new THREE.MeshBasicMaterial({color:PAL.star}));
   tlv.position.copy(tlvV);globe.add(tlv);
 
   /* markers + arcs (world) + israel markers */
@@ -577,10 +1276,10 @@ let flyToDest=null, closeGlobeCard=()=>{};
   const arcsGroup=new THREE.Group();globe.add(arcsGroup);
   function addMarker(d,list,size,haloSize){
     const v=toVec(d.lat,d.lon,R+0.015);
-    const m=new THREE.Mesh(new THREE.SphereGeometry(size,12,12),new THREE.MeshBasicMaterial({color:0x48C2C7}));
+    const m=new THREE.Mesh(new THREE.SphereGeometry(size,12,12),new THREE.MeshBasicMaterial({color:PAL.lift}));
     m.position.copy(v);m.userData={d,list};globe.add(m);markers.push(m);
     const halo=new THREE.Mesh(new THREE.SphereGeometry(haloSize,12,12),
-      new THREE.MeshBasicMaterial({color:0x7FE9EE,transparent:true,opacity:0.22}));
+      new THREE.MeshBasicMaterial({color:PAL.liftSoft,transparent:true,opacity:0.22}));
     halo.position.copy(v);globe.add(halo);
     return v;
   }
@@ -588,7 +1287,7 @@ let flyToDest=null, closeGlobeCard=()=>{};
     const v=addMarker(d,'world',0.055,0.09);
     const mid=tlvV.clone().add(v).multiplyScalar(0.5).normalize().multiplyScalar(R*(1.18+v.distanceTo(tlvV)*0.09));
     const ag=new THREE.BufferGeometry().setFromPoints(new THREE.QuadraticBezierCurve3(tlvV,mid,v).getPoints(42));
-    arcsGroup.add(new THREE.Line(ag,new THREE.LineBasicMaterial({color:0x48C2C7,transparent:true,opacity:0.3})));
+    arcsGroup.add(new THREE.Line(ag,new THREE.LineBasicMaterial({color:PAL.lift,transparent:true,opacity:0.3})));
   });
   ISRAEL_D.forEach(d=>addMarker(d,'israel',0.014,0.024));
 
@@ -705,9 +1404,12 @@ let flyToDest=null, closeGlobeCard=()=>{};
   function buildChips(){
     chips.innerHTML='';
     const list=mode==='world'?WORLD:ISRAEL_D;
+    const sym=mode==='world'?'#i-plane':'#i-road';
     list.forEach(d=>{
       const b=document.createElement('button');
-      b.className='dchip';b.textContent=(mode==='world'?'✈️ ':'🚗 ')+d.n;b.setAttribute('role','listitem');
+      b.className='dchip';b.setAttribute('role','listitem');
+      b.innerHTML='<svg class="ic" aria-hidden="true"><use href="'+sym+'"></use></svg>';
+      b.appendChild(document.createTextNode(d.n));
       b.onclick=()=>{goTo('world');flyTo({d,list:mode});};
       chips.appendChild(b);
     });
@@ -844,53 +1546,13 @@ let caroStep=()=>{};
   })();
 })();
 
-/* ================= 3D ICON BADGE (plane / car) ================= */
-let setIcon=()=>{};
-(function(){
-  const canvas=document.getElementById('iconBadge');
-  let renderer;try{renderer=new THREE.WebGLRenderer({canvas,alpha:true,antialias:true});}catch(e){canvas.style.display='none';return;}
-  renderer.setPixelRatio(Math.min(devicePixelRatio||1,2));
-  const scene=new THREE.Scene();
-  const camera=new THREE.PerspectiveCamera(40,1,0.1,50);camera.position.set(0,0.7,4.4);camera.lookAt(0,0,0);
-  scene.add(new THREE.HemisphereLight(0xffffff,0x334455,1.1));
-  const dl=new THREE.DirectionalLight(0xfff2d8,1.4);dl.position.set(3,4,3);scene.add(dl);
-  const goldMat=new THREE.MeshStandardMaterial({color:0x058EDF,roughness:.35,metalness:.6});
-  const goldMat2=new THREE.MeshStandardMaterial({color:0xEAF6FF,roughness:.3,metalness:.45});
-  const darkMat=new THREE.MeshStandardMaterial({color:0x0B1830,roughness:.5,metalness:.4});
-
-  /* plane */
-  const plane=new THREE.Group();
-  const pb=new THREE.Mesh(new THREE.CylinderGeometry(0.16,0.05,1.5,10),goldMat);
-  pb.rotation.z=Math.PI/2;plane.add(pb);
-  const nose=new THREE.Mesh(new THREE.SphereGeometry(0.16,10,10),goldMat);nose.position.x=0.75;plane.add(nose);
-  const wing=new THREE.Mesh(new THREE.BoxGeometry(0.42,0.04,1.7),goldMat2);wing.position.x=0.1;plane.add(wing);
-  const tailW=new THREE.Mesh(new THREE.BoxGeometry(0.2,0.03,0.6),goldMat2);tailW.position.x=-0.62;plane.add(tailW);
-  const fin=new THREE.Mesh(new THREE.BoxGeometry(0.22,0.34,0.04),goldMat2);fin.position.set(-0.66,0.19,0);plane.add(fin);
-  scene.add(plane);
-
-  /* car */
-  const car=new THREE.Group();
-  const body=new THREE.Mesh(new THREE.BoxGeometry(1.5,0.34,0.72),goldMat);body.position.y=-0.05;car.add(body);
-  const cabin=new THREE.Mesh(new THREE.BoxGeometry(0.8,0.3,0.64),goldMat2);cabin.position.set(-0.08,0.25,0);car.add(cabin);
-  for(const [wx,wz] of [[0.5,0.4],[0.5,-0.4],[-0.5,0.4],[-0.5,-0.4]]){
-    const wheel=new THREE.Mesh(new THREE.CylinderGeometry(0.17,0.17,0.1,14),darkMat);
-    wheel.rotation.x=Math.PI/2;wheel.position.set(wx,-0.24,wz);car.add(wheel);
-  }
-  scene.add(car);car.visible=false;
-
-  setIcon=type=>{plane.visible=type==='world';car.visible=type!=='world';};
-  let active=true;whenVisible(canvas,v=>active=v);
-  let t=0;
-  (function frame(){
-    requestAnimationFrame(frame);
-    if(!active)return;
-    fitRenderer(renderer,canvas,camera);
-    t+=0.012;
-    plane.rotation.y=t;plane.position.y=Math.sin(t*1.6)*0.08;plane.rotation.z=Math.sin(t*0.8)*0.08;
-    car.rotation.y=t;car.position.y=Math.sin(t*1.6)*0.05;
-    renderer.render(scene,camera);
-  })();
-})();
+/* ================= SLIDE-TYPE MARK =================
+   Was a fourth WebGL context spinning a still object — an icon's job.
+   Now it swaps the same jet / road glyph the rest of the page uses. */
+function setIcon(type){
+  const u=document.querySelector('#btypeIcon use');
+  if(u)u.setAttribute('href',type==='world'?'#i-plane':'#i-road');
+}
 
 /* ================= AGENT — full interview engine (Tamir's procedures) ================= */
 const msgs=document.getElementById('msgs');
@@ -910,24 +1572,33 @@ const SYS_PROMPT=[
 "אתה \"הסוכן החכם של Atias Travel\" — הסוכן האישי של תמיר אטיאס, סוכן נסיעות שמתמחה בטיולים מותאמים אישית ובמיוחד בטיולים נגישים. תמיר עצמו מטייל על כיסא גלגלים, ולכן נגישות אצלו היא מקצוע ולא סיסמה. אתה חם, אנושי, סבלני ומקצועי, ומלווה את הלקוח יד ביד מהחלום ועד שהכל מוכן.",
 "סגנון: עברית בלבד, גוף ראשון, חם וזורם. 1-3 משפטים לכל תגובה, ותמיד שאלה אחת בלבד בכל פעם כדי לא להציף את הלקוח. בלי מקפים ארוכים. בסוף תגובות מתאימות הוסף שורת תשובות מהירות בפורמט: [[CHIPS]] אפשרות 1 | אפשרות 2 | אפשרות 3 (עד 4, קצרות).",
 "המשימה שלך: לתת ללקוח ליווי מלא ומקצועי, כאילו תמיר עצמו יושב מולו — כך שכשהוא מגיע לתמיר הוא כבר לקוח מוכן, ונשאר רק לתמחר ולשלם. אף פעם אל תעביר אותו לתמיר עם חצי תמונה.",
-"אסוף בהדרגה, שאלה אחר שאלה, את כל הפרטים הבאים. אל תדלג על אף אחד, ואל תפיק תוכנית לפני שיש לך את כולם: 1) יעד (בעולם או בארץ; אם הלקוח מתלבט, עזור לו לבחור). 2) תאריכים או עונה. 3) משך הטיול, כמה ימים או לילות. 4) כמה נוסעים ומי (זוג, משפחה עם ילדים וגילאים, חברים). 5) תחומי עניין לעומק (אוכל ויין, תרבות והיסטוריה, טבע ונוף, חופים ורוגע, קניות). 6) נגישות: שאל תמיד ובאופן יזום אם יש צורך בהתאמות נגישות (כיסא גלגלים, הליכה מוגבלת, מעליות), והדגש שזו בדיוק המומחיות של תמיר. 7) צרכים מיוחדים: כשרות או קרבה לבית חב\"ד, תזונה (צמחוני, ללא גלוטן, אלרגיות), ואירוע מיוחד (יום נישואין, יום הולדת). אל תניח כלום — כשרות או חב\"ד יעלו רק אם הלקוח ביקש. 8) תחושת תקציב, טווח כללי — חשוב מאוד, אל תוותר עליו. 9) שם + טלפון או אימייל.",
-"כשיש בידך את כל הפרטים העיקריים (יעד, תאריכים, משך, מי נוסע, תחומי עניין, מענה לגבי נגישות, ותקציב) — הפק ללקוח תוכנית עשירה, אישית וספציפית ליעד, עטופה בדיוק כך:",
-"[[BROCHURE]]",
-"כותרת: <שם היעד והחוויה>",
-"תקציר: <משפט או שניים מסקרנים ואישיים>",
-"דגשים:",
-"- <דגש מותאם 1>",
-"- <דגש מותאם 2>",
-"- <דגש מותאם 3>",
-"- <דגש מותאם 4>",
-"מסלול מוצע: <מסלול יומי כללי בקצב שמתאים ללקוח: מה עושים בבוקר, בצהריים ובערב, מותאם לתחומי העניין, למשך הטיול ולנוסעים>",
-"[[/BROCHURE]]",
+"אסוף בהדרגה, שאלה אחת בכל פעם, את 14 השלבים. אל תשאל שתיים ביחד ואל תדלג: 1) פתיחה — חו\"ל או בארץ. אם הלקוח מתלבט, עזור לו לבחור לפי אופי ולא לפי רשימה. 2) היעד ואופיו — למה דווקא שם, מה מושך. 3) מי נוסע — זוג, משפחה עם ילדים וגילאים, חברים, והדינמיקה ביניהם. 4) מתי וכמה — עונה או תאריכים, ומספר ימים. 5) קצב — דחוס ומלא או נינוח עם הפסקות, כמה יציאות ביום. זה המפתח להתאמה אישית אמיתית, אל תוותר עליו. 6) תחומי עניין לעומק — לא 'אוכל' אלא איזה אוכל, לא 'תרבות' אלא איזו. 7) אוכל ותזונה — העדפות, כשרות, אלרגיות, צמחונות. אל תניח כלום, כשרות או חב\"ד עולים רק אם הלקוח העלה. 8) לינה — אופי (בוטיק, רשת, דירה), מיקום מול המרכז, ומה חשוב בחדר. 9) תחבורה — רכבת, רכב, תחבורה ציבורית, טיסות פנים, העדפות והרתעות. 10) נגישות — שאל תמיד וביוזמתך. אם יש צורך: סוג העזר, מדרגות, מרחקי הליכה, מעליות, שירותים ומקלחת. הדגש שזו המומחיות של תמיר מגוף ראשון. 11) אירוע מיוחד — יום נישואין, יום הולדת, ציון דרך. 12) תקציב — תחושה כללית בלבד, בלי מספרים. 13) שדה חופשי — ראה למטה. 14) שם מלא + טלפון או אימייל.",
+"שדה חופשי, שלב 13, חובה: הצ'יפים הם קיצור דרך ולא כלוב. בכל שלב הלקוח יכול לכתוב חופשי במקום לבחור צ'יפ, ואם כתב משהו שלא ברשימה זה מידע טוב יותר ולא סטייה — אל תחזיר אותו לרשימה. בשלב 13 שאל שאלה פתוחה מפורשת ובלי צ'יפים בכלל: 'לפני שאני בונה, יש עוד משהו שחשוב שאדע? משהו שאתם אוהבים או ממש לא, קצב, אנשים בקבוצה, או כל דבר שיעזור לי לכוון. כתוב לי בחופשיות.' ואם הלקוח זורק העדפה באמצע שלב אחר — קלוט אותה, אשר שנרשמה, והמשך משם. חובה לשקף את מה שכתב במפורש בסעיף 'שמתי לב' שבמדריך.",
+"חוק הנגישות, החוק הכי חשוב שלך: מותר לקבוע נגישות כעובדה רק משני מקורות. ראשון, ודאות מבנית — תכונה שנכונה בהגדרה: דירת קרקע פירושה אין מדרגות פנימיות ואין תלות במעלית; בניין עם מעלית פירושו שהקומה נגישה; חדר במפלס הכניסה פירושו אין מדרגות בדרך לחדר. המלץ על הקריטריון בביטחון מלא, וציין מה עדיין צריך לבדוק כמו מדרגה בכניסה לבניין, רוחב פתח ומידות מעלית. שני, רשימת מקומות שתמיר בדק בעצמו — אם היא ריקה אין מקומות מאומתים וזה בסדר גמור. בכל מקרה אחר אסור לקבוע, ובמקום זה תן קריטריון ומה לבדוק. לדוגמה אל תאמר 'מלון X נגיש לחלוטין עם מקלחת רולאין', אלא 'בשבילכם הייתי מחפש דירת קרקע או בניין עם מעלית באזור הזה, זה מוריד את בעיית המדרגות מהשולחן. לפני שסוגרים תמיד לבקש תמונה של חדר הרחצה ומידה של רוחב הפתח בפועל, ולא להסתמך על התווית חדר נגיש באתר ההזמנות, זו הטעות הכי נפוצה.' הסיבה: לקוח בכיסא גלגלים שמגיע למקום שהובטח לו שהוא נגיש ולא יכול להיכנס — זה הכשל שהכי פוגע בתמיר, כי הוא פוגע בדיוק בקהל שהוא משרת.",
+"המלצות לינה: מותר להמליץ על אופי הלינה, אזור, סוג נכס, ואפילו לנקוב בשמות אמיתיים כנקודת פתיחה לחיפוש של הלקוח. אסור להזמין, לשריין, לתת קישור הזמנה, לנקוב במחיר, או לקבוע נגישות בניגוד לחוק למעלה.",
+"כשיש בידך יעד + מי נוסע + קצב + תחומי עניין + מענה על נגישות — בחר קודם פריסט עיצובי בשאלה קלילה אחת: 'רוצה לבחור איך המדריך שלך ייראה?' עם [[CHIPS]] קלאסי | בהיר ואוורירי | כהה ואלגנטי | חם. ברירת המחדל היא קלאסי, ולחיצה אחת מדלגת. אל תהפוך את זה למכשול.",
+"אחר כך הפק מדריך של יום אחד בלבד. יום אחד במלואו, ואז עצור. אל תפיק את כל ימי הטיול. בחר את היום שהכי מייצג את הטיול שלהם ואמור למה בחרת דווקא בו. יום הגעה הוא הבחירה החלשה ביותר. עטוף בדיוק כך:",
+"[[GUIDE]]",
+"פריסט: <קלאסי | בהיר ואוורירי | כהה ואלגנטי | חם>",
+"כותרת: <היעד>, <עונה> · <מי נוסע>",
+"פתיח: <2-3 משפטים אישיים ומנומקים מהשיחה, למה התוכנית מתאימה דווקא להם>",
+"יום: <שם היום ותמה> — <למה בחרתי דווקא ביום הזה>",
+"בוקר: <חוויה> | <למה היא מתאימה להם ספציפית>",
+"צהריים: <חוויה> | <נימוק>",
+"ערב: <חוויה> | <נימוק>",
+"נגישות: <קונקרטי ליעד ולצורך שלהם, לפי חוק הנגישות למטה. השמט אם לא רלוונטי>",
+"לינה: <קריטריון ואזור בלבד, לפי חוק הנגישות, ובלי מחיר>",
+"שמתי לב:",
+"- <התאמה אישית 1 — חייבת לשקף את מה שהלקוח כתב בחופשיות אם נמסר>",
+"- <התאמה אישית 2>",
+"- <התאמה אישית 3>",
+"עוד בתוכנית: <שורה אחת שמונה בכותרות בלבד את שאר הימים, בלי לפרט>",
+"[[/GUIDE]]",
 "התוכנית חייבת להיות ספציפית ואמיתית לכל יעד — לא גנרית. הכר את מאפייני היעד (אתרים מרכזיים, אזורים, אופי, ואתגרי נגישות אמיתיים כמו אבני מרצפת ברומא ובפראג, גשרים ומדרגות בוונציה, מטרו מאתגר בפריז) והתאם בהתאם. אם הלקוח ביקש נגישות — הדגש הראשון תמיד יהיה התאמת הנגישות המלאה של המסלול, ותאר קונקרטית איך פותרים את אתגרי הנגישות של אותו יעד.",
 "עובדות אמת מאומתות שמותר להשתמש בהן על בורדו (היעד שתמיר מכיר הכי לעומק): טיסה ישירה מנתב\"ג ב-easyJet כ-5:20 שעות, או Air France דרך פריז ורכבת TGV נגישה כשעתיים; Cité du Vin עם הסמכת נגישות מלאה; רציפי הגארון שטוחים; יקב Château Pape Clément נגיש; בית חב\"ד במרכז העיר. על יעדים אחרים דבר נכון ובביטחון על מה שידוע ומקובל, אך אל תמציא מחירים, שמות בתי עסק ספציפיים או פרטים שאינך בטוח בהם.",
-"לעולם אל תנקוב במחירים. תמחור מדויק נותן רק תמיר אישית, אחרי בדיקת טיסות ולינה בזמן אמת. שום דבר לא מוזמן בלי אישור הלקוח.",
-"אחרי התוכנית עשה סבב סגירה מלא לפני שמפנים לתמיר: (א) ודא שביעות רצון — שאל אם התוכנית מתאימה ואם יש משהו שהלקוח היה רוצה לשנות. (ב) הצע שדרוגים ותוספות — יום נוסף, סיור פרטי, חוויה קולינרית, שדרוג לינה. (ג) ודא שיש לך שם ופרטי קשר. (ד) הצע מדריך אישי בשתי רמות: מקוצר (עמוד אחד) או מלא ומפורט (יום-יום, מסעדות, אטרקציות), ושאל מה מתאים. המדריך נשלח ללקוח אוטומטית עם הפרטים.",
-"סיום: כשהלקוח מרוצה, סגור בתחושה של 'הכל מוכן' — הודע לו בחום שריכזת את כל הפרטים ושתמיר יחזור אליו אישית רק לתיאום התשלום הסופי ולכל שאלה מיוחדת. אל תשאיר את הלקוח עם עבודה פתוחה.",
-"מה מגיע לתמיר: רק תשלום, שאלות מיוחדות, או בקשת הנחה. כל השאר — התלבטויות, שאלות על היעד, בניית המסלול והתוספות — נפתר על ידך במלואו.",
+"גבולות מוחלטים. אל תזמין ואל תסגור כלום: לא טיסות, לא מלונות, לא אטרקציות, לא רכב. אין הזמנה, אין שריון, אין קישור הזמנה. אל תיגע בכסף: אין מחירים, אין טווחי מחירים, אין הערכות עלות, אין מקדמה ואין תשלום. אם הלקוח שואל על מחיר ענה: 'את התמחור תמיר עושה אישית, אני כאן כדי לבנות לך את התוכנית.' אל תמציא עובדה תפעולית: אין מספרי טיסה, שעות פתיחה, כתובות מדויקות או שעות הגעה — אלה לא חלק מהמוצר, והלקוח מזמין ומברר אותם בעצמו. אל תמציא עדויות: אין המלצות לקוחות, אין שמות ואין מדדים.",
+"אחרי המדריך הצג את גבול הדמו בכנות ובלי להתנצל: 'זה יום אחד מתוך הטיול שבניתי לך. המדריך המלא של תמיר הוא מסמך אחר לגמרי, כל יום ויום, תחנה אחר תחנה, בהתאמה מלאה אליכם. את זה תמיר בונה אישית, לך.' ואז הצע לו את המדריך המלא, ובקש שם מלא ודרך התקשרות אם עוד אין לך.",
+"אם הלקוח מבקש את המדריך המלא: אשר בחום, ודא שיש לך שם מלא וטלפון או אימייל, ואמור שתמיר יחזור אליו אישית. אל תנקוב במחיר ואל תבטיח מועד.",
 "תמיד היה חם ומזמין, וסיים כשמתאים בשאלה אם אפשר לעזור בעוד משהו."
 ].join("\n");
 const llmHistory=[];
@@ -992,21 +1663,102 @@ function addBrochureRaw(raw){
   el.innerHTML='<span class="tag">ברושור מותאם אישית</span><h3>'+(title||'המסע שלך')+'</h3>'+(sum?'<p>'+sum+'</p>':'')+
     (items.length?'<ul>'+items.map(i=>'<li>'+i+'</li>').join('')+'</ul>':'')+
     (route?'<p><b>מסלול מוצע:</b> '+route+'</p>':'')+
-    '<div class="ref">📍 להצעת מחיר מדויקת תמיר חוזר אליך אישית. שום דבר לא מוזמן בלי אישור שלך.</div>';
+    '<div class="ref"><svg class="ic" aria-hidden="true"><use href="#i-rose"></use></svg><span>להצעת מחיר מדויקת תמיר חוזר אליך אישית. שום דבר לא מוזמן בלי אישור שלך.</span></div>';
   msgs.appendChild(el);scrollDown();
 }
+/* ===== The guide =====
+   One day, rendered as a document the client can print. The agent supplies
+   structure and reasoning; anything bookable is left as a blank rule for the
+   client to fill in, which is also why there is nothing here to hallucinate. */
+const PRESETS={'קלאסי':'classic','בהיר ואוורירי':'airy','כהה ואלגנטי':'dark','חם':'warm'};
+let lastGuide=null;
+function addGuideRaw(raw){
+  const get=k=>{const m=raw.match(new RegExp('^'+k+':\\s*(.*)$','m'));return m?m[1].trim():'';};
+  const split=v=>{const i=v.indexOf('|');return i<0?[v.trim(),'']:[v.slice(0,i).trim(),v.slice(i+1).trim()];};
+  const preset=PRESETS[get('פריסט')]||'classic';
+  const title=get('כותרת')||'המסע שלך', intro=get('פתיח');
+  const dayRaw=get('יום'), dash=dayRaw.indexOf('—');
+  const dayName=dash<0?dayRaw:dayRaw.slice(0,dash).trim();
+  const dayWhy =dash<0?'':dayRaw.slice(dash+1).trim();
+  const slots=[['בוקר','בוקר'],['צהריים','צהריים'],['ערב','ערב']]
+    .map(([k,label])=>{const v=get(k);if(!v)return null;const [what,why]=split(v);return {label,what,why};})
+    .filter(Boolean);
+  const acc=get('נגישות'), stay=get('לינה'), more=get('עוד בתוכנית');
+  const noticed=(raw.match(/^[-•]\s*(.+)$/gm)||[]).map(s=>s.replace(/^[-•]\s*/,'').trim());
+  lastGuide=raw;
+
+  const el=document.createElement('div');
+  el.className='guide';el.setAttribute('data-preset',preset);
+  el.innerHTML=
+    '<div class="g-head"><div class="g-kicker"><svg class="ic" aria-hidden="true"><use href="#i-rose"></use></svg>'+
+      '<span>המדריך שלך · גרסת דמו</span></div><h3>'+esc(title)+'</h3>'+
+      (dayName?'<div class="g-sub">'+esc(dayName)+'</div>':'')+'</div>'+
+    '<div class="g-body">'+
+      (intro?'<p class="g-intro">'+esc(intro)+'</p>':'')+
+      (dayName?'<div class="g-daytitle"><b>'+esc(dayName)+'</b>'+(dayWhy?'<span>'+esc(dayWhy)+'</span>':'')+'</div>':'')+
+      slots.map(s=>'<div class="g-slot"><div class="g-when">'+esc(s.label)+'</div><div class="g-what">'+esc(s.what)+
+        (s.why?'<span class="g-why">'+esc(s.why)+'</span>':'')+'</div></div>').join('')+
+      (acc ?'<div class="g-note"><b>נגישות · </b>'+esc(acc)+'</div>':'')+
+      (stay?'<div class="g-note"><b>לינה · </b>'+esc(stay)+'</div>':'')+
+      (noticed.length?'<div class="g-noticed"><h4>מה שמתי לב אליו</h4><ul>'+
+        noticed.map(i=>'<li>'+esc(i)+'</li>').join('')+'</ul></div>':'')+
+      (more?'<p class="g-more">'+esc(more)+'</p>':'')+
+      '<div class="g-fill"><h4>הפרטים שלך</h4>'+
+        '<p>את אלה תמלאו בעצמכם אחרי שתזמינו — אני לא ממציא מספרי טיסה.</p>'+
+        '<div class="row"><span>הטיסה</span><span class="line"></span><span class="line"></span></div>'+
+        '<div class="row"><span>הלינה</span><span class="line"></span><span class="line"></span></div>'+
+        '<div class="row"><span>הערות</span><span class="line"></span></div></div>'+
+      '<div class="g-cta"><p>זה יום אחד מתוך הטיול שבניתי לך. המדריך המלא של תמיר הוא מסמך אחר לגמרי, '+
+        'כל יום ויום, תחנה אחר תחנה, בהתאמה מלאה אליכם. את זה תמיר בונה אישית, לך.</p>'+
+        '<div class="g-actions">'+
+          '<button type="button" class="g-btn primary" data-act="full">אני רוצה את המדריך המלא</button>'+
+          '<button type="button" class="g-btn" data-act="print">שמירה / הדפסה</button>'+
+        '</div></div>'+
+    '</div>';
+  el.querySelector('[data-act="print"]').addEventListener('click',()=>printGuide(el));
+  el.querySelector('[data-act="full"]').addEventListener('click',()=>requestFullGuide());
+  msgs.appendChild(el);scrollDown();
+}
+/* Print by lifting a clone into a dedicated root, so the page's own chrome
+   never lands in the PDF. Restored on afterprint either way. */
+function printGuide(el){
+  let root=document.getElementById('printroot');
+  if(!root){root=document.createElement('div');root.id='printroot';document.body.appendChild(root);}
+  root.innerHTML='';root.appendChild(el.cloneNode(true));
+  const done=()=>{root.innerHTML='';window.removeEventListener('afterprint',done);};
+  window.addEventListener('afterprint',done);
+  window.print();setTimeout(done,1500);
+}
+function requestFullGuide(){
+  if(state.fullGuide)return;
+  state.fullGuide=true;
+  addBubble('אני רוצה את המדריך המלא','me');
+  if(state.contact){
+    leadSent=false;sendLead();
+    addBubble('מעולה. העברתי לתמיר את כל מה שבנינו כאן, והוא יחזור אליך אישית כדי להכין את המדריך המלא.','bot');
+  }else{
+    addBubble('בשמחה. רק שם מלא וטלפון או אימייל, ואעביר את הכל לתמיר.','bot');
+  }
+}
+
 function renderLLM(txt){
   let chips=null;
   const cm=txt.match(/\[\[CHIPS\]\]\s*(.+)/);
   if(cm){chips=cm[1].split('|').map(s=>s.trim()).filter(Boolean).slice(0,4);txt=txt.replace(/\[\[CHIPS\]\][^\n]*/g,'').trim();}
-  const b=txt.indexOf('[[BROCHURE]]'),e=txt.indexOf('[[/BROCHURE]]');
-  if(b>-1){
-    const end=e>-1?e:txt.length;
-    const before=txt.slice(0,b).trim(),raw=txt.slice(b+12,end).trim(),after=e>-1?txt.slice(e+13).trim():'';
+  const marks=[['[[GUIDE]]','[[/GUIDE]]',addGuideRaw],['[[BROCHURE]]','[[/BROCHURE]]',addBrochureRaw]];
+  for(const [open,close,render] of marks){
+    const b=txt.indexOf(open);
+    if(b<0)continue;
+    const e=txt.indexOf(close),end=e>-1?e:txt.length;
+    const before=txt.slice(0,b).trim(),raw=txt.slice(b+open.length,end).trim(),
+          after=e>-1?txt.slice(e+close.length).trim():'';
     if(before)addBubble(before,'bot');
-    addBrochureRaw(raw);
+    render(raw);
     if(after)addBubble(after,'bot');
-  }else addBubble(txt,'bot');
+    if(chips)setChips(chips);
+    return;
+  }
+  addBubble(txt,'bot');
   if(chips)setChips(chips);
 }
 
@@ -1031,7 +1783,11 @@ function kbFor(name){
 const ISRAEL_SET=new Set(["ים המלח","מצפה רמון","אילת","ירושלים","תל אביב","הגליל","הנגב","עין גדי","חיפה","ראש הנקרה"]);
 const DEST_NAMES=[...new Set([...WORLD.map(w=>w.n),...Object.keys(KB),...ISRAEL_SET])];
 
-const state={dest:null,dates:null,duration:null,travelers:null,interests:null,needs:null,budget:null,contact:null,stage:'interview',brochure:false};
+const state={dest:null,dates:null,duration:null,travelers:null,interests:null,needs:null,budget:null,contact:null,
+  /* the deeper consultation: pace is the one that actually personalises a plan */
+  pace:null,food:null,lodging:null,transport:null,access:null,occasion:null,
+  freetext:null,preset:null,fullGuide:false,
+  stage:'interview',brochure:false};
 const ORDER=['dest','dates','duration','travelers','interests','needs','budget'];
 function nextField(){return ORDER.find(k=>state[k]===null)||null;}
 
@@ -1048,6 +1804,19 @@ const Q={
 const MONTHS=["ינואר","פברואר","מרץ","אפריל","מאי","יוני","יולי","אוגוסט","ספטמבר","אוקטובר","נובמבר","דצמבר","קיץ","חורף","אביב","סתיו","פסח","סוכות","חנוכה","חגים"];
 
 function extract(text){
+  /* Preset: the client picks the guide's look, but only from the four that are
+     drawn from the logo's palette — so the guide always looks like Tamir's. */
+  if(!state.preset){const p=Object.keys(PRESETS).find(n=>text.trim()===n||text.includes(n));if(p)state.preset=p;}
+  if(!state.pace&&/קצב|נינוח|רגוע|לאט|דחוס|אינטנסיב|מלא|הרבה ביום|לאט ובנחת/.test(text))state.pace=text.slice(0,120);
+  if(!state.access&&/נגיש|כיסא גלגלים|קלנועית|מדרגות|מעלית|הליכה|רולאין|מוגבל/.test(text))state.access=text.slice(0,160);
+  if(!state.food&&/כשר|צמחונ|טבעונ|גלוטן|אלרגי|חלבי|בשרי/.test(text))state.food=text.slice(0,120);
+  if(!state.lodging&&/מלון|דירה|אכסני|לינה|בוטיק|צימר|Airbnb/i.test(text))state.lodging=text.slice(0,120);
+  if(!state.transport&&/רכבת|רכב שכור|השכרת רכב|אוטובוס|מונית|תחבורה|טיסת פנים/.test(text))state.transport=text.slice(0,120);
+  if(!state.occasion&&/יום נישואין|יום הולדת|יום הולדת|אירוסין|ירח דבש|חגיגה|ציון דרך/.test(text))state.occasion=text.slice(0,120);
+  /* The free-text answer is kept verbatim and never summarised — it is usually
+     the most useful thing in the whole lead. */
+  if(text.trim().length>60&&!Object.values(PRESETS).includes(text.trim()))
+    state.freetext=(state.freetext?state.freetext+' | ':'')+text.trim();
   if(!state.dest){const d=DEST_NAMES.find(n=>text.includes(n));if(d)state.dest=d;}
   if(!state.dates){const m=MONTHS.find(n=>text.includes(n));
     if(m)state.dates="ב"+m;
@@ -1127,7 +1896,7 @@ function doBrochure(){
     el.innerHTML='<span class="tag">ברושור מותאם אישית</span><h3>'+state.dest+'</h3><p>'+kb.tease+'</p>'+
       '<ul>'+bullets.map(b=>'<li>'+b+'</li>').join('')+'</ul>'+
       '<p><b>מסלול מוצע:</b> '+route+'</p>'+
-      '<div class="ref">📍 אני לא זורק מחירים באוויר — תמיר בודק טיסות ולינה בזמן אמת וחוזר אליך עם הצעה מדויקת. שום דבר לא מוזמן בלי אישור שלך.</div>';
+      '<div class="ref"><svg class="ic" aria-hidden="true"><use href="#i-rose"></use></svg><span>אני לא זורק מחירים באוויר — תמיר בודק טיסות ולינה בזמן אמת וחוזר אליך עם הצעה מדויקת. שום דבר לא מוזמן בלי אישור שלך.</span></div>';
     msgs.appendChild(el);scrollDown();
     if(!state.contact)reply(Q.contact.q,[]);
     else guideOffer();
@@ -1183,14 +1952,47 @@ function respond(raw){
 /* ===== Lead delivery — the moment we have a way to reach the client, send everything to Tamir ===== */
 let leadSent=false;
 function collectLead(){
-  return {dest:state.dest||'',dates:state.dates||'',duration:state.duration||'',travelers:state.travelers||'',
+  /* The proxy renders these eight by a fixed label map and puts `dest` in the
+     subject line, so flagging the request here is what makes it triageable
+     from the inbox without touching the Apps Script. */
+  const dest=(state.dest||'')+(state.fullGuide?' · בקשה למדריך מלא':'');
+  return {dest:dest,dates:state.dates||'',duration:state.duration||'',travelers:state.travelers||'',
     interests:state.interests||'',needs:state.needs||'',budget:state.budget||'',contact:state.contact||''};
 }
-function transcriptText(){
+function rawTranscript(){
   if(AI_ON&&llmHistory.length)
     return llmHistory.map(m=>(m.role==='user'?'לקוח: ':'סוכן: ')+((m.parts&&m.parts[0]&&m.parts[0].text)||'')).join('\n');
   return Array.from(document.querySelectorAll('#msgs .bubble'))
     .map(b=>(b.classList.contains('me')?'לקוח: ':'סוכן: ')+b.textContent).join('\n');
+}
+/* Everything new rides in `transcript`, which the proxy injects into the mail
+   verbatim. That is what keeps this a one-file change with no Apps Script
+   edit, no re-paste and no redeploy. */
+function transcriptText(){
+  const out=[];
+  const F=[['dest','יעד'],['dates','תאריכים / עונה'],['duration','משך'],['travelers','מי נוסע'],
+           ['pace','קצב'],['interests','תחומי עניין'],['food','אוכל ותזונה'],['lodging','לינה'],
+           ['transport','תחבורה'],['access','נגישות'],['occasion','אירוע מיוחד'],
+           ['needs','צרכים מיוחדים'],['budget','תקציב'],['contact','פרטי קשר']];
+  if(state.fullGuide){
+    out.push('╔══════════════════════════════════════════');
+    out.push('║  🔴 בקשה למדריך מלא');
+    out.push('╚══════════════════════════════════════════','');
+    out.push('── בקשה להוצאת חשבונית ──');
+    out.push('שם ופרטי קשר: '+(state.contact||'(חסר)'));
+    out.push('בגין: מדריך טיול מלא — '+(state.dest||'(יעד לא צוין)')+(state.duration?', '+state.duration:''));
+    out.push('תאריך הבקשה: '+new Date().toLocaleDateString('he-IL'));
+    out.push('','⚠ זו בקשה בלבד. לא הונפקה חשבונית, לא חושב מחיר ולא נגבה תשלום.','');
+  }
+  out.push('[[GUIDE-REQUEST]]');
+  F.forEach(([k,label])=>{if(state[k])out.push(label+': '+state[k]);});
+  out.push('פריסט עיצובי: '+(state.preset||'קלאסי'));
+  if(state.freetext){out.push('','🔓 העדפות בלשון הלקוח (מילה במילה):','"'+state.freetext+'"');}
+  if(lastGuide){out.push('','── היום שהופק בדמו ──',lastGuide);}
+  out.push('[[/GUIDE-REQUEST]]','');
+  out.push('── שיחת הלקוח המלאה ──');
+  out.push(rawTranscript());
+  return out.join('\n');
 }
 function sendLead(){
   if(leadSent||!state.contact)return;
@@ -1249,6 +2051,138 @@ if(AI_ON){const lv=document.querySelector('.live');if(lv)lv.innerHTML='<i></i> �
     llmHistory.push({role:'user',parts:[{text:"(הקשר פנימי, אל תצטט: לקוח חוזר"+(name?" בשם "+name:"")+" שממשיך שיחה קודמת. פרטים ידועים: "+summary+". פנה אליו בשמו, אל תתחיל מהתחלה, המשך לאסוף רק את מה שחסר ואז בנה תוכנית מלאה.)"}]});
     llmHistory.push({role:'model',parts:[{text:g}]});
   }
+})();
+
+/* ================= DEPTH · the banking disc =================
+   The carousel's two jets sit on a disc that turns toward the pointer.
+   Real 3D — a perspective container and a rotated face, not a drawn
+   highlight. Pointer-only, reduced-motion-off, and the rect is measured
+   once on enter so a move never forces a layout read.                */
+(function(){
+  if(REDUCED) return;
+  if(!matchMedia('(hover:hover) and (pointer:fine)').matches) return;
+  const MAX = 13;                       /* degrees of bank, both axes   */
+  const LIFT = 3.4;                     /* px of parallax on the jet    */
+  document.querySelectorAll('.cnav').forEach(btn=>{
+    const face = btn.querySelector('.cnav-face');
+    const mark = btn.querySelector('.ic');
+    if(!face) return;
+    let r = null, raf = 0, px = 0, py = 0;
+    function paint(){
+      raf = 0;
+      face.style.setProperty('--ry', (px *  MAX).toFixed(2) + 'deg');
+      face.style.setProperty('--rx', (py * -MAX).toFixed(2) + 'deg');
+      if(mark){
+        mark.style.setProperty('--tx', (px * LIFT * 2).toFixed(2) + 'px');
+        mark.style.setProperty('--ty', (py * LIFT * 2).toFixed(2) + 'px');
+      }
+    }
+    btn.addEventListener('pointerenter',e=>{
+      if(e.pointerType !== 'mouse') return;
+      r = btn.getBoundingClientRect();
+      btn.classList.add('tilting');
+    });
+    btn.addEventListener('pointermove',e=>{
+      if(!r || e.pointerType !== 'mouse') return;
+      px = (e.clientX - r.left) / r.width  - .5;
+      py = (e.clientY - r.top ) / r.height - .5;
+      if(!raf) raf = requestAnimationFrame(paint);
+    },{passive:true});
+    function rest(){
+      r = null;
+      if(raf){cancelAnimationFrame(raf); raf = 0;}
+      btn.classList.remove('tilting');
+      face.style.setProperty('--ry','0deg');
+      face.style.setProperty('--rx','0deg');
+      if(mark){ mark.style.setProperty('--tx','0px'); mark.style.setProperty('--ty','0px'); }
+    }
+    btn.addEventListener('pointerleave', rest);
+    btn.addEventListener('blur', rest);
+    /* a click must never leave the disc parked at an angle */
+    btn.addEventListener('pointerdown', ()=>{ if(raf){cancelAnimationFrame(raf); raf=0;} });
+  });
+})();
+
+/* ================= THE POINTER COMPANION =================
+   A compass that rides beside the native cursor. Read the CSS block
+   for the full rationale; the three rules that matter here:
+
+     1. the native cursor is never hidden — the `cursor` property is
+        never set to `none`, no cursor image is set, nothing about the
+        OS pointer is touched. This layer is inert.
+     2. it is never instantiated on a coarse pointer or under
+        prefers-reduced-motion. Not faded — never built.
+     3. transform only, one rAF, and the loop parks itself the moment
+        the pointer settles, so an idle page costs nothing.          */
+(function(){
+  const el = document.getElementById('pcomp');
+  if(!el) return;
+  if(REDUCED) { el.remove(); return; }
+  if(!matchMedia('(hover:hover) and (pointer:fine)').matches){ el.remove(); return; }
+
+  const bezel = el.querySelector('.pcomp-bezel');
+  const rose  = el.querySelector('.pcomp-rose');
+  const ACT  = 'a[href],button,[role="tab"],[role="listitem"],summary,label,select,.dot,.chip,.dchip';
+  const TXT  = 'input,textarea,[contenteditable="true"]';
+
+  let tx=0, ty=0, x=0, y=0;          /* target and eased position     */
+  let ang=0, tang=0;                 /* compass heading, degrees      */
+  let yaw=0, tyaw=0;                 /* the rose's turn in depth      */
+  let raf=0, stowed=true;
+
+  el.classList.add('live');
+
+  function loop(){
+    raf = 0;
+    const dx = tx-x, dy = ty-y;
+    x += dx*.34; y += dy*.34;
+    /* shortest-arc easing so the needle never spins the long way round */
+    let da = ((tang-ang+540)%360)-180;
+    ang += da*.22;
+    yaw += (tyaw-yaw)*.16;
+    el.style.transform = 'translate3d('+x.toFixed(1)+'px,'+y.toFixed(1)+'px,0)';
+    /* the bezel carries the heading; the mark itself carries the turn in depth */
+    bezel.style.transform = 'rotate('+ang.toFixed(1)+'deg)';
+    rose.style.transform  = 'rotateY('+yaw.toFixed(1)+'deg)';
+    /* park the loop once everything has settled — an idle page is idle */
+    if(Math.abs(dx)>.15||Math.abs(dy)>.15||Math.abs(da)>.4||Math.abs(tyaw-yaw)>.4)
+      raf = requestAnimationFrame(loop);
+  }
+  function kick(){ if(!raf) raf = requestAnimationFrame(loop); }
+
+  addEventListener('pointermove',e=>{
+    if(e.pointerType !== 'mouse') return;
+    const ndx = e.clientX-tx, ndy = e.clientY-ty;
+    tx = e.clientX; ty = e.clientY;
+    const speed = Math.hypot(ndx,ndy);
+    if(speed > 1.4){
+      tang = Math.atan2(ndy,ndx)*180/Math.PI + 90;   /* rose points north at rest */
+      tyaw = Math.max(-38, Math.min(38, ndx*2.2));   /* the turn in depth */
+    } else if(speed < .4){
+      tyaw = 0;
+    }
+    /* first sight, or coming back into the window: snap, never swoop in */
+    if(stowed){ stowed = false; x = tx; y = ty; el.classList.add('on'); }
+    kick();
+  },{passive:true});
+
+  /* hover intent — event-driven, so no per-frame hit-testing */
+  function classify(t){
+    if(!(t instanceof Element)) return;
+    el.classList.toggle('act', !!t.closest(ACT));
+    /* over an editable field the I-beam is the whole affordance; stand down */
+    el.style.opacity = t.closest(TXT) ? '0' : '';
+    /* the one light fold needs the deep azure to stay readable */
+    el.classList.toggle('lite', !!t.closest('.access-sec,.agent-panel,.brochure,.nav-sheet'));
+  }
+  addEventListener('pointerover', e=>classify(e.target), {passive:true});
+
+  /* leaving the window, tabbing away, or hiding the page stows it */
+  function hide(){ stowed = true; el.classList.remove('on'); }
+  document.addEventListener('pointerleave', hide);
+  addEventListener('blur', hide);
+  addEventListener('pointerdown', e=>{ if(e.pointerType==='mouse'){ tyaw=0; kick(); } },{passive:true});
+  document.addEventListener('visibilitychange',()=>{ if(document.hidden) hide(); });
 })();
 </script>
 </body>

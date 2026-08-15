@@ -1,2 +1,6 @@
 ﻿fanalis_ref.png
 .claude/
+
+# local backups and working artefacts
+docs/*.bak-*
+.hallmark/
