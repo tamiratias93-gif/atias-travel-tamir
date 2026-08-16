@@ -750,9 +750,13 @@ button:disabled:hover,input:disabled:hover{background-color:inherit;border-color
 /* Four presets. Every one is drawn from the logo's navy-to-cyan palette;
    none of them leaves it, so a client can pick a look without the guide
    ceasing to look like Tamir's product. */
-.guide{align-self:stretch;border-radius:var(--r-lg);overflow:hidden;margin:6px 0 2px;
+/* .msgs is a fixed-height flex column, so a tall child is shrunk to fit unless
+   told otherwise. The guide is ~2200px inside a 430px box: without flex-shrink:0
+   it collapsed to a single pixel — present in the DOM, invisible on screen. */
+.guide{align-self:stretch;flex:0 0 auto;border-radius:var(--r-lg);overflow:hidden;margin:6px 0 2px;
   border:1px solid var(--g-line);background:var(--g-paper);color:var(--g-ink);
   box-shadow:0 18px 44px rgba(3,10,24,.30)}
+.msgs>*{flex-shrink:0}
 .guide[data-preset="classic"]{--g-paper:#FBFDFF;--g-ink:#0C2036;--g-mut:#4C6784;--g-line:#D6E4F0;--g-accent:#0267AF;--g-head:#0B1830;--g-headink:#EAF4FC}
 /* accent doubles as 12px label text, so it is held to 4.5:1 on its own paper */
 .guide[data-preset="airy"]  {--g-paper:#FFFFFF;--g-ink:#16232F;--g-mut:#5B7186;--g-line:#E8EFF5;--g-accent:#0B6E92;--g-head:#F4FAFE;--g-headink:#0C2036}
@@ -1740,7 +1744,11 @@ function addGuideRaw(raw){
   el.querySelector('[data-act="print"]').addEventListener('click',()=>printGuide(el));
   el.querySelector('[data-act="save"]').addEventListener('click',()=>downloadGuide(el,title));
   el.querySelector('[data-act="full"]').addEventListener('click',()=>requestFullGuide());
-  msgs.appendChild(el);scrollDown();
+  msgs.appendChild(el);
+  /* The guide is taller than the chat window. Scrolling to the bottom as usual
+     would land the client past it, on the closing line — which reads as though
+     nothing was produced. Land them on its title instead. */
+  requestAnimationFrame(()=>{msgs.scrollTop=Math.max(0,el.offsetTop-msgs.offsetTop-8);});
 }
 /* Save the guide as a file the client keeps. A chat card disappears on reload;
    a file on their desktop is still there when they decide to call. Everything
