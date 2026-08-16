@@ -33,7 +33,7 @@ function doPost(e) {
     var body = {
       system_instruction: payload.system_instruction,
       contents: payload.contents,
-      generationConfig: payload.generationConfig || { temperature: 0.7, maxOutputTokens: 2048, thinkingConfig: { thinkingBudget: 0 } }
+      generationConfig: payload.generationConfig || { temperature: 0.7, maxOutputTokens: 1400 }
     };
 
     var lastErr = 'unavailable';
@@ -44,10 +44,10 @@ function doPost(e) {
           { method: 'post', contentType: 'application/json', payload: JSON.stringify(body), muteHttpExceptions: true }
         );
         var code = resp.getResponseCode();
-        /* 429 is this model's quota being gone. Sleeping and asking it again
-           just spends more of a quota that has already run out — move straight
-           to the next model, which has its own. Only 503 (transient overload)
-           is worth a second attempt. */
+        /* 429 is this model's quota being gone. Sleeping and asking it again just
+           spends more of a quota that has already run out — move straight to the
+           next model, which has its own. Only 503 (transient overload) is worth a
+           second attempt. */
         if (code === 429) { lastErr = MODELS[m] + ' 429'; break; }
         if (code === 503) { lastErr = MODELS[m] + ' 503'; Utilities.sleep(700); continue; }
         if (code !== 200) { lastErr = MODELS[m] + ' ' + code; break; }
@@ -87,7 +87,7 @@ function handleLead(payload) {
   try {
     var L = payload.lead || {};
     var labels = {
-      dest: 'יעד', dates: 'תאריכים / עונה', duration: 'משך הטיול', travelers: 'מי נוסע',
+      dest: 'יעד', dates: 'תאריכים / עונה', travelers: 'מי נוסע',
       interests: 'תחומי עניין', needs: 'צרכים מיוחדים', budget: 'תקציב', contact: 'פרטי קשר'
     };
     var lines = [];
