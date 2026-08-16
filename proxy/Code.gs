@@ -44,7 +44,12 @@ function doPost(e) {
           { method: 'post', contentType: 'application/json', payload: JSON.stringify(body), muteHttpExceptions: true }
         );
         var code = resp.getResponseCode();
-        if (code === 429 || code === 503) { lastErr = MODELS[m] + ' ' + code; Utilities.sleep(700); continue; }
+        /* 429 is this model's quota being gone. Sleeping and asking it again
+           just spends more of a quota that has already run out — move straight
+           to the next model, which has its own. Only 503 (transient overload)
+           is worth a second attempt. */
+        if (code === 429) { lastErr = MODELS[m] + ' 429'; break; }
+        if (code === 503) { lastErr = MODELS[m] + ' 503'; Utilities.sleep(700); continue; }
         if (code !== 200) { lastErr = MODELS[m] + ' ' + code; break; }
         var data = JSON.parse(resp.getContentText());
         var parts = (data.candidates && data.candidates[0] && data.candidates[0].content && data.candidates[0].content.parts) || [];

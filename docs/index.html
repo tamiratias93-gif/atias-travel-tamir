@@ -1703,16 +1703,24 @@ async function askGemini(userText){
   /* Preferred path: hidden proxy (key stays server-side). text/plain avoids CORS preflight on Apps Script. */
   if(AI.GEMINI_PROXY_URL){
     let lastErr=null;
+    /* The proxy already walks three models with two attempts each, so a retry
+       here multiplies into as many as twelve API calls for one message. On a
+       free-tier daily quota that is the difference between serving a dozen
+       clients and serving one. Retry only what a retry can actually fix: a
+       transient network or 5xx failure. A 429 is the quota being gone — trying
+       again just spends more of it. */
     for(let attempt=0;attempt<2;attempt++){
       try{
         const resp=await fetch(AI.GEMINI_PROXY_URL,{method:'POST',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify(payload)});
-        if(!resp.ok){lastErr=new Error('proxy http '+resp.status);await new Promise(r=>setTimeout(r,800));continue;}
+        if(!resp.ok){lastErr=new Error('proxy http '+resp.status);
+          if(resp.status===429)break;
+          await new Promise(r=>setTimeout(r,800));continue;}
         const data=await resp.json();
         if(data.error)throw new Error('proxy: '+data.error);
         const txt=(data.text||'').trim();
         if(!txt)throw new Error('proxy empty');
         llmHistory.push({role:'model',parts:[{text:txt}]});llmFails=0;return txt;
-      }catch(e){lastErr=e;}
+      }catch(e){lastErr=e;if(/429|quota|RESOURCE_EXHAUSTED/i.test(String(e.message||e)))break;}
     }
     /* Keep the client's turn in history even though this one failed. Dropping
        it means the next request has a hole where their message was, and the
