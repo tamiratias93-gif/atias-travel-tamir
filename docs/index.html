@@ -2164,6 +2164,15 @@ function send(){
          retry; the scripted flow is a last resort after repeated failure, and
          even then it resumes rather than restarts. */
       .catch(err=>{console.warn('AI retry:',err);typing(false);
+        /* 429 means the day's API quota is gone, not a blip — telling this
+           client to try again would just fail again. Say it plainly and take
+           their details instead, so a busy day costs Tamir a reply, not a lead. */
+        if(/429|quota|RESOURCE_EXHAUSTED/i.test(String(err&&err.message||err))){
+          llmDead=true;
+          addBubble('סליחה, המערכת עמוסה ברגע זה ואני לא מצליח להמשיך לתכנן כרגע. אבל אני לא רוצה שנאבד את מה שבנינו — תשאיר לי שם וטלפון או אימייל, ותמיר יחזור אליך אישית עם הכל.','bot');
+          setChips([]);
+          return;
+        }
         if(++llmFails<4){
           addBubble('רגע, משהו נתקע לי לשנייה. תוכל לכתוב את זה שוב? אני זוכר את כל מה שסיפרת עד עכשיו.','bot');
         }else{llmDead=true;resumeScripted(v);}})
