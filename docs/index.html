@@ -1558,9 +1558,28 @@ function setIcon(type){
 const msgs=document.getElementById('msgs');
 function scrollDown(){msgs.scrollTop=msgs.scrollHeight;}
 function addBubble(text,who){const b=document.createElement('div');b.className='bubble '+who;b.textContent=text;msgs.appendChild(b);scrollDown();return b;}
-function typing(on){let t=document.getElementById('typing');
-  if(on){if(t)return;t=document.createElement('div');t.id='typing';t.className='typing';t.innerHTML='הסוכן מקליד <i></i><i></i><i></i>';msgs.appendChild(t);scrollDown();}
-  else if(t)t.remove();}
+/* Building the guide is a much longer generation than a chat turn — measured at
+   60-100s against the live proxy. Three blinking dots for a minute and a half
+   reads as broken, so a long wait announces itself and keeps counting. */
+let waitTimer=null;
+function typing(on,mode){let t=document.getElementById('typing');
+  if(on){
+    if(t)return;
+    t=document.createElement('div');t.id='typing';t.className='typing';
+    if(mode==='guide'){
+      t.innerHTML='<span id="tw-label">בונה לך עכשיו את המדריך, זה לוקח קצת יותר זמן</span> <i></i><i></i><i></i>';
+      const t0=Date.now();
+      waitTimer=setInterval(()=>{
+        const el=document.getElementById('tw-label');if(!el)return;
+        const s=Math.round((Date.now()-t0)/1000);
+        el.textContent = s<20 ? 'בונה לך עכשיו את המדריך, זה לוקח קצת יותר זמן'
+                       : s<50 ? 'עוד רגע, כותב את היום שבחרתי עבורך ('+s+' שניות)'
+                              : 'כמעט שם, מסיים את הפרטים האחרונים ('+s+' שניות)';
+      },1000);
+    }else t.innerHTML='הסוכן מקליד <i></i><i></i><i></i>';
+    msgs.appendChild(t);scrollDown();
+  }
+  else{if(waitTimer){clearInterval(waitTimer);waitTimer=null;}if(t)t.remove();}}
 function setChips(arr){const c=document.getElementById('chips');c.innerHTML='';
   arr.forEach(t=>{const e=document.createElement('button');e.className='chip';e.textContent=t;
     e.onclick=()=>{document.getElementById('inp').value=t;send();};c.appendChild(e);});}
@@ -1597,6 +1616,7 @@ const SYS_PROMPT=[
 "התוכנית חייבת להיות ספציפית ואמיתית לכל יעד — לא גנרית. הכר את מאפייני היעד (אתרים מרכזיים, אזורים, אופי, ואתגרי נגישות אמיתיים כמו אבני מרצפת ברומא ובפראג, גשרים ומדרגות בוונציה, מטרו מאתגר בפריז) והתאם בהתאם. אם הלקוח ביקש נגישות — הדגש הראשון תמיד יהיה התאמת הנגישות המלאה של המסלול, ותאר קונקרטית איך פותרים את אתגרי הנגישות של אותו יעד.",
 "עובדות אמת מאומתות שמותר להשתמש בהן על בורדו (היעד שתמיר מכיר הכי לעומק): טיסה ישירה מנתב\"ג ב-easyJet כ-5:20 שעות, או Air France דרך פריז ורכבת TGV נגישה כשעתיים; Cité du Vin עם הסמכת נגישות מלאה; רציפי הגארון שטוחים; יקב Château Pape Clément נגיש; בית חב\"ד במרכז העיר. על יעדים אחרים דבר נכון ובביטחון על מה שידוע ומקובל, אך אל תמציא מחירים, שמות בתי עסק ספציפיים או פרטים שאינך בטוח בהם.",
 "גבולות מוחלטים. אל תזמין ואל תסגור כלום: לא טיסות, לא מלונות, לא אטרקציות, לא רכב. אין הזמנה, אין שריון, אין קישור הזמנה. אל תיגע בכסף: אין מחירים, אין טווחי מחירים, אין הערכות עלות, אין מקדמה ואין תשלום. אם הלקוח שואל על מחיר ענה: 'את התמחור תמיר עושה אישית, אני כאן כדי לבנות לך את התוכנית.' אל תמציא עובדה תפעולית: אין מספרי טיסה, שעות פתיחה, כתובות מדויקות או שעות הגעה — אלה לא חלק מהמוצר, והלקוח מזמין ומברר אותם בעצמו. אל תמציא עדויות: אין המלצות לקוחות, אין שמות ואין מדדים.",
+"קריטי: ברגע שהלקוח בחר פריסט, או דילג עליו, או ביקש במפורש את המדריך — התגובה הבאה שלך חייבת להכיל את בלוק [[GUIDE]] המלא. אל תשאל עוד שאלה, אל תאשר, ואל תגיד 'מיד אכין'. פשוט הפק אותו. אם חסר לך פרט קטן, השלם אותו בהיגיון מתוך מה שכבר סיפרו לך במקום לעצור ולשאול.",
 "אחרי המדריך הצג את גבול הדמו בכנות ובלי להתנצל: 'זה יום אחד מתוך הטיול שבניתי לך. המדריך המלא של תמיר הוא מסמך אחר לגמרי, כל יום ויום, תחנה אחר תחנה, בהתאמה מלאה אליכם. את זה תמיר בונה אישית, לך.' ואז הצע לו את המדריך המלא, ובקש שם מלא ודרך התקשרות אם עוד אין לך.",
 "אם הלקוח מבקש את המדריך המלא: אשר בחום, ודא שיש לך שם מלא וטלפון או אימייל, ואמור שתמיר יחזור אליו אישית. אל תנקוב במחיר ואל תבטיח מועד.",
 "תמיד היה חם ומזמין, וסיים כשמתאים בשאלה אם אפשר לעזור בעוד משהו."
@@ -1712,12 +1732,53 @@ function addGuideRaw(raw){
         'כל יום ויום, תחנה אחר תחנה, בהתאמה מלאה אליכם. את זה תמיר בונה אישית, לך.</p>'+
         '<div class="g-actions">'+
           '<button type="button" class="g-btn primary" data-act="full">אני רוצה את המדריך המלא</button>'+
-          '<button type="button" class="g-btn" data-act="print">שמירה / הדפסה</button>'+
+          '<button type="button" class="g-btn" data-act="save">שמור את המדריך אצלי</button>'+
+          '<button type="button" class="g-btn" data-act="print">הדפסה / PDF</button>'+
         '</div></div>'+
     '</div>';
   el.querySelector('[data-act="print"]').addEventListener('click',()=>printGuide(el));
+  el.querySelector('[data-act="save"]').addEventListener('click',()=>downloadGuide(el,title));
   el.querySelector('[data-act="full"]').addEventListener('click',()=>requestFullGuide());
   msgs.appendChild(el);scrollDown();
+}
+/* Save the guide as a file the client keeps. A chat card disappears on reload;
+   a file on their desktop is still there when they decide to call. Everything
+   is inlined — the guide's own rules, the rosette, the fonts fall back
+   gracefully — so it opens with no network and no dependency on this site. */
+function guideCSS(){
+  let out='';
+  for(const sh of document.styleSheets){
+    let rules; try{rules=sh.cssRules;}catch(e){continue;}
+    for(const r of rules){const t=r.cssText;if(/\.guide|\.g-|@page/.test(t))out+=t+'\n';}
+  }
+  return out;
+}
+function downloadGuide(el,title){
+  const clone=el.cloneNode(true);
+  clone.querySelector('.g-actions')?.remove();
+  const rose=document.getElementById('i-rose');
+  const doc='<!doctype html>\n<html lang="he" dir="rtl">\n<head>\n<meta charset="utf-8">\n'+
+    '<meta name="viewport" content="width=device-width, initial-scale=1">\n'+
+    '<title>'+esc(title)+' · Atias Travel</title>\n'+
+    '<link rel="preconnect" href="https://fonts.googleapis.com">\n'+
+    '<link href="https://fonts.googleapis.com/css2?family=Bellefair&family=Heebo:wght@300;400;500;700;800&display=swap" rel="stylesheet">\n'+
+    '<style>\n:root{--display:\'Bellefair\',Georgia,serif;--body:\'Heebo\',system-ui,sans-serif;'+
+    '--ease:cubic-bezier(.22,1,.36,1);--r-lg:14px;--ic-glint:rgba(255,255,255,.55)}\n'+
+    '*{box-sizing:border-box}body{margin:0;padding:24px 16px 50px;font-family:var(--body);'+
+    'background:#0B1830;display:flex;justify-content:center}\n'+
+    '.sheet{max-width:660px;width:100%}\n'+
+    '@media print{body{background:#fff;padding:0}}\n'+
+    guideCSS()+'\n</style>\n</head>\n<body>\n'+
+    '<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>'+
+    (rose?rose.outerHTML:'')+'</defs></svg>\n'+
+    '<div class="sheet">'+clone.outerHTML+'</div>\n</body>\n</html>';
+  const blob=new Blob([doc],{type:'text/html;charset=utf-8'});
+  const url=URL.createObjectURL(blob);
+  const a=document.createElement('a');
+  a.href=url;
+  a.download=(title?title.replace(/[\\/:*?"<>|]/g,'').slice(0,60):'המדריך שלי')+' — Atias Travel.html';
+  document.body.appendChild(a);a.click();a.remove();
+  setTimeout(()=>URL.revokeObjectURL(url),4000);
 }
 /* Print by lifting a clone into a dedicated root, so the page's own chrome
    never lands in the PDF. Restored on afterprint either way. */
@@ -1741,6 +1802,22 @@ function requestFullGuide(){
   }
 }
 
+/* A deterministic way to get the guide. Relying on the model to decide when to
+   stop asking and start producing is the one step that failed in practice, so
+   the client also gets a button that simply asks for it. */
+function guideReady(){
+  return !document.querySelector('.guide') && state.dest &&
+    [state.travelers,state.dates,state.duration,state.interests,state.pace].filter(Boolean).length>=2;
+}
+function offerGuideButton(){
+  if(!guideReady()||document.getElementById('mkguide'))return;
+  const c=document.getElementById('chips');
+  const b=document.createElement('button');
+  b.id='mkguide';b.className='chip';b.textContent='✦ בנה לי את המדריך';
+  b.onclick=()=>{document.getElementById('inp').value='בנה לי את המדריך עכשיו';send();};
+  c.prepend(b);
+}
+
 function renderLLM(txt){
   let chips=null;
   const cm=txt.match(/\[\[CHIPS\]\]\s*(.+)/);
@@ -1760,6 +1837,7 @@ function renderLLM(txt){
   }
   addBubble(txt,'bot');
   if(chips)setChips(chips);
+  offerGuideButton();
 }
 
 /* ---- knowledge base, distilled from Tamir's real agent procedures ---- */
@@ -2013,7 +2091,11 @@ function send(){
       addBubble("וואו, זו כבר שיחה רצינית 🙂 בוא נמשיך אותה ישירות עם תמיר — השאר שם וטלפון והוא יחזור אליך.",'bot');
       return;
     }
-    llmBusy=true;typing(true);
+    /* Picking a preset is the last step before the guide, so that turn gets the
+       long-wait treatment rather than the ordinary typing dots. */
+    const buildingGuide=!document.querySelector('.guide') &&
+      (Object.keys(PRESETS).some(p=>v.trim()===p||v.includes(p)) || /בנה לי את המדריך/.test(v));
+    llmBusy=true;typing(true,buildingGuide?'guide':null);
     askGemini(v)
       .then(txt=>{typing(false);renderLLM(txt);})
       .catch(err=>{console.warn('AI fallback:',err);typing(false);if(++llmFails>=2)llmDead=true;respond(v);})
