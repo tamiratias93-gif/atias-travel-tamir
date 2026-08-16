@@ -1728,8 +1728,10 @@ function addGuideRaw(raw){
       (noticed.length?'<div class="g-noticed"><h4>מה שמתי לב אליו</h4><ul>'+
         noticed.map(i=>'<li>'+esc(i)+'</li>').join('')+'</ul></div>':'')+
       (more?'<p class="g-more">'+esc(more)+'</p>':'')+
+      /* Neutral and useful to the client. What the agent does or does not
+         invent is an internal concern and has no place on their document. */
       '<div class="g-fill"><h4>הפרטים שלך</h4>'+
-        '<p>את אלה תמלאו בעצמכם אחרי שתזמינו — אני לא ממציא מספרי טיסה.</p>'+
+        '<p>כשתסגרו את ההזמנות, רשמו אותן כאן — ככה הכל נמצא במקום אחד.</p>'+
         '<div class="row"><span>הטיסה</span><span class="line"></span><span class="line"></span></div>'+
         '<div class="row"><span>הלינה</span><span class="line"></span><span class="line"></span></div>'+
         '<div class="row"><span>הערות</span><span class="line"></span></div></div>'+
