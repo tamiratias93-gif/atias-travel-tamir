@@ -1643,8 +1643,56 @@ const llmHistory=[];
 let llmBusy=false,llmTurns=0,llmDead=false,llmFails=0;
 const AI_MODELS=[AI.GEMINI_MODEL||'gemini-flash-latest','gemini-2.5-flash','gemini-3-flash-preview'];
 const AI_ON=!!(AI.GEMINI_PROXY_URL||AI.GEMINI_KEY);
+/* ===== Dates come from Hebcal, not from memory =====
+   The prompt carries a table of festival dates, which is accurate but frozen:
+   it ends in 2029 and cannot answer anything outside it. Hebcal is the
+   authoritative open source for the Hebrew calendar, needs no key and sends
+   access-control-allow-origin:*, so the page can just ask it. When the client
+   mentions a date we look it up and hand the model the real answer, rather
+   than hoping it recalls one. */
+const HEB_MONTHS={'תשרי':'Tishrei','חשון':'Cheshvan','חשוון':'Cheshvan','מרחשון':'Cheshvan',
+ 'כסלו':'Kislev','טבת':'Tevet','שבט':"Sh'vat",'אדר':'Adar','אדר א':'Adar I','אדר ב':'Adar II',
+ 'ניסן':'Nisan','אייר':'Iyyar','סיון':'Sivan','סיוון':'Sivan','תמוז':'Tamuz','אב':'Av','אלול':'Elul'};
+const GEM={'א':1,'ב':2,'ג':3,'ד':4,'ה':5,'ו':6,'ז':7,'ח':8,'ט':9,'י':10,'כ':20,'ל':30,'מ':40,'נ':50,'ס':60,'ע':70,'פ':80,'צ':90,'ק':100,'ר':200,'ש':300,'ת':400,'ך':20,'ם':40,'ן':50,'ף':80,'ץ':90};
+function gematria(s){return [...s.replace(/["'׳״\s]/g,'')].reduce((n,c)=>n+(GEM[c]||0),0);}
+const HOLIDAY_WORDS=/ראש השנה|ימי תשובה|בין כסה לעשור|יום כיפור|כיפור|סוכות|חול המועד|שמחת תורה|שמיני עצרת|חנוכה|פורים|פסח|שבועות|תשעה באב|ט' באב|החגים|ל"ג בעומר|יום העצמאות/;
+
+async function hebcalFacts(text){
+  const notes=[];
+  try{
+    /* An explicit Hebrew date — convert it exactly. */
+    const m=text.match(/([א-ת]["'׳״]?[א-ת]?)\s*ב?[־-]?\s*(תשרי|חשוון|חשון|מרחשון|כסלו|טבת|שבט|אדר ב|אדר א|אדר|ניסן|אייר|סיוון|סיון|תמוז|אב|אלול)\s*(ה?תש[א-ת"'׳״]{1,4})?/);
+    if(m){
+      const hd=gematria(m[1]);
+      const hm=HEB_MONTHS[m[2]];
+      /* תשפ"ז → ת400+ש300+פ80+ז7 = 787, and the 5000 is left implicit as usual */
+      let hy=null;
+      if(m[3]){const g=gematria(m[3].replace(/^ה/,''));hy=g<1000?5000+g:g;}
+      if(hd&&hm){
+        const q='https://www.hebcal.com/converter?cfg=json&h2g=1&hm='+encodeURIComponent(hm)+'&hd='+hd+(hy?'&hy='+hy:'&hy='+5787);
+        const r=await fetch(q);const d=await r.json();
+        if(d&&d.gy)notes.push('המרת תאריך עברי (Hebcal): '+(d.hebrew||'')+' = '+String(d.gd).padStart(2,'0')+'.'+String(d.gm).padStart(2,'0')+'.'+d.gy+(d.events&&d.events.length?' · '+d.events.join(', '):''));
+      }
+    }
+    /* A festival by name — pull the real list for the coming years. */
+    if(HOLIDAY_WORDS.test(text)){
+      const yr=new Date().getFullYear();
+      for(const y of [yr,yr+1]){
+        const r=await fetch('https://www.hebcal.com/hebcal?v=1&cfg=json&maj=on&min=off&mod=off&nx=off&ss=off&mf=off&c=off&geo=none&lg=h&year='+y);
+        const d=await r.json();
+        if(d&&d.items)notes.push('מועדי '+y+' (Hebcal): '+d.items.map(i=>(i.hebrew||i.title)+' '+i.date.slice(8,10)+'.'+i.date.slice(5,7)).join(' · '));
+      }
+    }
+  }catch(e){console.warn('hebcal:',e);}   /* never block the conversation on this */
+  return notes;
+}
+
 async function askGemini(userText){
-  llmHistory.push({role:'user',parts:[{text:userText}]});
+  let toSend=userText;
+  const facts=await hebcalFacts(userText);
+  if(facts.length)
+    toSend=userText+'\n\n[מידע מאומת שנשלף עכשיו ממקור רשמי — השתמש בו והעדף אותו על כל תאריך שאתה זוכר. אל תציג ללקוח את הבלוק הזה, רק את התשובה]\n'+facts.join('\n');
+  llmHistory.push({role:'user',parts:[{text:toSend}]});
   const payload={
     system_instruction:{parts:[{text:SYS_PROMPT}]},
     contents:llmHistory,
