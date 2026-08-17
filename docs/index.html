@@ -767,6 +767,12 @@ button:disabled:hover,input:disabled:hover{background-color:inherit;border-color
   text-transform:uppercase;opacity:.72;margin-bottom:10px}
 .g-head h3{font-family:var(--display);font-size:clamp(21px,4.4vw,27px);line-height:1.15;margin:0}
 .g-head .g-sub{font-size:13.5px;opacity:.78;margin-top:6px}
+.g-dates{margin-top:8px;font-size:13px;font-weight:600;letter-spacing:.01em;
+  display:inline-block;padding:4px 11px;border-radius:20px;
+  background:color-mix(in srgb,var(--g-accent) 20%,transparent);
+  border:1px solid color-mix(in srgb,var(--g-accent) 38%,transparent)}
+.g-daydate{font-style:normal;font-size:12.5px;font-weight:600;color:var(--g-accent);
+  white-space:nowrap}
 .g-body{padding:20px 22px 22px}
 .g-intro{font-size:15px;line-height:1.75;color:var(--g-ink);margin-bottom:18px}
 .g-daytitle{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap;
@@ -1629,9 +1635,11 @@ const SYS_PROMPT=[
 "אחר כך הפק מדריך של יום אחד בלבד. יום אחד במלואו, ואז עצור. אל תפיק את כל ימי הטיול. בחר את היום שהכי מייצג את הטיול שלהם ואמור למה בחרת דווקא בו. יום הגעה הוא הבחירה החלשה ביותר. עטוף בדיוק כך:",
 "[[GUIDE]]",
 "פריסט: <קלאסי | בהיר ואוורירי | כהה ואלגנטי | חם>",
-"כותרת: <היעד>, <עונה> · <מי נוסע>",
+"כותרת: <היעד> · <מי נוסע>",
+"תאריכים: <טווח הטיול המלא בתאריכים ממש, למשל 12-19 בספטמבר 2026, ולידו מספר הימים. חובה, לעולם אל תשמיט>",
 "פתיח: <2-3 משפטים אישיים ומנומקים מהשיחה, למה התוכנית מתאימה דווקא להם>",
 "יום: <שם היום ותמה> — <למה בחרתי דווקא ביום הזה>",
+"תאריך היום: <התאריך המדויק של היום הזה כולל יום בשבוע, למשל יום שלישי, 15.09.2026. חובה>",
 "בוקר: <חוויה> | <למה היא מתאימה להם ספציפית>",
 "צהריים: <חוויה> | <נימוק>",
 "ערב: <חוויה> | <נימוק>",
@@ -1645,6 +1653,10 @@ const SYS_PROMPT=[
 "שדות למילוי: <2 עד 4 קטגוריות מופרדות בפסיק, שהלקוח הזה באמת צריך לרשום. בחר לפי ההקשר ואל תשתמש ברשימה קבועה>",
 "[[/GUIDE]]",
 "על שדות המילוי: אלה השורות הריקות שהלקוח ממלא בעצמו בסוף המדריך, אז שים רק מה שרלוונטי לטיול הזה. לטיול בחו\"ל: הטיסה, הלינה. לטיול בארץ אין טיסה — במקומה הנסיעה או הרכב או הרכבת. אם שכרו רכב הוסף הרכב. אם יש רכבת בין ערים הוסף הרכבת. 'הערות' תמיד שווה בסוף. קטגוריה שלא רלוונטית לטיול הזה פשוט לא נכנסת.",
+"📅 חוק התאריכים במדריך — מדריך בלי תאריכים לא נראה מקצועי, ולכן: לעולם אל תפיק מדריך בלי טווח תאריכים מלא ובלי התאריך המדויק של היום שפירטת, כולל היום בשבוע. אל תכתוב 'בספטמבר' או 'בסתיו' בשדות האלה — תאריכים ממש.",
+"ואל תפיק מדריך לפני שיש לך גם תאריכים או עונה וגם מספר ימים. אם חסר אחד מהם — שאל עליו, גם אם הלקוח ביקש את המדריך עכשיו. אמור לו בפשטות שאתה צריך לדעת מתי ולכמה זמן כדי לבנות לו יום אמיתי.",
+"אם הלקוח נתן טווח או עונה ולא תאריך מדויק ('בספטמבר', 'אחרי החגים', 'שבוע כלשהו באוקטובר') — אל תשאיר את זה מעורפל ואל תמציא בשקט. הצע לו טווח קונקרטי מתוך מה שאמר, נמק למה דווקא הוא (מזג אוויר, עומס, מועדים, אירוע שסיפר עליו), ובקש אישור: 'אני מציע 14-20 בספטמבר, זה אחרי החגים והעיר נרגעת. מתאים?' אחרי שאישר — זה הטווח שנכנס למדריך. אם לא אישר עדיין, כתוב במדריך שהתאריכים מוצעים ולא סופיים.",
+"ואם הלקוח מבקש שתמליץ לו איזה ימים לבחור בתוך טווח שנתן — עשה זאת ברצון וזה חלק מהערך שלך. שקלול נכון כולל: מה פתוח ומה סגור בשבת ובמועדים, ימים עמוסים לעומת שקטים באתרים, מזג האוויר בעונה, ואירוע מיוחד שסיפרו עליו. נמק את ההמלצה בפועל, אל תזרוק תאריך יבש.",
 "⚠️ עצור ובדוק לפני שאתה מפיק את המדריך. עבור בראש על השיחה כולה ושאל את עצמך: מה בדיוק אמרו לי, ומה נגזר מזה. שלוש דוגמאות לסוג הדיוק שאני מצפה לו: (1) טיול בארץ לא אומר שאין טיסה — טיסה לאילת היא טיסה, ואם דיברו על טיסה פנימית שים 'הטיסה'. (2) אם אמרו שהם מגיעים ברכב שכור, 'הרכב' רלוונטי ו'הטיסה' לא. (3) אם לא עלה שום צורך בנגישות, אל תכתוב סעיף נגישות סתם כדי למלא מקום. תן למה שנאמר בשיחה לקבוע, לא לתבנית.",
 "ודיוק גם בתוכן עצמו, לא רק בסעיפים: אם אמרו שמישהו מתעייף אחרי שעתיים — היום שתבנה חייב לשקף את זה בפועל, לא רק להזכיר את זה במשפט. אם אמרו שהם שונאים מוזיאונים, אל תשים מוזיאון. אם ציינו אירוע מיוחד, שיהיה לו מקום ביום. לפני שאתה שולח, עבור על מה שכתבת ובדוק שכל פרט שסיפרו לך באמת בא לידי ביטוי. מדריך שמתעלם ממה שהלקוח אמר גרוע ממדריך קצר.",
 "וכלל רחב יותר על המדריך כולו: אל תמלא סעיף רק כי הוא קיים בתבנית. סעיף הנגישות נכנס רק אם עלה צורך בנגישות. סעיף הלינה נכנס רק אם יש מה להגיד עליו שמתאים דווקא להם. מדריך של יום בירושלים ומדריך של יום ברומא לא אמורים להיראות אותו דבר, לא בתוכן ולא בסעיפים שנבחרו. תן למה שסיפרו לך לקבוע מה נכנס.",
@@ -1827,6 +1839,7 @@ function addGuideRaw(raw){
     .map(([k,label])=>{const v=get(k);if(!v)return null;const [what,why]=split(v);return {label,what,why};})
     .filter(Boolean);
   const acc=get('נגישות'), stay=get('לינה'), more=get('עוד בתוכנית');
+  const span=get('תאריכים'), dayDate=get('תאריך היום');
   const noticed=(raw.match(/^[-•]\s*(.+)$/gm)||[]).map(s=>s.replace(/^[-•]\s*/,'').trim());
   lastGuide=raw;
 
@@ -1835,10 +1848,15 @@ function addGuideRaw(raw){
   el.innerHTML=
     '<div class="g-head"><div class="g-kicker"><svg class="ic" aria-hidden="true"><use href="#i-rose"></use></svg>'+
       '<span>המדריך שלך · גרסת דמו</span></div><h3>'+esc(title)+'</h3>'+
+      /* The trip's dates belong at the top of the document. Without them it
+         reads as a sketch rather than a plan. */
+      (span?'<div class="g-dates">'+esc(span)+'</div>':'')+
       (dayName?'<div class="g-sub">'+esc(dayName)+'</div>':'')+'</div>'+
     '<div class="g-body">'+
       (intro?'<p class="g-intro">'+esc(intro)+'</p>':'')+
-      (dayName?'<div class="g-daytitle"><b>'+esc(dayName)+'</b>'+(dayWhy?'<span>'+esc(dayWhy)+'</span>':'')+'</div>':'')+
+      (dayName?'<div class="g-daytitle"><b>'+esc(dayName)+'</b>'+
+        (dayDate?'<em class="g-daydate">'+esc(dayDate)+'</em>':'')+
+        (dayWhy?'<span>'+esc(dayWhy)+'</span>':'')+'</div>':'')+
       slots.map(s=>'<div class="g-slot"><div class="g-when">'+esc(s.label)+'</div><div class="g-what">'+esc(s.what)+
         (s.why?'<span class="g-why">'+esc(s.why)+'</span>':'')+'</div></div>').join('')+
       (acc ?'<div class="g-note"><b>נגישות · </b>'+esc(acc)+'</div>':'')+
@@ -1932,9 +1950,12 @@ function requestFullGuide(){
 /* A deterministic way to get the guide. Relying on the model to decide when to
    stop asking and start producing is the one step that failed in practice, so
    the client also gets a button that simply asks for it. */
+/* Offering to build the guide before we know when and for how long produces a
+   plan with no dates in it, which reads as a sketch. Destination, timing and
+   length are the floor; the rest is what makes it personal. */
 function guideReady(){
-  return !document.querySelector('.guide') && state.dest &&
-    [state.travelers,state.dates,state.duration,state.interests,state.pace].filter(Boolean).length>=2;
+  return !document.querySelector('.guide') && state.dest && state.dates && state.duration &&
+    [state.travelers,state.interests,state.pace].filter(Boolean).length>=1;
 }
 function offerGuideButton(){
   if(!guideReady()||document.getElementById('mkguide'))return;
