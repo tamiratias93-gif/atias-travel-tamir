@@ -792,8 +792,17 @@ button:disabled:hover,input:disabled:hover{background-color:inherit;border-color
 .g-fill h4{font-size:14px;margin:0 0 4px;color:var(--g-ink)}
 .g-fill p{font-size:12.5px;color:var(--g-mut);margin:0 0 12px}
 .g-fill .row{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:11px;font-size:13px}
-.g-fill .row>span:first-child{min-width:64px;color:var(--g-mut)}
-.g-fill .line{flex:1;min-width:96px;border-bottom:1px solid var(--g-line);height:19px}
+.g-fill .row>span:first-child{min-width:78px;color:var(--g-mut)}
+/* Actually fillable. contenteditable rather than <input> so the typed text is
+   real DOM content and survives cloneNode into the print sheet and the saved
+   file — an input's value would not. */
+.g-fill .line{flex:1;min-width:110px;border-bottom:1px solid var(--g-line);min-height:22px;
+  padding:2px 4px;color:var(--g-ink);outline:none;border-radius:3px 3px 0 0;
+  transition:background .15s var(--ease),border-color .15s var(--ease);cursor:text}
+.g-fill .line:hover{background:color-mix(in srgb,var(--g-accent) 6%,transparent)}
+.g-fill .line:focus{background:color-mix(in srgb,var(--g-accent) 10%,transparent);border-bottom-color:var(--g-accent)}
+.g-fill .line:empty::before{content:attr(data-ph);color:var(--g-mut);opacity:.55}
+.g-fill .line:focus:empty::before{opacity:.3}
 .g-cta{margin-top:18px;padding-top:16px;border-top:1px solid var(--g-line)}
 .g-cta p{font-size:13.5px;line-height:1.7;color:var(--g-ink);margin:0 0 12px}
 .g-actions{display:flex;gap:9px;flex-wrap:wrap}
@@ -818,7 +827,10 @@ button:disabled:hover,input:disabled:hover{background-color:inherit;border-color
   .g-head{border-bottom:2px solid var(--g-accent);padding:0 0 12px}
   .g-body{padding:16px 0 0}
   .g-slot,.g-note,.g-fill,.g-noticed{break-inside:avoid}
-  .g-fill .line{border-bottom:1px solid #8fa3b5}
+  /* Whatever was typed prints as written; an empty field prints as a rule to
+     write on by hand, so the placeholder hint must not print. */
+  .g-fill .line{border-bottom:1px solid #8fa3b5;background:none}
+  .g-fill .line:empty::before{content:""}
 }
 </style>
 </head>
@@ -1630,7 +1642,12 @@ const SYS_PROMPT=[
 "- <התאמה אישית 2>",
 "- <התאמה אישית 3>",
 "עוד בתוכנית: <שורה אחת שמונה בכותרות בלבד את שאר הימים, בלי לפרט>",
+"שדות למילוי: <2 עד 4 קטגוריות מופרדות בפסיק, שהלקוח הזה באמת צריך לרשום. בחר לפי ההקשר ואל תשתמש ברשימה קבועה>",
 "[[/GUIDE]]",
+"על שדות המילוי: אלה השורות הריקות שהלקוח ממלא בעצמו בסוף המדריך, אז שים רק מה שרלוונטי לטיול הזה. לטיול בחו\"ל: הטיסה, הלינה. לטיול בארץ אין טיסה — במקומה הנסיעה או הרכב או הרכבת. אם שכרו רכב הוסף הרכב. אם יש רכבת בין ערים הוסף הרכבת. 'הערות' תמיד שווה בסוף. קטגוריה שלא רלוונטית לטיול הזה פשוט לא נכנסת.",
+"⚠️ עצור ובדוק לפני שאתה מפיק את המדריך. עבור בראש על השיחה כולה ושאל את עצמך: מה בדיוק אמרו לי, ומה נגזר מזה. שלוש דוגמאות לסוג הדיוק שאני מצפה לו: (1) טיול בארץ לא אומר שאין טיסה — טיסה לאילת היא טיסה, ואם דיברו על טיסה פנימית שים 'הטיסה'. (2) אם אמרו שהם מגיעים ברכב שכור, 'הרכב' רלוונטי ו'הטיסה' לא. (3) אם לא עלה שום צורך בנגישות, אל תכתוב סעיף נגישות סתם כדי למלא מקום. תן למה שנאמר בשיחה לקבוע, לא לתבנית.",
+"ודיוק גם בתוכן עצמו, לא רק בסעיפים: אם אמרו שמישהו מתעייף אחרי שעתיים — היום שתבנה חייב לשקף את זה בפועל, לא רק להזכיר את זה במשפט. אם אמרו שהם שונאים מוזיאונים, אל תשים מוזיאון. אם ציינו אירוע מיוחד, שיהיה לו מקום ביום. לפני שאתה שולח, עבור על מה שכתבת ובדוק שכל פרט שסיפרו לך באמת בא לידי ביטוי. מדריך שמתעלם ממה שהלקוח אמר גרוע ממדריך קצר.",
+"וכלל רחב יותר על המדריך כולו: אל תמלא סעיף רק כי הוא קיים בתבנית. סעיף הנגישות נכנס רק אם עלה צורך בנגישות. סעיף הלינה נכנס רק אם יש מה להגיד עליו שמתאים דווקא להם. מדריך של יום בירושלים ומדריך של יום ברומא לא אמורים להיראות אותו דבר, לא בתוכן ולא בסעיפים שנבחרו. תן למה שסיפרו לך לקבוע מה נכנס.",
 "התוכנית חייבת להיות ספציפית ואמיתית לכל יעד — לא גנרית. הכר את מאפייני היעד (אתרים מרכזיים, אזורים, אופי, ואתגרי נגישות אמיתיים כמו אבני מרצפת ברומא ובפראג, גשרים ומדרגות בוונציה, מטרו מאתגר בפריז) והתאם בהתאם. אם הלקוח ביקש נגישות — הדגש הראשון תמיד יהיה התאמת הנגישות המלאה של המסלול, ותאר קונקרטית איך פותרים את אתגרי הנגישות של אותו יעד.",
 "עובדות אמת מאומתות שמותר להשתמש בהן על בורדו (היעד שתמיר מכיר הכי לעומק): טיסה ישירה מנתב\"ג ב-easyJet כ-5:20 שעות, או Air France דרך פריז ורכבת TGV נגישה כשעתיים; Cité du Vin עם הסמכת נגישות מלאה; רציפי הגארון שטוחים; יקב Château Pape Clément נגיש; בית חב\"ד במרכז העיר. על יעדים אחרים דבר נכון ובביטחון על מה שידוע ומקובל, אך אל תמציא מחירים, שמות בתי עסק ספציפיים או פרטים שאינך בטוח בהם.",
 "גבולות מוחלטים. אל תזמין ואל תסגור כלום: לא טיסות, לא מלונות, לא אטרקציות, לא רכב. אין הזמנה, אין שריון, אין קישור הזמנה. אל תיגע בכסף: אין מחירים, אין טווחי מחירים, אין הערכות עלות, אין מקדמה ואין תשלום. אם הלקוח שואל על מחיר ענה: 'את התמחור תמיר עושה אישית, אני כאן כדי לבנות לך את התוכנית.' אל תמציא עובדה תפעולית: אין מספרי טיסה, שעות פתיחה, כתובות מדויקות או שעות הגעה — אלה לא חלק מהמוצר, והלקוח מזמין ומברר אותם בעצמו. אל תמציא עדויות: אין המלצות לקוחות, אין שמות ואין מדדים.",
@@ -1769,6 +1786,35 @@ function addBrochureRaw(raw){
    client to fill in, which is also why there is nothing here to hallucinate. */
 const PRESETS={'קלאסי':'classic','בהיר ואוורירי':'airy','כהה ואלגנטי':'dark','חם':'warm'};
 let lastGuide=null;
+
+/* The fields worth filling in depend on the trip. A week in Jerusalem has no
+   flight to record and a rental car probably matters more; a week in Rome is
+   the other way round. The agent names them because it knows the context — this
+   only decides what to do when it doesn't, and a domestic trip is the case
+   where the generic list is most obviously wrong. */
+const ISRAEL_HINT=/ירושלים|תל אביב|אילת|חיפה|הגליל|הנגב|ים המלח|מצפה רמון|עין גדי|ראש הנקרה|טבריה|צפת|עכו|באר שבע|בארץ|בישראל/;
+function fillRows(spec){
+  let labels=(spec||'').split(/[,·|]/).map(s=>s.trim()).filter(Boolean).slice(0,4);
+  if(!labels.length){
+    const ctx=(state.dest||'')+' '+(state.transport||'');
+    /* Domestic does not mean no flight — Eilat is the obvious case. If a flight
+       came up anywhere in the conversation it wins over the destination guess. */
+    const flying=/טיסה|טסים|לטוס|נטוס|תעופה|צלצל|ארקיע|אל על|ישראייר/.test(ctx);
+    const domestic=ISRAEL_HINT.test(ctx);
+    labels=(domestic&&!flying)?['הנסיעה','הלינה','הערות']:['הטיסה','הלינה','הערות'];
+  }
+  const PH={'הטיסה':['חברה ומספר','שעת המראה'],'הנסיעה':['איך מגיעים','שעת יציאה'],
+            'הלינה':['שם ומיקום','צ׳ק-אין'],'הרכב':['חברה','איסוף'],
+            'הרכבת':['קו','שעה'],'הערות':['כל דבר שכדאי לזכור']};
+  return labels.map(l=>{
+    const ph=PH[l]||['',''];
+    const cells=(l==='הערות'?1:2);
+    let row='<div class="row"><span>'+esc(l)+'</span>';
+    for(let i=0;i<cells;i++)
+      row+='<span class="line" contenteditable="true" role="textbox" aria-label="'+esc(l)+(cells>1?' '+(i+1):'')+'" data-ph="'+esc(ph[i]||'')+'"></span>';
+    return row+'</div>';
+  }).join('');
+}
 function addGuideRaw(raw){
   const get=k=>{const m=raw.match(new RegExp('^'+k+':\\s*(.*)$','m'));return m?m[1].trim():'';};
   const split=v=>{const i=v.indexOf('|');return i<0?[v.trim(),'']:[v.slice(0,i).trim(),v.slice(i+1).trim()];};
@@ -1803,10 +1849,8 @@ function addGuideRaw(raw){
       /* Neutral and useful to the client. What the agent does or does not
          invent is an internal concern and has no place on their document. */
       '<div class="g-fill"><h4>הפרטים שלך</h4>'+
-        '<p>כשתסגרו את ההזמנות, רשמו אותן כאן — ככה הכל נמצא במקום אחד.</p>'+
-        '<div class="row"><span>הטיסה</span><span class="line"></span><span class="line"></span></div>'+
-        '<div class="row"><span>הלינה</span><span class="line"></span><span class="line"></span></div>'+
-        '<div class="row"><span>הערות</span><span class="line"></span></div></div>'+
+        '<p>כשתסגרו את ההזמנות, רשמו אותן כאן — אפשר לכתוב ישירות בשורות, וזה נשמר גם בהדפסה ובקובץ.</p>'+
+        fillRows(get('שדות למילוי'))+'</div>'+
       '<div class="g-cta"><p>זה יום אחד מתוך הטיול שבניתי לך. המדריך המלא של תמיר הוא מסמך אחר לגמרי, '+
         'כל יום ויום, תחנה אחר תחנה, בהתאמה מלאה אליכם. את זה תמיר בונה אישית, לך.</p>'+
         '<div class="g-actions">'+
